@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Pieter Lexis
+  description: PowerDNS Recursor Role
+  company: PowerDNS.COM BV
+  license: GPLv2
+  min_ansible_version: 1.2
+  platforms:
+  - name: Debian
+    versions:
+    - jessie
+  - name: Ubuntu
+    versions:
+    - Trusty
+  categories:
+    - system
+dependencies: []

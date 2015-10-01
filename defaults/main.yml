@@ -1,0 +1,26 @@
+---
+pdns_rec_installation_type: packages
+pdns_rec_repo_provider: os
+# XXX:stable doesnt work yet
+pdns_rec_repo_branch: stable
+
+# The user and group to run as.
+# NOTE: at the moment, we don't create a user as we assume the package creates
+# a "pdns" user and group. If you change these variables, make sure to create
+# the user and groups before applying this role
+pdns_rec_user: pdns
+pdns_rec_group: pdns
+
+# The directory where the config is located
+pdns_rec_config_dir: '/etc/powerdns'
+
+# pdns_rec_config: A dict containing all configuration options, except for backend
+# configuration and the "config-dir", "setuid" and "setgid" directives.
+# NOTE: Right now, we don't verify the options when configuring the server.
+#
+# Example:
+# pdns_rec_config:
+#  allow_from: '127.0.0.1/8,192.168.2.0/24'
+#  local-address: 0.0.0.0
+#  server-id: 'nothing to see here'
+pdns_rec_config: {}
