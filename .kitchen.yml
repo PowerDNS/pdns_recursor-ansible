@@ -46,3 +46,6 @@ platforms:
 
 suites:
   - name: default
+  - name: pdnsrepo
+    excludes:
+      - ubuntu-14.04
