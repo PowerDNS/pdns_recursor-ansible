@@ -1,8 +1,22 @@
 config-dir={{pdns_rec_config_dir}}
 setuid={{ pdns_rec_user }}
 setgid={{ pdns_rec_group }}
-{% for config_item in pdns_rec_config.keys() | sort %}
-{% if config_item not in ["config-dir", "setuid", "setgid"] %}
+
+{%- for config_item in pdns_rec_config.keys() | sort -%}
+  {%- if config_item not in ["config-dir", "setuid", "setgid"] -%}
+    {%- if pdns_rec_config[config_item] is sequence -%}
+      {%- for config_item_item in pdns_rec_config[config_item] -%}
+        {%- if loop.first %}
+
+{{config_item}}={{config_item_item|string}}
+        {%- else %}
+
+{{config_item}}+={{config_item_item|string}}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else %}
+
 {{config_item}}={{pdns_rec_config[config_item]|string}}
-{% endif %}
-{% endfor %}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}

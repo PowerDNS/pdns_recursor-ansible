@@ -14,8 +14,8 @@ pdns_rec_group: pdns
 # The directory where the config is located
 pdns_rec_config_dir: '/etc/powerdns'
 
-# pdns_rec_config: A dict containing all configuration options, except for backend
-# configuration and the "config-dir", "setuid" and "setgid" directives.
+# pdns_rec_config: A dict containing all configuration options, except for the
+# "config-dir", "setuid" and "setgid" directives.
 # NOTE: Right now, we don't verify the options when configuring the server.
 #
 # Example:
