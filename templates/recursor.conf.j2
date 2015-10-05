@@ -4,7 +4,10 @@ setgid={{ pdns_rec_group }}
 
 {%- for config_item in pdns_rec_config.keys() | sort -%}
   {%- if config_item not in ["config-dir", "setuid", "setgid"] -%}
-    {%- if pdns_rec_config[config_item] is sequence -%}
+    {%- if pdns_rec_config[config_item] is string or pdns_rec_config[config_item] is number %}
+
+{{config_item}}={{pdns_rec_config[config_item]|string}}
+{%- elif pdns_rec_config[config_item] is sequence -%}
       {%- for config_item_item in pdns_rec_config[config_item] -%}
         {%- if loop.first %}
 
@@ -15,8 +18,6 @@ setgid={{ pdns_rec_group }}
         {%- endif -%}
       {%- endfor -%}
     {%- else %}
-
-{{config_item}}={{pdns_rec_config[config_item]|string}}
     {%- endif -%}
   {%- endif -%}
 {%- endfor -%}
