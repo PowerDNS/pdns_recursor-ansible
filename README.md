@@ -3,7 +3,7 @@ PowerDNS Recursor Role
 An Ansible role created by the folks behind PowerDNS to install and configure
 the PowerDNS Recursor.
 
-This role is considered alpha quality at the moment, but issues and pull requests
+This role is considered alpha quality at the moment, issues and pull requests
 are accepted.
 
 Requirements
