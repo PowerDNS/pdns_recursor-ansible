@@ -52,7 +52,7 @@ subnet:
   roles:
     - role: PowerDNS.pdns_recursor
   vars:
-    pdns_config:
+    pdns_rec_config:
       'allow-from': '198.51.100.0/24'
       'local-address': '203.0.113.53:5300'
 ```
@@ -63,7 +63,7 @@ Allow from multiple networks:
   roles:
     - role: PowerDNS.pdns_recursor
   vars:
-    pdns_config:
+    pdns_rec_config:
       'allow-from':
         - '198.51.100.0/24'
         - '203.0.113.53/24'
