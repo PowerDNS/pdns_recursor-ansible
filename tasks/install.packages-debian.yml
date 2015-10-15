@@ -26,4 +26,4 @@
   when: pdns_rec_repo_provider == "powerdns"
 
 - name: Install the PowerDNS Recursor package
-  apt: name=pdns-recursor state=present
+  apt: name=pdns-recursor state=present update_cache=yes
