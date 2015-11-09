@@ -2,6 +2,12 @@
 - name: Ensure the PowerDNS configuration directory exists
   file: name={{pdns_rec_config_dir | default('/etc/powerdns')}} state=directory owner="root" group="root"
 
+- name: grab pdns_recursor version
+  shell: "pdns_recursor --version 2>&1 | awk '/PowerDNS Recursor/ { print $6 }'"
+  register: pdns_recursor_version_result
+
+- set_fact: pdns_recursor_version="{{ pdns_recursor_version_result.stdout }}"
+
 - name: Add configuration for the PowerDNS Recursor
   template: src=recursor.conf.j2 dest={{pdns_rec_config_dir | default('/etc/powerdns')}}/recursor.conf
   notify: Restart PowerDNS Recursor
