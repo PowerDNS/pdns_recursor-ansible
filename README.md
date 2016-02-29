@@ -8,7 +8,7 @@ are accepted.
 
 Requirements
 ------------
-An Ansible installation.
+An Ansible 2.0 or higher installation.
 
 Role Variables
 --------------
@@ -24,8 +24,8 @@ The directory where the configuration (`recursor.conf`) is stored. '/etc/powerdn
 by default.
 
 ### pdns_rec_installation_type
-How to install PowerDNS, either 'packages' or 'source'. 'packages' by default.
-Source installations are not supported yet.
+How to install the PowerDNS Recursor, either 'packages', 'source' or 'url'.
+'packages' by default. Source installations are not supported yet.
 
 ### pdns_rec_repo_provider
 When using 'packages' for pdns_rec_installation_type, use operating system packages
@@ -34,6 +34,15 @@ When using 'packages' for pdns_rec_installation_type, use operating system packa
 ### pdns_rec_repo_branch
 When installing from the PowerDNS repository, what branch should be installed?
 Currently only 'master' is supported.
+
+### pdns_rec_url
+When `pdns_rec_installation_type` is 'url'. This is the URL to be fetched for the
+package.
+
+### pdns_rec_url_checksum
+When `pdns_rec_installation_type` is 'url'. This is the checksum of the package
+that is fetched from `pdns_rec_url` This should be in the format for the `checksum`
+option of the [`get_url module`](http://docs.ansible.com/ansible/get_url_module.html).
 
 ### pdns_rec_user
 The user to run the PowerDNS Recursor as, this is 'pdns' by default on Debian

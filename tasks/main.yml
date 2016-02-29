@@ -31,6 +31,9 @@
 #    - source
 #    - install
 
+- include: install.url-debian.yml
+  when: pdns_rec_installation_type == "url" and ansible_os_family == "Debian"
+
 - include: configuration.yml
   tags:
     - conf

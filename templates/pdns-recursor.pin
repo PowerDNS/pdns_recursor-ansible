@@ -1,0 +1,4 @@
+Package: pdns-recursor
+Pin: version {{pdns_rec_pkg_version}}*
+Pin-Priority: 1001
+
