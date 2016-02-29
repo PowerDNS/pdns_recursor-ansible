@@ -1,8 +1,9 @@
 ---
 pdns_rec_installation_type: packages
 pdns_rec_repo_provider: os
-# XXX:stable doesnt work yet
-pdns_rec_repo_branch: stable
+
+# Install packages from the master powerdns repo by default
+pdns_rec_repo_branch: master
 
 # Used when pdns_rec_installation_type is 'url'
 pdns_rec_url: ''
