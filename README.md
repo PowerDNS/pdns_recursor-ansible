@@ -29,7 +29,7 @@ How to install the PowerDNS Recursor, either 'packages', 'source' or 'url'.
 
 ### pdns_rec_repo_provider
 When using 'packages' for pdns_rec_installation_type, use operating system packages
-('os') or the PowerDNS repository ('PowerDNS'). This is 'os' by default.
+('os') or the PowerDNS repository ('powerdns'). This is 'os' by default.
 
 ### pdns_rec_repo_branch
 When installing from the PowerDNS repository, what branch should be installed?
