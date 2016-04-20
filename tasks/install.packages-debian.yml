@@ -21,7 +21,7 @@
   when: pdns_rec_repo_provider == "powerdns"
 
 - name: Add the PowerDNS repository
-  apt_repository: repo="deb http://repo.powerdns.com/{{ansible_distribution | lower}} {{ansible_distribution_release|lower}}-rec-{{pdns_rec_repo_branch}} main"
+  apt_repository: repo="deb http://repo.powerdns.com/{{ansible_lsb.id | lower}} {{ansible_distribution_release|lower}}-rec-{{pdns_rec_repo_branch}} main"
   when: pdns_rec_repo_provider == "powerdns"
 
 - name: Install the PowerDNS Recursor package
