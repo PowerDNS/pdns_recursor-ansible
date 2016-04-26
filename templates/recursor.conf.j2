@@ -2,14 +2,20 @@ config-dir={{pdns_rec_config_dir}}
 setuid={{ pdns_rec_user }}
 setgid={{ pdns_rec_group }}
 
-{%- for config_item in pdns_rec_config.keys() | sort -%}
+{%- for config_item, value in pdns_rec_config.items() -%}
   {%- if config_item not in ["config-dir", "setuid", "setgid"] -%}
-    {%- if pdns_rec_config[config_item] is string or pdns_rec_config[config_item] is number %}
+    {%- if value == True %}
+
+{{config_item}}=yes
+    {%- elif value == False %}
+
+{{config_item}}=no
+    {%- elif value is string or value is number %}
 
 {{config_item}}={{pdns_rec_config[config_item]|string}}
     {%- elif pdns_rec_config[config_item] is sequence %}
       {%- if pdns_recursor_version[0:3] in ['0.0', '3.6', '4.0'] %}
-        {%- for config_item_item in pdns_rec_config[config_item] -%}
+        {%- for config_item_item in value -%}
           {%- if loop.first %}
 
 {{config_item}}={{config_item_item|string}}
@@ -20,7 +26,7 @@ setgid={{ pdns_rec_group }}
         {%- endfor -%}
       {%- else %}
 
-{{config_item}}={{ ', '.join(pdns_rec_config[config_item]) }}
+{{config_item}}={{ ', '.join(value) }}
       {%- endif %}
     {%- endif -%}
   {%- endif -%}
