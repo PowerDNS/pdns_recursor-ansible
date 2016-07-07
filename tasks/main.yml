@@ -41,6 +41,9 @@
     - configuration
 
 - name: Start and enable the PowerDNS Recursor service
-  service: name=pdns-recursor state=started enabled=true
+  service:
+    name: pdns-recursor
+    state: started
+    enabled: true
   tags:
     - service
