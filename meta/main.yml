@@ -12,6 +12,8 @@ galaxy_info:
   - name: Ubuntu
     versions:
     - Trusty
-  categories:
+  galaxy_tags:
     - system
+    - powerdns
+    - powerdnsrecursor
 dependencies: []
