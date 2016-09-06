@@ -10,19 +10,19 @@
     msg: "pdns_rec_repo_branch isn't set to a known branch"
   when: pdns_rec_repo_provider == "powerdns" and pdns_rec_repo_branch not in ["master", "40"]
 
-- name: Add the PowerDNS repository key
+- name: Add the PowerDNS 'master' repository key
   apt_key:
     url: http://repo.powerdns.com/CBC8B383-pub.asc
     id: D47975F8DAE32700A563E64FFF389421CBC8B383
   when: pdns_rec_repo_provider == "powerdns" and pdns_rec_repo_branch == "master"
 
-- name: Add the PowerDNS repository key
+- name: Add the PowerDNS '4.0.x' repository key
   apt_key:
     url: http://repo.powerdns.com/FD380FBB-pub.asc
     id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   when: pdns_rec_repo_provider == "powerdns" and pdns_rec_repo_branch in ["40"]
 
-- name: apt-pin the PowerDNS packages to the PowerDNS repo
+- name: Pinning the PowerDNS packages to the PowerDNS repo
   copy:
     dest: /etc/apt/preferences.d/pdns
     src: pdns.pin
