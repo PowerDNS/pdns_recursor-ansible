@@ -10,6 +10,9 @@ setgid={{ pdns_rec_group }}
     {%- elif value == False %}
 
 {{config_item}}=no
+    {%- elif value == None %}
+
+{{config_item}}=
     {%- elif value is string or value is number %}
 
 {{config_item}}={{pdns_rec_config[config_item]|string}}
