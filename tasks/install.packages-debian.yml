@@ -24,7 +24,7 @@
 
 - name: apt-pin the PowerDNS packages to the PowerDNS repo
   copy:
-    dest: '/etc/apt/preferences.d/pdns'
+    dest: /etc/apt/preferences.d/pdns
     src: pdns.pin
     owner: root
     group: root

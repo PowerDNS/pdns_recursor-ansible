@@ -1,9 +1,10 @@
 ---
-- name: Load variables
-  include_vars: '{{item}}'
+
+- name: Include os-specific variables
+  include_vars: "{{ item }}"
   with_first_found:
-    - '{{ansible_os_family}}.yml}}'
-    - 'default.yml'
+    - "vars/{{ ansible_os_family }}.yml"
+    - "vars/default.yml"
 
 - include: install.packages-debian.yml
   when: pdns_rec_installation_type == "packages" and ansible_os_family == "Debian"
@@ -33,6 +34,9 @@
 
 - include: install.url-debian.yml
   when: pdns_rec_installation_type == "url" and ansible_os_family == "Debian"
+  tags:
+    - url
+    - install
 
 - include: configuration.yml
   tags:
