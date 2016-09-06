@@ -1,22 +1,31 @@
 ---
 - name: Fail if variables are missing
-  fail: msg="Unable to continue, pdns_rec_url or pdns_rec_url_checksum is unset"
+  fail:
+    msg: "Unable to continue, pdns_rec_url or pdns_rec_url_checksum is unset"
   when: pdns_rec_url == "" or pdns_rec_url_checksum == ""
 
-- name: get the name of the package
-  set_fact: pdns_rec_pkg_name="{{ pdns_rec_url.split('/')[-1] }}"
+- name: Get the name of the package
+  set_fact:
+    pdns_rec_pkg_name: "{{ pdns_rec_url.split('/')[-1] }}"
 
-- name: get the version of the package
-  set_fact: pdns_rec_pkg_version="{{ pdns_rec_pkg_name.split('_')[-2] }}"
+- name: Get the version of the package
+  set_fact:
+    pdns_rec_pkg_version: "{{ pdns_rec_pkg_name.split('_')[-2] }}"
 
-- name: grab the package
-  get_url: url={{pdns_rec_url}} dest="/tmp/{{pdns_rec_pkg_name}}" checksum={{pdns_rec_url_checksum}}
+- name: Grab the package
+  get_url:
+    url: "{{ pdns_rec_url }}"
+    dest: "/tmp/{{ pdns_rec_pkg_name }}"
+    checksum: "{{ pdns_rec_url_checksum }}"
 
 - name: Pin the package to the version downloaded
-  template: src=pdns-recursor.pin dest=/etc/apt/preferences.d/pdns
+  template:
+    src: pdns-recursor.pin
+    dest: /etc/apt/preferences.d/pdns
 
 - name: Install the package, ignoring dependency errors
-  apt: deb="/tmp/{{pdns_rec_pkg_name}}"
+  apt:
+    deb: "/tmp/{{ pdns_rec_pkg_name }}"
   failed_when: False
 
 - name: Install dependencies
