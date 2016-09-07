@@ -8,7 +8,7 @@ if os[:family] == 'debian' and os[:release] =~ /8\./
 end
 
 if os[:family] == 'redhat'
-  describe file('/etc/powerdns/recursor.conf') do
+  describe file('/etc/pdns-recursor/recursor.conf') do
     its(:content) { should contain "allow-from=127.0.0.1/24, ::1/127" }
   end
 end
