@@ -1,28 +1,18 @@
 ---
-- name: Check pdns_rec_repo_provider
-  fail:
-    msg: "pdns_rec_repo_provider is neither 'powerdns' nor 'os'"
-  when: pdns_rec_repo_provider not in ["os", "powerdns"]
 
-# XXX: Is this handy to check ( I guess... no)
-- name: Check pdns_rec_repo_branch
-  fail:
-    msg: "pdns_rec_repo_branch isn't set to a known branch"
-  when: pdns_rec_repo_provider == "powerdns" and pdns_rec_repo_branch not in ["master", "40"]
-
-- name: Add the PowerDNS 'master' repository key
+- name: Import the PowerDNS Recursor 'master' APT repository key
   apt_key:
     url: http://repo.powerdns.com/CBC8B383-pub.asc
     id: D47975F8DAE32700A563E64FFF389421CBC8B383
   when: pdns_rec_repo_provider == "powerdns" and pdns_rec_repo_branch == "master"
 
-- name: Add the PowerDNS '4.0.x' repository key
+- name: Import the PowerDNS Recursor '4.0.x' APT repository key
   apt_key:
     url: http://repo.powerdns.com/FD380FBB-pub.asc
     id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   when: pdns_rec_repo_provider == "powerdns" and pdns_rec_repo_branch in ["40"]
 
-- name: Pinning the PowerDNS packages to the PowerDNS repo
+- name: Pinning the PowerDNS packages to the PowerDNS APT repo
   copy:
     dest: /etc/apt/preferences.d/pdns
     src: pdns.pin
@@ -31,9 +21,9 @@
     mode: 0644
   when: pdns_rec_repo_provider == "powerdns"
 
-- name: Add the PowerDNS repository
+- name: Add the PowerDNS Recursor APT repository
   apt_repository:
-    repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_lsb.id | lower }} {{ ansible_distribution_release | lower }}-rec-{{ pdns_rec_repo_branch }} main"
+    repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-{{ pdns_rec_repo_branch }} main"
   when: pdns_rec_repo_provider == "powerdns"
 
 - name: Install the PowerDNS Recursor package

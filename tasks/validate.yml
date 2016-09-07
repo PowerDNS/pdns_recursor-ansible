@@ -1,0 +1,20 @@
+---
+
+- name: Check pdns_rec_repo_provider
+  fail:
+    msg: "pdns_rec_repo_provider is neither 'powerdns' nor 'os'"
+  when: pdns_rec_installation_type == "packages"
+    and pdns_rec_repo_provider not in ["os", "powerdns"]
+
+- name: Check pdns_rec_repo_branch
+  fail:
+    msg: "pdns_rec_repo_branch isn't set to a known branch"
+  when: pdns_rec_installation_type == "packages"
+    and pdns_rec_repo_provider == "powerdns"
+    and pdns_rec_repo_branch not in ["master", "40"]
+
+- name: Fail if variables are missing
+  fail:
+    msg: "Unable to continue, pdns_rec_url or pdns_rec_url_checksum is unset"
+  when: pdns_rec_installation_type == "url"
+    and (pdns_rec_url == "" or pdns_rec_url_checksum == "")

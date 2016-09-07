@@ -1,4 +1,5 @@
 ---
+
 - name: Ensure the PowerDNS configuration directory exists
   file:
     name: "{{ pdns_rec_config_dir | default('/etc/powerdns') }}"
