@@ -33,7 +33,7 @@ When using 'packages' for pdns_rec_installation_type, use operating system packa
 
 ### pdns_rec_repo_branch
 When installing from the PowerDNS repository, what branch should be installed?
-Currently only 'master' is supported.
+Currently only 'master' and '40' (latest 4.0.x release) are supported.
 
 ### pdns_rec_url
 When `pdns_rec_installation_type` is 'url'. This is the URL to be fetched for the

@@ -6,6 +6,9 @@
     - "vars/{{ ansible_os_family }}.yml"
     - "vars/default.yml"
 
+- name: Validating role variables
+  include: validate.yml
+
 - include: install.packages-debian.yml
   when: pdns_rec_installation_type == "packages" and ansible_os_family == "Debian"
   tags:

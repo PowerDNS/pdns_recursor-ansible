@@ -1,8 +1,4 @@
 ---
-- name: Fail if variables are missing
-  fail:
-    msg: "Unable to continue, pdns_rec_url or pdns_rec_url_checksum is unset"
-  when: pdns_rec_url == "" or pdns_rec_url_checksum == ""
 
 - name: Get the name of the package
   set_fact:
@@ -18,7 +14,7 @@
     dest: "/tmp/{{ pdns_rec_pkg_name }}"
     checksum: "{{ pdns_rec_url_checksum }}"
 
-- name: Pin the package to the version downloaded
+- name: Pinning the pdns-recursor package to the downloaded version
   template:
     src: pdns-recursor.pin
     dest: /etc/apt/preferences.d/pdns

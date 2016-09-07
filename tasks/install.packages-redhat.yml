@@ -1,8 +1,4 @@
 ---
-- name: Check pdns_rec_repo_provider
-  fail:
-    msg: "pdns_rec_repo_provider is neither 'powerdns' nor 'os'"
-  when: pdns_rec_repo_provider not in ["os", "powerdns"]
 
 - name: Install yum-plugin-priorities
   yum:
@@ -10,7 +6,7 @@
     state: installed
   when: pdns_rec_repo_provider == "powerdns"
 
-- name: Add PowerDNS repository
+- name: Add the PowerDNS Recursor YUM repository
   get_url:
     url: https://repo.powerdns.com/repo-files/{{ ansible_distribution | lower() }}-rec-{{ pdns_rec_repo_branch }}.repo
     dest: /etc/yum.repos.d/powerdns-rec-{{ pdns_rec_repo_branch }}.repo
