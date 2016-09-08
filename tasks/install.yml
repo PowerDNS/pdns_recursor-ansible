@@ -1,0 +1,12 @@
+---
+
+- name: Install epel-release
+  package:
+    name: epel-release
+    state: installed
+  when: ansible_os_family == "RedHat"
+
+- name: Install the PowerDNS Recursor package
+  package:
+    name: pdns-recursor
+    state: present

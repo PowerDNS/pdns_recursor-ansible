@@ -3,13 +3,19 @@
 - name: Include os-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Validating role variables
-  include: validate.yml
+- include: validate.yml
 
-- include: "install-{{ pdns_rec_installation_type }}.yml"
+- include: "repo-{{ ansible_os_family }}.yml"
+  when: pdns_rec_repo_provider == "powerdns"
   tags:
-    - "{{ pdns_rec_installation_type }}"
     - install
+    - repository
+
+- include: "inspect-{{ ansible_os_family }}.yml"
+
+- name: Export the pdns_recursor_version variable
+  set_fact:
+    pdns_recursor_version: "{{ pdns_recursor_version_result['stdout'].split('-')[0] }}"
 
 - include: configure.yml
   tags:
@@ -17,20 +23,9 @@
     - config
     - configuration
 
-# TODO
-#- include: install.source-debian.yml
-#  when: pdns_installation_type == "source" and ansible_os_family == "Debian"
-#  tags:
-#    - source
-#    - install
-#
-# TODO
-#- include: install.source-redhat.yml
-#  when: pdns_installation_type == "source" and ansible_os_family == "RedHat"
-#  tags:
-#    - source
-#    - install
-
+- include: install.yml
+  tags:
+    - install
 
 - name: Start and enable the PowerDNS Recursor service
   service:

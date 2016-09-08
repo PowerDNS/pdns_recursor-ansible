@@ -1,0 +1,8 @@
+---
+
+## NB: The `which yum` is needed to suppress the annoying
+##     "[WARNING]: Consider using yum module rather than running yum"
+##     message.
+- name: Extract the PowerDNS Recursor Version from YUM
+  shell: "`which yum` list pdns-recursor 2>&1 | awk '/pdns-recursor/ {print $2}'"
+  register: pdns_recursor_version_result

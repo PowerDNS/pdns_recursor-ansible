@@ -4,4 +4,4 @@ Pin: version {{ pdns_rec_pkg_version }}*
 {% else %}
 Pin: origin repo.powerdns.com
 {% endif %}
-Pin-Priority: 900
+Pin-Priority: 600

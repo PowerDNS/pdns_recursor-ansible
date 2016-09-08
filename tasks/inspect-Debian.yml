@@ -1,0 +1,5 @@
+---
+
+- name: Extract the PowerDNS Recursor Version from APT
+  shell: "apt-cache madison pdns-recursor | awk '/{%if pdns_rec_repo_provider == 'powerdns'%}repo.powerdns.com{%endif%}/ {print $3}' | head -1"
+  register: pdns_recursor_version_result

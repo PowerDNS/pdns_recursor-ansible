@@ -1,0 +1,11 @@
+---
+
+- name: Install yum-plugin-priorities
+  package:
+    name: yum-plugin-priorities
+    state: installed
+
+- name: Add the PowerDNS Recursor YUM repository
+  get_url:
+    url: "{{ pdns_rec_yum_repo }}"
+    dest: /etc/yum.repos.d/powerdns-rec-{{ pdns_rec_repo_branch }}.repo
