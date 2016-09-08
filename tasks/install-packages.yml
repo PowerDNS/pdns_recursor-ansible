@@ -1,0 +1,41 @@
+---
+
+- name: Import the PowerDNS Recursor APT repository key
+  apt_key:
+    url: "{{ pdns_rec_apt_keys[pdns_rec_repo_branch]['url'] }}"
+    id: "{{ pdns_rec_apt_keys[pdns_rec_repo_branch]['id'] }}"
+  when: pdns_rec_repo_provider == "powerdns" and ansible_os_family == "Debian"
+
+- name: Add the PowerDNS Recursor APT repository
+  apt_repository:
+    repo: "{{ pdns_rec_apt_repo }}"
+  when: pdns_rec_repo_provider == "powerdns" and ansible_os_family == "Debian"
+
+- name: Pin the PowerDNS Recursor package the PowerDNS APT Repository
+  template:
+    src: pdns-recursor.pin
+    dest: /etc/apt/preferences.d/pdns-recursor
+  when: pdns_rec_repo_provider == "powerdns" and ansible_os_family == "Debian"
+
+- name: Install yum-plugin-priorities
+  package:
+    name: yum-plugin-priorities
+    state: installed
+  when: pdns_rec_repo_provider == "powerdns" and ansible_os_family == "RedHat"
+
+- name: Add the PowerDNS Recursor YUM repository
+  get_url:
+    url: "{{ pdns_rec_yum_repo }}"
+    dest: /etc/yum.repos.d/powerdns-rec-{{ pdns_rec_repo_branch }}.repo
+  when: pdns_rec_repo_provider == "powerdns" and ansible_os_family == "RedHat"
+
+- name: Install epel-release
+  package:
+    name: epel-release
+    state: installed
+  when: ansible_os_family == "RedHat"
+
+- name: Install the PowerDNS Recursor package
+  package:
+    name: pdns-recursor
+    state: present

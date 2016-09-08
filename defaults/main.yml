@@ -1,5 +1,12 @@
 ---
+
+# PowerDNS Recursor installation type
 pdns_rec_installation_type: packages
+
+# The repository from which download the PowerDNS Recursor package.
+# Currently supported values are:
+# - os, default os repository
+# - powerdns, use the powerdns repository
 pdns_rec_repo_provider: os
 
 # Install packages from the master powerdns repo by default

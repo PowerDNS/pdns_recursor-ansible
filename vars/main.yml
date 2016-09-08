@@ -1,2 +1,12 @@
 ---
-# vars file for pdns_recursor-ansible
+
+# PowerDNS Recursor APT Repository
+pdns_rec_apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-{{ pdns_rec_repo_branch }} main"
+
+# PowerDNS Recursor APT Repository GPG keys
+pdns_rec_apt_keys: {
+  "master": { url: "http://repo.powerdns.com/CBC8B383-pub.asc", id: "D47975F8DAE32700A563E64FFF389421CBC8B383" },
+  "40":     { url: "http://repo.powerdns.com/FD380FBB-pub.asc", id: "9FAAA5577E8FCF62093D036C1B0C6205FD380FBB" }
+}
+
+pdns_rec_yum_repo: "https://repo.powerdns.com/repo-files/{{ ansible_distribution | lower }}-rec-{{ pdns_rec_repo_branch }}.repo"
