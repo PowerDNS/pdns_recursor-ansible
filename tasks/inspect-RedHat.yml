@@ -1,9 +1,21 @@
 ---
 
-## NB: The `which yum` is needed to suppress the annoying
-##     "[WARNING]: Consider using yum module rather than running yum"
-##     message.
+# XXX: This should be definitively improved once issue
+#      https://github.com/ansible/ansible-modules-core/issues/1706
+#      will get solved
+
 - name: Extract the PowerDNS Recursor Version from YUM
-  shell: "`which yum` list pdns-recursor 2>&1 | awk '/pdns-recursor/ {print $2}'"
-  register: pdns_recursor_version_result
+  yum_madison:
+    name: "pdns-recursor"
+    update_cache: yes
   changed_when: False
+  register: pdns_recursor_version_result
+
+- name: Export the pdns_recursor_version variable for RedHat
+  set_fact:
+    pdns_recursor_version: |
+      {% if pdns_rec_repo_provider == 'powerdns' %}
+      {{ pdns_recursor_version_result.versions | selectattr("repo_name", "match", "^powerdns") | map(attribute='version') | first }}
+      {% else %}
+      {{ pdns_recursor_version_result.versions | map(attribute='version') | first }}
+      {% endif %}

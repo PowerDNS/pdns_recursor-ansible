@@ -9,7 +9,7 @@
   apt_repository:
     repo: "{{ pdns_rec_apt_repo }}"
 
-- name: Pin the PowerDNS Recursor package the PowerDNS APT Repository
+- name: Pin the PowerDNS Recursor to the PowerDNS APT Repository
   template:
     src: pdns-recursor.pin
     dest: /etc/apt/preferences.d/pdns-recursor

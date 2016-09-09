@@ -13,10 +13,6 @@
 
 - include: "inspect-{{ ansible_os_family }}.yml"
 
-- name: Export the pdns_recursor_version variable
-  set_fact:
-    pdns_recursor_version: "{{ pdns_recursor_version_result['stdout'].split('-')[0] }}"
-
 - include: configure.yml
   tags:
     - conf

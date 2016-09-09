@@ -1,0 +1,67 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# Originally published at
+# https://gist.github.com/atosatto/12c01e8d22533884c87a755989cd36eb
+
+DOCUMENTATION = """
+---
+module: yum_madison
+short_description: Extract the available versions of a package from YUM.
+description:
+  - This module extracts the available versions of a package from YUM.
+options:
+  name:
+    required: true
+    description:
+      - Name of the package.
+    aliases: [ pkg, package ]
+  update_cache:
+    required: false
+    default: no
+    choices: [ no, yes ]
+    description:
+      - Force updating the cache.
+requirements: [ yum ]
+"""
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            package=dict(required=True, aliases=['pkg', 'name'], type='str'),
+            update_cache = dict(default=False, aliases=['update-cache'], type='bool')
+        ))
+
+    yumbin = module.get_bin_path('yum')
+    pkg_name = module.params.get('package')
+    yum_basecmd = [yumbin, '-d', '2', '-y']
+
+    if module.params.get('update_cache'):
+        module.run_command(yum_basecmd + ['makecache'])
+
+    yum_madcmd = yum_basecmd + ['list', '--showduplicates', '--quiet', pkg_name ]
+    rc, out, err = module.run_command(yum_madcmd)
+
+    if rc != 0:
+        module.fail_json(msg='Error from yum: %s: %s' % (yum_madcmd, err))
+    out_lines = [ o for o in out.split('\n') if o.strip() ]
+
+    retvals = []
+    state = ""
+    for l in out_lines:
+
+        if l.startswith(pkg_name):
+            p = l.split()
+            retvals.append({
+                "name": pkg_name,
+                "version":  p[1],
+                "architecture": p[0].split('.')[-1],
+                "repo_name": p[2]
+            })
+
+    module.exit_json(changed=False, versions=retvals)
+
+# import module snippets
+from ansible.module_utils.basic import *
+if __name__ == '__main__':
+    main()
