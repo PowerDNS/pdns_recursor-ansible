@@ -34,3 +34,11 @@ setgid={{ pdns_rec_group }}
     {%- endif -%}
   {%- endif -%}
 {%- endfor -%}
+
+{% if pdns_rec_lua_config_file_content is defined %}
+lua-config-file={{pdns_rec_config_dir | default('/etc/powerdns')}}/config.lua
+{% endif %}
+
+{% if pdns_rec_lua_dns_script_content is defined %}
+lua-dns-script={{pdns_rec_config_dir | default('/etc/powerdns')}}/dns-script.lua
+{% endif %}

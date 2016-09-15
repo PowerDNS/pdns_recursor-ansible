@@ -21,3 +21,17 @@
     src: recursor.conf.j2
     dest: "{{ pdns_rec_config_dir | default('/etc/powerdns') }}/recursor.conf"
   notify: Restart PowerDNS Recursor
+
+- name: Add lua-config-file
+  copy:
+    dest: "{{ pdns_rec_config_dir | default('/etc/powerdns') }}/config.lua"
+    content: "{{ pdns_rec_lua_config_file_content }}"
+  when: pdns_rec_lua_config_file_content is defined
+  notify: Restart PowerDNS Recursor
+
+- name: Add lua-dns-script
+  copy:
+    dest: "{{ pdns_rec_config_dir | default('/etc/powerdns') }}/dns-script.lua"
+    content: "{{ pdns_rec_lua_dns_script_content }}"
+  when: pdns_rec_lua_dns_script_content is defined
+  notify: Restart PowerDNS Recursor
