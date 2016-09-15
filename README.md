@@ -52,6 +52,16 @@ systems and 'pdns-recursor' on CentOS/RHEL. This user is not created.
 The group to run the PowerDNS Recursor as, this is 'pdns' by default on Debian
 systems and 'pdns-recursor' on CentOS/RHEL. This group is not created.
 
+### pdns_rec_lua_config_file_content
+The content for the lua-config-file. This will place a file called `config.lua`
+in [pdns_rec_config_dir](#pdns_rec_config_dir) and add the configuration to
+`recursor.conf`.
+
+### pdns_rec_lua_dns_script_content
+The content for the lua-dns-script. This will place a file called `dns-script.lua`
+in [pdns_rec_config_dir](#pdns_rec_config_dir) and add the configuration to load
+this script to `recursor.conf`.
+
 Example Playbook
 ----------------
 Bind to 203.0.113.53, port 5300 and allow only traffic from the 198.51.100.0/24
