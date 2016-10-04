@@ -1,0 +1,5 @@
+---
+
+- src: atosatto.package-extras
+  version: v1.0.1
+  name: atosatto.package-extras

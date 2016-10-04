@@ -1,5 +1,6 @@
 PowerDNS Recursor Role
 ======================
+
 An Ansible role created by the folks behind PowerDNS to install and configure
 the PowerDNS Recursor.
 
@@ -8,10 +9,17 @@ are accepted.
 
 Requirements
 ------------
+
 An Ansible 2.0 or higher installation.
+
+Dependencies
+------------
+
+This role depends on [`atosatto.package-extras`](https://galaxy.ansible.com/atosatto/package-extras/).
 
 Role Variables
 --------------
+
 ### pdns_rec_config
 A dict detailing the configuration of PowerDNS. You should not set the following
 options here (other variables set these):
@@ -64,6 +72,7 @@ this script to `recursor.conf`.
 
 Example Playbook
 ----------------
+
 Bind to 203.0.113.53, port 5300 and allow only traffic from the 198.51.100.0/24
 subnet:
 ```
@@ -91,8 +100,11 @@ Allow from multiple networks:
 
 License
 -------
+
 GPLv2
 
 Author Information
 ------------------
+
 Pieter Lexis <pieter.lexis@powerdns.com>
+Andrea Tosatto <andrea.tosatto@open-xchange.com>s

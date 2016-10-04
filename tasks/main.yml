@@ -6,18 +6,15 @@
 - include: validate.yml
 
 - include: "repo-{{ ansible_os_family }}.yml"
-  when: pdns_rec_repo_provider == "powerdns"
+  when: pdns_rec_repo_provider != "os"
   tags:
     - install
     - repository
 
 - include: "inspect-{{ ansible_os_family }}.yml"
-
 - include: configure.yml
   tags:
-    - conf
     - config
-    - configuration
 
 - include: install.yml
   tags:

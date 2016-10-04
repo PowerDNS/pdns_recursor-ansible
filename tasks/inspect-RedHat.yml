@@ -1,9 +1,5 @@
 ---
 
-# XXX: This should be definitively improved once issue
-#      https://github.com/ansible/ansible-modules-core/issues/1706
-#      will get solved
-
 - name: Extract the PowerDNS Recursor Version from YUM
   yum_madison:
     name: "pdns-recursor"

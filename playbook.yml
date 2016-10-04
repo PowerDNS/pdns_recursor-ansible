@@ -1,0 +1,10 @@
+---
+- hosts: all
+  roles:
+    - { role: pdns_recursor-ansible,
+        pdns_rec_repo_provider: powerdns,
+        pdns_rec_repo_branch: 'master' }
+# 
+# - hosts: all
+#   roles:
+#     - { role: pdns_recursor-ansible }

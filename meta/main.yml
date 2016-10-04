@@ -16,11 +16,15 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - trusty
+        - utopic
+        - vivid
+        - wily
         - xenial
   galaxy_tags:
     - system
     - pdns
     - powerdns
     - pdns-recursor
-    - powerdnsrecursor
-dependencies: []
+
+  dependencies:
+    - { role: atosatto.package-extras }
