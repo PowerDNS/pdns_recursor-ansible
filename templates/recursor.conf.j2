@@ -15,16 +15,16 @@ setgid={{ pdns_rec_group }}
 {{config_item}}=
     {%- elif value is string or value is number %}
 
-{{ config_item }}={{ pdns_rec_config[config_item]|string }}
+{{ config_item }}={{ pdns_rec_config[config_item] | string }}
     {%- elif pdns_rec_config[config_item] is sequence %}
       {%- if pdns_recursor_version[0:3] in ['0.0', '3.6', '4.0'] %}
         {%- for config_item_item in value -%}
           {%- if loop.first %}
 
-{{ config_item }}={{ config_item_item|string }}
+{{ config_item }}={{ config_item_item | string }}
           {%- else %}
 
-{{ config_item }}+={{ config_item_item|string }}
+{{ config_item }}+={{ config_item_item | string }}
           {%- endif -%}
         {%- endfor -%}
       {%- else %}
@@ -36,9 +36,9 @@ setgid={{ pdns_rec_group }}
 {%- endfor %}
 
 {% if pdns_rec_lua_config_file_content is defined %}
-lua-config-file={{pdns_rec_config_dir | default('/etc/powerdns')}}/config.lua
+lua-config-file={{ pdns_rec_config_lua }}
 {% endif %}
 
 {% if pdns_rec_lua_dns_script_content is defined %}
-lua-dns-script={{pdns_rec_config_dir | default('/etc/powerdns')}}/dns-script.lua
+lua-dns-script={{ pdns_rec_config_dns_script }}
 {% endif %}

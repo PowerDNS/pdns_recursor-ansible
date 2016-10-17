@@ -1,21 +1,20 @@
 ---
 
-# PowerDNS Recursor installation type
-pdns_rec_installation_type: packages
-
-# The repository from which download the PowerDNS Recursor package.
-# Currently supported values are:
-# - os, the default os repository
-# - powerdns, use the official powerdns repository
-# - custom, install the repo from
-pdns_rec_repo_provider: os
-
-# Install packages from the master powerdns repo by default
+# By default the PowerDNS Recursor is installed from the system repositories.
+pdns_rec_install_repo: False
+# To install the PowerDNS Recursor package from the PowerDNS official repository
+# uncomment the following lines
+# pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo }}"
+# If using the PowerDNS official repository this variable allows to select
+# the repository branch ['master', '40'] from which install the packages.
 pdns_rec_repo_branch: master
-
-# Used when pdns_rec_installation_type is 'url'
-pdns_rec_url: ''
-pdns_rec_url_checksum: ''
+# To install the PowerDNS Recursor package from a custom repository
+# override the `pdns_rec_install_repo` default value in your playbook.
+# e.g.
+# - hosts: all
+#   roles:
+#    - { role: powerdns.recursor,
+#        pdns_rec_install_repo: { } }
 
 # The user and group to run as.
 # NOTE: at the moment, we don't create a user as we assume the package creates
@@ -24,8 +23,10 @@ pdns_rec_url_checksum: ''
 pdns_rec_user: pdns
 pdns_rec_group: pdns
 
-# The directory where the config is located
-pdns_rec_config_dir: '/etc/powerdns'
+# Configuration directory and files
+pdns_rec_config_dir: "/etc/powerdns"
+pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
+pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
 
 # pdns_rec_config: A dict containing all configuration options, except for the
 # "config-dir", "setuid" and "setgid" directives.

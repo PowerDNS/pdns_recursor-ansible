@@ -2,27 +2,27 @@
 
 - name: Ensure that the PowerDNS configuration directory exists
   file:
-    name: "{{ pdns_rec_config_dir | default('/etc/powerdns') }}"
+    name: "{{ pdns_rec_config_dir }}"
     state: directory
     owner: root
     group: root
 
-- name: Add the PowerDNS Recursor configuration
+- name: Generate the PowerDNS Recursor configuration
   template:
     src: recursor.conf.j2
-    dest: "{{ pdns_rec_config_dir | default('/etc/powerdns') }}/recursor.conf"
+    dest: "{{ pdns_rec_config_dir }}/recursor.conf"
   notify: Restart PowerDNS Recursor
 
-- name: Add lua-config-file
+- name: Generate the Lua config-file
   copy:
-    dest: "{{ pdns_rec_config_dir | default('/etc/powerdns') }}/config.lua"
+    dest: "{{ pdns_rec_config_lua }}"
     content: "{{ pdns_rec_lua_config_file_content }}"
   when: pdns_rec_lua_config_file_content is defined
   notify: Restart PowerDNS Recursor
 
-- name: Add lua-dns-script
+- name: Generate the Lua dns-script
   copy:
-    dest: "{{ pdns_rec_config_dir | default('/etc/powerdns') }}/dns-script.lua"
+    dest: "{{ pdns_rec_config_dns_script }}"
     content: "{{ pdns_rec_lua_dns_script_content }}"
   when: pdns_rec_lua_dns_script_content is defined
   notify: Restart PowerDNS Recursor

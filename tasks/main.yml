@@ -3,10 +3,8 @@
 - name: Include os-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
-- include: validate.yml
-
 - include: "repo-{{ ansible_os_family }}.yml"
-  when: pdns_rec_repo_provider != "os"
+  when: pdns_rec_install_repo
   tags:
     - install
     - repository
