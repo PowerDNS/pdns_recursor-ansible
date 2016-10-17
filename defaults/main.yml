@@ -1,10 +1,10 @@
 ---
 
-# By default the PowerDNS Recursor is installed from the system repositories.
+# By default the PowerDNS Recursor is installed from the os default repositories.
 pdns_rec_install_repo: False
 # To install the PowerDNS Recursor package from the PowerDNS official repository
 # uncomment the following lines
-# pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo }}"
+# pdns_rec_install_repo: "{{ pdns_rec_official_pdns_repo }}"
 # If using the PowerDNS official repository this variable allows to select
 # the repository branch ['master', '40'] from which install the packages.
 pdns_rec_repo_branch: master
@@ -13,7 +13,7 @@ pdns_rec_repo_branch: master
 # e.g.
 # - hosts: all
 #   roles:
-#    - { role: powerdns.recursor,
+#    - { role: PowerDNS.pdns_recursor,
 #        pdns_rec_install_repo: { } }
 
 # The user and group to run as.

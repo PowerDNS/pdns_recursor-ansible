@@ -1,6 +1,6 @@
 ---
 
-pdns_rec_powerdns_repo:
+pdns_rec_official_pdns_repo:
   apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-{{ pdns_rec_repo_branch }} main"
   apt_keys: {
     "master": { url: "http://repo.powerdns.com/CBC8B383-pub.asc", id: "D47975F8DAE32700A563E64FFF389421CBC8B383" },
