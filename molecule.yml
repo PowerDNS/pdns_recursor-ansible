@@ -2,25 +2,33 @@
 
 ansible:
    requirements_file: requirements.yml
-#  verbose: true
+   verbose: true
 
 driver:
-  name: docker
+  name: vagrant
 
-docker:
-  containers:
-    - name: centos-7
-      image: centos
-      image_version: '7'
-    - name: centos-6
-      image: centos
-      image_version: '6'
-    - name: ubuntu-trusty
-      image: ubuntu
-      image_version: '14.04'
+vagrant:
+
+  platforms:
+    - name: centos7
+      box: centos/7
     - name: ubuntu-xenial
-      image: ubuntu
-      image_version: '16.04'
+      box: bento/ubuntu-16.04
     - name: debian-jessie
-      image: debian
-      image_version: '8'
+      box: debian/jessie64
+
+  providers:
+    - name: virtualbox
+      type: virtualbox
+      options:
+        memory: 1024
+        cpus: 2
+
+  instances:
+    - name: pdns-recursor-01
+      interfaces:
+        - network_name: private_network
+          type: dhcp
+          auto_config: true
+      options:
+        append_platform_to_hostname: yes

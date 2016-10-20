@@ -1,5 +1,10 @@
 ---
 
-- src: atosatto.package-extras
-  version: v1.0.1
-  name: atosatto.package-extras
+# - src: atosatto.packages-extras
+#   version: v1.1.1
+#   name: atosatto.packages-extras
+
+- src: https://github.com/atosatto/ansible-packages-extras.git
+  scm: git
+  version: master
+  name: atosatto.packages-extras

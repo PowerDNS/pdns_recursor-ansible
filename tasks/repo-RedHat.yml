@@ -6,6 +6,6 @@
     state: installed
 
 - name: Add the PowerDNS Recursor YUM repository
-  get_url:
-    url: "{{ pdns_rec_install_repo['yum_repo'] }}"
-    dest: /etc/yum.repos.d/powerdns-rec-{{ pdns_rec_repo_branch }}.repo
+  template:
+    src: powerdns-rec.repo.j2
+    dest: /etc/yum.repos.d/powerdns-rec.repo

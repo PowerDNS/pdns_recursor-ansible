@@ -10,8 +10,8 @@
 - name: Export the pdns_recursor_version variable for Debian
   set_fact:
     pdns_recursor_version: |
-      {% if pdns_rec_repo_provider == 'powerdns' %}
-      {{ pdns_recursor_version_result.versions | selectattr("repo_name", "equalto", "PowerDNS") | map(attribute='version') | first }}
+      {% if pdns_rec_install_repo %}
+      {{ pdns_recursor_version_result.versions | selectattr('repo_site', 'equalto', pdns_rec_install_repo['repo_site']) | map(attribute='version') | sort(reverse=True) | first }}
       {% else %}
-      {{ pdns_recursor_version_result.versions | map(attribute='version') | first }}
+      {{ pdns_recursor_version_result.versions | map(attribute='version') | sort(reverse=True) | first }}
       {% endif %}

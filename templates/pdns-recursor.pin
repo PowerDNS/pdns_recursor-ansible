@@ -1,3 +1,3 @@
 Package: pdns-recursor
-Pin: origin repo.powerdns.com
+Pin: origin {{ pdns_rec_install_repo.repo_site }}
 Pin-Priority: 600

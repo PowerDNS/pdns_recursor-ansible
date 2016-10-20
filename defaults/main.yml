@@ -2,12 +2,21 @@
 
 # By default the PowerDNS Recursor is installed from the os default repositories.
 pdns_rec_install_repo: False
-# To install the PowerDNS Recursor package from the PowerDNS official repository
-# uncomment the following lines
-# pdns_rec_install_repo: "{{ pdns_rec_official_pdns_repo }}"
-# If using the PowerDNS official repository this variable allows to select
-# the repository branch ['master', '40'] from which install the packages.
-pdns_rec_repo_branch: master
+#
+# You can install the PowerDNS Recursor package from the 'master' branch as
+# follows:
+# - hosts: all
+#   roles:
+#    - { role: PowerDNS.pdns_recursor,
+#        pdns_rec_install_repo: "{{ pdns_rec_official_pdns_master }}"
+#
+# To install the PowerDNS Recursor package from the '40' branch of
+# the PowerDNS official repository use the following playbook
+# - hosts: all
+#   roles:
+#    - { role: PowerDNS.pdns_recursor,
+#        pdns_rec_install_repo: "{{ pdns_rec_official_pdns_40 }}"
+#
 # To install the PowerDNS Recursor package from a custom repository
 # override the `pdns_rec_install_repo` default value in your playbook.
 # e.g.
@@ -17,9 +26,10 @@ pdns_rec_repo_branch: master
 #        pdns_rec_install_repo: { } }
 
 # The user and group to run as.
-# NOTE: at the moment, we don't create a user as we assume the package creates
-# a "pdns" user and group. If you change these variables, make sure to create
-# the user and groups before applying this role
+# NOTE: This role does not create any user as we assume the "pdns" user and group
+# to be created by the PowerDNS Recursor package or by an other role.
+# If you change these variables, make sure to create the user and groups before
+# applying this role
 pdns_rec_user: pdns
 pdns_rec_group: pdns
 
@@ -30,8 +40,7 @@ pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
 
 # pdns_rec_config: A dict containing all configuration options, except for the
 # "config-dir", "setuid" and "setgid" directives.
-# NOTE: Right now, we don't verify the options when configuring the server.
-#
+# NOTE: We don't verify the options when configuring the server.
 # Example:
 # pdns_rec_config:
 #  allow_from: '127.0.0.1/8,192.168.2.0/24'
