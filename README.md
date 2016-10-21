@@ -89,7 +89,7 @@ Example Playbook
 
 Here we show some examples of usage of the `PowerDNS.pdns_recursor` role.
 
-Bind to `203.0.113.53` on port `5300`and allow only traffic from the `198.51.100.0/24 subnet:
+Bind to `203.0.113.53` on port `5300` and allow only traffic from the `198.51.100.0/24` subnet:
 
     - hosts: pdns-recursors
       vars:
