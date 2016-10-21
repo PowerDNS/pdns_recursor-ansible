@@ -89,32 +89,28 @@ Example Playbook
 
 Here we show some examples of usage of the `PowerDNS.pdns_recursor` role.
 
-Bind to 203.0.113.53, port 5300 and allow only traffic from the 198.51.100.0/24
-subnet:
+Bind to `203.0.113.53` on port `5300`and allow only traffic from the `198.51.100.0/24 subnet:
 
-```
-- hosts: pdns-recursors
-  vars:
-    pdns_rec_config:
-      'allow-from': '198.51.100.0/24'
-      'local-address': '203.0.113.53:5300'
-  roles:
-    - { role: PowerDNS.pdns_recursor }
-```
+    - hosts: pdns-recursors
+      vars:
+        pdns_rec_config:
+          'allow-from': '198.51.100.0/24'
+          'local-address': '203.0.113.53:5300'
+      roles:
+        - { role: PowerDNS.pdns_recursor }
 
 Allow from multiple networks:
 
-```
-- hosts: pdns-recursors
-  vars:
-    pdns_rec_config:
-      'allow-from':
-        - '198.51.100.0/24'
-        - '203.0.113.53/24'
-      'local-address': '203.0.113.53:5300'
-  roles:
-    - { role: PowerDNS.pdns_recursor }
-```
+    - hosts: pdns-recursors
+      vars:
+        pdns_rec_config:
+          'allow-from':
+            - '198.51.100.0/24'
+            - '203.0.113.53/24'
+          'local-address': '203.0.113.53:5300'
+      roles:
+        - { role: PowerDNS.pdns_recursor }
+
 
 License
 -------
