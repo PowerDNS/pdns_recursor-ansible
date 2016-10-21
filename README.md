@@ -53,31 +53,31 @@ The roles also supports custom repositories
 
 If targetting a specific platform (e.g. Debian) is not needed to provide yum repositories informations.
 
-      pdns_rec_user: pdns   # pdns-recursor on CentOS/RHEL
-      pdns_rec_group: pdns  # pdns-recursor on CentOS/RHEL
+    pdns_rec_user: pdns   # pdns-recursor on CentOS/RHEL
+    pdns_rec_group: pdns  # pdns-recursor on CentOS/RHEL
 
 The user and group the PowerDNS Recursor will run as.
 **NOTE**: This role does not create any user or group as we assume that they're created
 by the package or other roles.
 
-      pdns_rec_config_dir: "/etc/powerdns"
-      pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
-      pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
+    pdns_rec_config_dir: "/etc/powerdns"
+    pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
+    pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
 
 The PowerDNS Recursor configuration files and directories.
 
-      pdns_rec_config: { }
+    pdns_rec_config: { }
 
 A dict containing in YAML format the custom configuration of PowerDNS Recursor.
 **NOTE**: You should not set the `config-dir`, `set-uid` and `set-gid` because are set by other role variables (respectively `pdns_rec_config_dir`, `pdns_rec_user`, `pdns_rec_group`).
 
-      # pdns_rec_lua_config_file_content: ""
+    # pdns_rec_lua_config_file_content: ""
 
 String containing the content of the lua-config-file file.
 This will create a file called `config.lua` into the `pdns_rec_config_dir`
 and add the configuration to the `recursor.conf` configuration file.
 
-      # pdns_rec_lua_dns_script_content: ""
+    # pdns_rec_lua_dns_script_content: ""
 
 String containing the content of the lua-dns-script file.
 This will create a file called `dns-script.lua` into the `pdns_rec_config_dir`
