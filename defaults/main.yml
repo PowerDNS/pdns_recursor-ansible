@@ -21,11 +21,18 @@ pdns_rec_install_repo: False
 # override the `pdns_rec_install_repo` default value in your playbook.
 # e.g.
 # - hosts: all
+#   vars:
+#     pdns_rec_install_repo:
+#       apt_repo_origin: "my.repo.com"  # used to pin the pdns-recursor to the provided PowerDNS repository
+#       apt_repo: "deb http://my.repo.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}/pdns-recursor main"
+#       gpg_key: "http://my.repo.com/MYREPOGPGPUBKEY.asc" # repository public GPG key
+#       gpg_key_id: "MYREPOGPGPUBKEYID" # to avoid to reimport the key each time the role is executed
+#       yum_repo_baseurl: "http://my.repo.com/centos/$basearch/$releasever/pdns-recursor"
+#       yum_repo_name: "powerdns-rec"   # used to select only the pdns-recursor packages coming from this repo
 #   roles:
-#    - { role: PowerDNS.pdns_recursor,
-#        pdns_rec_install_repo: { } }
+#    - { role: PowerDNS.pdns_recursor }
 
-# The user and group to run as.
+# The user and group the PowerDNS Recursor will run as.
 # NOTE: This role does not create any user as we assume the "pdns" user and group
 # to be created by the PowerDNS Recursor package or by an other role.
 # If you change these variables, make sure to create the user and groups before
@@ -38,12 +45,22 @@ pdns_rec_config_dir: "/etc/powerdns"
 pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
 pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
 
-# pdns_rec_config: A dict containing all configuration options, except for the
-# "config-dir", "setuid" and "setgid" directives.
-# NOTE: We don't verify the options when configuring the server.
+# Dict containing all configuration options, except for the
+# "config-dir", "setuid" and "setgid" directives in YAML format.
+pdns_rec_config: { }
+#
 # Example:
 # pdns_rec_config:
 #  allow_from: '127.0.0.1/8,192.168.2.0/24'
 #  local-address: 0.0.0.0
 #  server-id: 'nothing to see here'
-pdns_rec_config: {}
+
+# String containing the content of the lua-config-file file.
+# NOTE: This will create a file called `config.lua` into the `pdns_rec_config_dir`
+# and add the configuration to the `recursor.conf` configuration file.
+# pdns_rec_lua_config_file_content: ""
+
+# String containing the content of the lua-dns-script file.
+# This will create a file called `dns-script.lua` into the `pdns_rec_config_dir`
+# and add the configuration to load this script to the `recursor.conf`
+# pdns_rec_lua_dns_script_content: ""

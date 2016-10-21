@@ -13,83 +13,107 @@ Dependencies
 ------------
 
 This role depends on [`atosatto.package-extras`](https://galaxy.ansible.com/atosatto/package-extras/).
+See the `requirements.yml` file for further details.
 
 Role Variables
 --------------
+Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-### pdns_rec_install_repo
-By default the PowerDNS Recursor is installed using the os default repositories.
-To install the PowerDNS Recursor package from the PowerDNS official repository
-you can use the predefined settings located in the `vars/main.yml`:
-`pdns_rec_install_repo: "{{ pdns_rec_official_pdns_repo }}"`.
-It is also possible to pass to the role a custom repository location from
-which install the packages.
+    pdns_rec_install_repo: False
 
-### pdns_rec_repo_branch
-When installing from the PowerDNS repository, the branch from which the packages
-should be installed. Currently only 'master' and '40' (latest 4.0.x release) are supported.
+By default the PowerDNS Recursor is installed from the os default repositories.
+You can install the PowerDNS Recursor package from official PowerDNS repository
+overriding the `pdns_rec_install_repo` variable value as follows:
 
-### pdns_rec_user
-The user to run the PowerDNS Recursor as, this is 'pdns' by default on Debian
-systems and 'pdns-recursor' on CentOS/RHEL. This user is not created.
+    # Install the PowerDNS Recursor from the 'master' branch
+    - hosts: pdns-recursors-master
+      roles:
+      - { role: PowerDNS.pdns_recursor,
+          pdns_rec_install_repo: "{{ pdns_rec_official_pdns_master }}"
 
-### pdns_rec_group
-The group to run the PowerDNS Recursor as, this is 'pdns' by default on Debian
-systems and 'pdns-recursor' on CentOS/RHEL. This group is not created.
+    # Install the PowerDNS Recursor from the '40' branch
+    - hosts: pdns-recursors-40
+      roles:
+      - { role: PowerDNS.pdns_recursor,
+          pdns_rec_install_repo: "{{ pdns_rec_official_pdns_40 }}"
 
-### pdns_rec_config
-A dict detailing the configuration of PowerDNS. You should not set the following
-options here (other variables set these):
- * config-dir
- * set-uid
- * set-gid
+The roles also supports custom repositories
 
-### pdns_rec_config_dir
-The directory where the configuration (`recursor.conf`) is stored. '/etc/powerdns'
-by default.
+    - hosts: all
+      vars:
+        pdns_rec_install_repo:
+          apt_repo_origin: "my.repo.com"  # used to pin the pdns-recursor to the provided PowerDNS repository
+          apt_repo: "deb http://my.repo.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}/pdns-recursor main"
+          gpg_key: "http://my.repo.com/MYREPOGPGPUBKEY.asc" # repository public GPG key
+          gpg_key_id: "MYREPOGPGPUBKEYID" # to avoid to reimport the key each time the role is executed
+          yum_repo_baseurl: "http://my.repo.com/centos/$basearch/$releasever/pdns-recursor"
+          yum_repo_name: "powerdns-rec"   # used to select only the pdns-recursor packages coming from this repo
+      roles:
+      - { role: PowerDNS.pdns_recursor }
 
-### pdns_rec_lua_config_file_content
-The content for the lua-config-file. This will place a file called `config.lua`
-in [pdns_rec_config_dir](#pdns_rec_config_dir) and add the configuration to
-`recursor.conf`.
+If targetting a specific platform (e.g. Debian) is not needed to provide yum repositories informations.
 
-### pdns_rec_lua_dns_script_content
-The content for the lua-dns-script. This will place a file called `dns-script.lua`
-in [pdns_rec_config_dir](#pdns_rec_config_dir) and add the configuration to load
-this script to `recursor.conf`.
+      pdns_rec_user: pdns   # pdns-recursor on CentOS/RHEL
+      pdns_rec_group: pdns  # pdns-recursor on CentOS/RHEL
+
+The user and group the PowerDNS Recursor will run as.
+**NOTE**: This role does not create any user or group as we assume that they're created
+by the package or other roles.
+
+      pdns_rec_config_dir: "/etc/powerdns"
+      pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
+      pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
+
+The PowerDNS Recursor configuration files and directories.
+
+      pdns_rec_config: { }
+
+A dict containing in YAML format the custom configuration of PowerDNS Recursor.
+**NOTE**: You should not set the `config-dir`, `set-uid` and `set-gid` because are set by other role variables (respectively `pdns_rec_config_dir`, `pdns_rec_user`, `pdns_rec_group`).
+
+      # pdns_rec_lua_config_file_content: ""
+
+String containing the content of the lua-config-file file.
+This will create a file called `config.lua` into the `pdns_rec_config_dir`
+and add the configuration to the `recursor.conf` configuration file.
+
+      # pdns_rec_lua_dns_script_content: ""
+
+String containing the content of the lua-dns-script file.
+This will create a file called `dns-script.lua` into the `pdns_rec_config_dir`
+and add the configuration to load this script to the `recursor.conf`
+configuration file.
 
 Example Playbook
 ----------------
 
-Here we show some examples of usage of the PowerDNS.pdns_recursor role.
-
-Install from custom repository:
-
-> TODO
+Here we show some examples of usage of the `PowerDNS.pdns_recursor` role.
 
 Bind to 203.0.113.53, port 5300 and allow only traffic from the 198.51.100.0/24
 subnet:
 
 ```
-- hosts: rec.example.net
+- hosts: pdns-recursors
+  vars:
+    pdns_rec_config:
+      'allow-from': '198.51.100.0/24'
+      'local-address': '203.0.113.53:5300'
   roles:
-    - { role: PowerDNS.pdns_recursor,
-        pdns_rec_config:
-          'allow-from': '198.51.100.0/24'
-          'local-address': '203.0.113.53:5300' }
+    - { role: PowerDNS.pdns_recursor }
 ```
 
 Allow from multiple networks:
 
 ```
-- hosts: rec.example.net
+- hosts: pdns-recursors
+  vars:
+    pdns_rec_config:
+      'allow-from':
+        - '198.51.100.0/24'
+        - '203.0.113.53/24'
+      'local-address': '203.0.113.53:5300'
   roles:
-    - { role: PowerDNS.pdns_recursor
-        pdns_rec_config:
-          'allow-from':
-            - '198.51.100.0/24'
-            - '203.0.113.53/24'
-          'local-address': '203.0.113.53:5300' }
+    - { role: PowerDNS.pdns_recursor }
 ```
 
 License
@@ -97,8 +121,8 @@ License
 
 GPLv2
 
-Author Information
-------------------
+Authors Informations
+--------------------
 
 Pieter Lexis <pieter.lexis@powerdns.com>
 Andrea Tosatto <andrea.tosatto@open-xchange.com>
