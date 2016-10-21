@@ -2,7 +2,7 @@
 
 ansible:
    requirements_file: requirements.yml
-   verbose: true
+   # verbose: true
 
 driver:
   name: vagrant
