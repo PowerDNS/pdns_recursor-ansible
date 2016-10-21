@@ -10,7 +10,7 @@ driver:
 vagrant:
 
   platforms:
-    - name: centos7
+    - name: centos-7
       box: centos/7
     - name: ubuntu-xenial
       box: bento/ubuntu-16.04

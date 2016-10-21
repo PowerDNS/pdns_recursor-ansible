@@ -1,5 +1,10 @@
 ---
 
+- name: Install epel-release
+  package:
+    name: epel-release
+    state: installed
+
 - name: Install yum-plugin-priorities
   package:
     name: yum-plugin-priorities

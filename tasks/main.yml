@@ -14,7 +14,10 @@
   tags:
     - config
 
-- include: install.yml
+- name: Install the PowerDNS Recursor package
+  package:
+    name: pdns-recursor
+    state: present
   tags:
     - install
 
