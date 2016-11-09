@@ -1,0 +1,17 @@
+---
+
+- name: Extract the PowerDNS Recursor Version from YUM
+  yum_madison:
+    name: "pdns-recursor"
+    update_cache: no # it could require too much bandwith
+  changed_when: False
+  register: pdns_recursor_version_result
+
+- name: Export the pdns_recursor_version variable for RedHat
+  set_fact:
+    pdns_recursor_version: |
+      {% if pdns_rec_install_repo %}
+      {{ pdns_recursor_version_result.versions | selectattr('repo_name', 'equalto', pdns_rec_install_repo['yum_repo_name']) | map(attribute='version') | sort(reverse=True) | first }}
+      {% else %}
+      {{ pdns_recursor_version_result.versions | map(attribute='version') | sort(reverse=True) | first }}
+      {% endif %}

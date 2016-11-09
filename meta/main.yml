@@ -1,7 +1,7 @@
 ---
 
 galaxy_info:
-  author: Pieter Lexis
+  author: PowerDNS Engineering Team
   description: PowerDNS Recursor Role
   company: PowerDNS.COM BV
   license: GPLv2
@@ -16,11 +16,15 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - trusty
+        - utopic
+        - vivid
+        - wily
         - xenial
   galaxy_tags:
     - system
     - pdns
     - powerdns
     - pdns-recursor
-    - powerdnsrecursor
-dependencies: []
+
+dependencies:
+  - { role: atosatto.packages-extras }

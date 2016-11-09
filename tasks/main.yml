@@ -1,51 +1,25 @@
 ---
 
 - name: Include os-specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-    - "vars/{{ ansible_os_family }}.yml"
-    - "vars/default.yml"
+  include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Validating role variables
-  include: validate.yml
-
-- include: install.packages-debian.yml
-  when: pdns_rec_installation_type == "packages" and ansible_os_family == "Debian"
+- include: "repo-{{ ansible_os_family }}.yml"
+  when: pdns_rec_install_repo
   tags:
-    - packages
     - install
+    - repository
 
-- include: install.packages-redhat.yml
-  when: pdns_rec_installation_type == "packages" and ansible_os_family == "RedHat"
+- include: "inspect-{{ ansible_os_family }}.yml"
+- include: configure.yml
   tags:
-    - packages
-    - install
-
-# TODO
-#- include: install.source-debian.yml
-#  when: pdns_installation_type == "source" and ansible_os_family == "Debian"
-#  tags:
-#    - source
-#    - install
-#
-# TODO
-#- include: install.source-redhat.yml
-#  when: pdns_installation_type == "source" and ansible_os_family == "RedHat"
-#  tags:
-#    - source
-#    - install
-
-- include: install.url-debian.yml
-  when: pdns_rec_installation_type == "url" and ansible_os_family == "Debian"
-  tags:
-    - url
-    - install
-
-- include: configuration.yml
-  tags:
-    - conf
     - config
-    - configuration
+
+- name: Install the PowerDNS Recursor package
+  package:
+    name: pdns-recursor
+    state: present
+  tags:
+    - install
 
 - name: Start and enable the PowerDNS Recursor service
   service:

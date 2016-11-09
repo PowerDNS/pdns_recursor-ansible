@@ -1,0 +1,17 @@
+---
+
+- name: Extract the PowerDNS Recursor Version from APT
+  apt_madison:
+    name: "pdns-recursor"
+    update_cache: yes
+  changed_when: False
+  register: pdns_recursor_version_result
+
+- name: Export the pdns_recursor_version variable for Debian
+  set_fact:
+    pdns_recursor_version: |
+      {% if pdns_rec_install_repo %}
+      {{ pdns_recursor_version_result.versions | selectattr('repo_site', 'equalto', pdns_rec_install_repo['apt_repo_origin']) | map(attribute='version') | sort(reverse=True) | first }}
+      {% else %}
+      {{ pdns_recursor_version_result.versions | map(attribute='version') | sort(reverse=True) | first }}
+      {% endif %}

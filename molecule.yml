@@ -1,0 +1,34 @@
+---
+
+ansible:
+   requirements_file: requirements.yml
+   # verbose: true
+
+driver:
+  name: vagrant
+
+vagrant:
+
+  platforms:
+    - name: centos-7
+      box: centos/7
+    - name: ubuntu-xenial
+      box: bento/ubuntu-16.04
+    - name: debian-jessie
+      box: debian/jessie64
+
+  providers:
+    - name: virtualbox
+      type: virtualbox
+      options:
+        memory: 1024
+        cpus: 2
+
+  instances:
+    - name: pdns-recursor-01
+      interfaces:
+        - network_name: private_network
+          type: dhcp
+          auto_config: true
+      options:
+        append_platform_to_hostname: yes
