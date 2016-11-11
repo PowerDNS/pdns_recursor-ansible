@@ -27,4 +27,4 @@ galaxy_info:
     - pdns-recursor
 
 dependencies:
-  - { role: atosatto.packages-extras }
+  - src: atosatto.packages-extras
