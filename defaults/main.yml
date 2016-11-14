@@ -3,19 +3,23 @@
 # By default the PowerDNS Recursor is installed from the os default repositories.
 pdns_rec_install_repo: False
 #
+# Install the EPEL repository.
+# EPEL is needed to satisfy some PowerDNS Recursor dependencies like protobuf
+pdns_rec_install_epel: True
+#
 # You can install the PowerDNS Recursor package from the 'master' branch as
 # follows:
 # - hosts: all
 #   roles:
 #    - { role: PowerDNS.pdns_recursor,
-#        pdns_rec_install_repo: "{{ pdns_rec_official_pdns_master }}"
+#        pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_master }}"
 #
 # To install the PowerDNS Recursor package from the '40' branch of
 # the PowerDNS official repository use the following playbook
 # - hosts: all
 #   roles:
 #    - { role: PowerDNS.pdns_recursor,
-#        pdns_rec_install_repo: "{{ pdns_rec_official_pdns_40 }}"
+#        pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_40 }}"
 #
 # To install the PowerDNS Recursor package from a custom repository
 # override the `pdns_rec_install_repo` default value in your playbook.
@@ -31,6 +35,9 @@ pdns_rec_install_repo: False
 #       yum_repo_name: "powerdns-rec"   # used to select only the pdns-recursor packages coming from this repo
 #   roles:
 #    - { role: PowerDNS.pdns_recursor }
+
+pdns_rec_install_epel: True
+
 
 # The user and group the PowerDNS Recursor will run as.
 # NOTE: This role does not create any user as we assume the "pdns" user and group

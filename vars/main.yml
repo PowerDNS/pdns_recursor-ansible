@@ -1,6 +1,6 @@
 ---
 
-pdns_rec_official_pdns_master:
+pdns_rec_powerdns_repo_master:
   apt_repo_origin: "repo.powerdns.com"
   apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-master main"
   gpg_key: "http://repo.powerdns.com/CBC8B383-pub.asc"
@@ -8,7 +8,7 @@ pdns_rec_official_pdns_master:
   yum_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/rec-master"
   yum_repo_name: "powerdns-rec"
 
-pdns_rec_official_pdns_40:
+pdns_rec_powerdns_repo_40:
   apt_repo_origin: "repo.powerdns.com"
   apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-40 main"
   gpg_key: "http://repo.powerdns.com/FD380FBB-pub.asc"

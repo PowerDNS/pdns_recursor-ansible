@@ -54,6 +54,14 @@ The roles also supports custom repositories
 
 If targeting only a specific platform (e.g. Debian) it's not needed to provide other platform (e.g. yum) repositories informations.
 
+    pdns_rec_install_epel: True
+
+By default the role installs also the EPEL repository.
+EPEL is needed to satisfy some PowerDNS Recursor dependencies like `protobuf`.
+If these dependencies are included into other repositories already configured in the
+host or in the custom `pdns_rec_install_epel`, override this variable to `False`
+to skip EPEL installation.
+
     pdns_rec_user: pdns   # pdns-recursor on CentOS/RHEL
     pdns_rec_group: pdns  # pdns-recursor on CentOS/RHEL
 
