@@ -1,16 +1,16 @@
 ---
 
-- name: Install epel-release
-  package:
-    name: epel-release
-    state: installed
-
 - name: Install yum-plugin-priorities
   package:
     name: yum-plugin-priorities
-    state: installed
+    state: present
 
-- name: Add the PowerDNS Recursor YUM repository
-  template:
-    src: powerdns-rec.repo.j2
-    dest: /etc/yum.repos.d/powerdns-rec.repo
+- name: Add the PowerDNS Recursor YUM Repository
+  yum_repository:
+    name: "{{ pdns_rec_install_repo['yum_repo_name'] }}"
+    description: PowerDNS Recursor Repository
+    baseurl: "{{ pdns_rec_install_repo['yum_repo_baseurl'] }}"
+    gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"
+    gpgcheck: yes
+    priority: 90
+    state: present

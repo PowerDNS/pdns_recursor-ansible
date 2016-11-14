@@ -17,6 +17,7 @@ See the `requirements.yml` file for further details.
 
 Role Variables
 --------------
+
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
     pdns_rec_install_repo: False
@@ -26,13 +27,13 @@ You can install the PowerDNS Recursor package from official PowerDNS repository
 overriding the `pdns_rec_install_repo` variable value as follows:
 
     # Install the PowerDNS Recursor from the 'master' branch
-    - hosts: pdns-recursors-master
+    - hosts: pdns-recursors
       roles:
       - { role: PowerDNS.pdns_recursor,
           pdns_rec_install_repo: "{{ pdns_rec_official_pdns_master }}"
 
     # Install the PowerDNS Recursor from the '40' branch
-    - hosts: pdns-recursors-40
+    - hosts: pdns-recursors
       roles:
       - { role: PowerDNS.pdns_recursor,
           pdns_rec_install_repo: "{{ pdns_rec_official_pdns_40 }}"
@@ -51,7 +52,7 @@ The roles also supports custom repositories
       roles:
       - { role: PowerDNS.pdns_recursor }
 
-If targetting a specific platform (e.g. Debian) is not needed to provide yum repositories informations.
+If targeting only a specific platform (e.g. Debian) it's not needed to provide other platform (e.g. yum) repositories informations.
 
     pdns_rec_user: pdns   # pdns-recursor on CentOS/RHEL
     pdns_rec_group: pdns  # pdns-recursor on CentOS/RHEL
@@ -120,5 +121,5 @@ GPLv2
 Authors Informations
 --------------------
 
-Pieter Lexis <pieter.lexis@powerdns.com>
-Andrea Tosatto <andrea.tosatto@open-xchange.com>
+- Pieter Lexis <pieter.lexis@powerdns.com>
+- Andrea Tosatto <andrea.tosatto@open-xchange.com>

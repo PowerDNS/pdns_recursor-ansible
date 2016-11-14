@@ -1,15 +1,17 @@
 ---
 
-- name: Import the PowerDNS Recursor APT repository key
+- name: Import the PowerDNS Recursor APT Repository key
   apt_key:
     url: "{{ pdns_rec_install_repo['gpg_key'] }}"
     id: "{{ pdns_rec_install_repo['gpg_key_id'] | default('') }}"
+    state: present
 
-- name: Add the PowerDNS Recursor APT repository
+- name: Add the PowerDNS Recursor APT Repository
   apt_repository:
     repo: "{{ pdns_rec_install_repo['apt_repo'] }}"
+    state: present
 
-- name: Pin the PowerDNS Recursor to the PowerDNS APT Repository
+- name: Pin the PowerDNS Recursor to the given APT Repository
   template:
-    src: pdns-recursor.pin
+    src: pdns-recursor.pin.j2
     dest: /etc/apt/preferences.d/pdns-recursor

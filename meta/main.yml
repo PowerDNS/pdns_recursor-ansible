@@ -22,6 +22,7 @@ galaxy_info:
         - xenial
   galaxy_tags:
     - system
+    - dns
     - pdns
     - powerdns
     - pdns-recursor
