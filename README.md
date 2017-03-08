@@ -12,7 +12,7 @@ An Ansible 2.0 or higher installation.
 Dependencies
 ------------
 
-This role depends on [`atosatto.package-extras`](https://galaxy.ansible.com/atosatto/package-extras/).
+This role depends on [`atosatto.packages-extras`](https://galaxy.ansible.com/atosatto/packages-extras/).
 See the `requirements.yml` file for further details.
 
 Role Variables
