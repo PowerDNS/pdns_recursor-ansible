@@ -1,20 +1,25 @@
 ---
 
-- name: Include os-specific variables
+- name: Include OS-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
-- include: "repo-{{ ansible_os_family }}.yml"
+- name: "Setup PowerDNS repo"
+  include: "repo-{{ ansible_os_family }}.yml"
   when: pdns_rec_install_repo
   tags:
     - install
     - repository
 
-- include: "inspect-{{ ansible_os_family }}.yml"
-- include: configure.yml
+- name: "Inspect package versions"
+  include: "inspect-{{ ansible_os_family }}.yml"
+
+- name: "Make configuration"
+  include: configure.yml
   tags:
     - config
 
-- include: install-epel.yml
+- name: "Install EPEL (when required)"
+  include: install-epel.yml
   when: ansible_os_family == 'RedHat' and pdns_rec_install_epel
   tags:
     - install
