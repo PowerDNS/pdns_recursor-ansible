@@ -41,11 +41,11 @@ pdns_rec_install_epel: True
 # to be created by the PowerDNS Recursor package or by an other role.
 # If you change these variables, make sure to create the user and groups before
 # applying this role
-pdns_rec_user: pdns
-pdns_rec_group: pdns
+pdns_rec_user: "{{ default_pdns_rec_user }}"
+pdns_rec_group: "{{ default_pdns_rec_group }}"
 
 # Configuration directory and files
-pdns_rec_config_dir: "/etc/powerdns"
+pdns_rec_config_dir: "{{ default_pdns_rec_config_dir }}"
 pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
 pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
 

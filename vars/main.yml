@@ -1,5 +1,9 @@
 ---
 
+default_pdns_rec_user: "pdns"
+default_pdns_rec_group: "pdns"
+default_pdns_rec_config_dir: "/etc/powerdns"
+
 pdns_rec_powerdns_repo_master:
   apt_repo_origin: "repo.powerdns.com"
   apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-master main"
