@@ -1,0 +1,6 @@
+---
+
+default_pdns_rec_user: "pdns"
+default_pdns_rec_group: "pdns"
+default_pdns_rec_config_dir: "/etc/powerdns"
+

@@ -5,7 +5,7 @@
 
 - name: "Setup PowerDNS repo"
   include: "repo-{{ ansible_os_family }}.yml"
-  when: pdns_rec_install_repo
+  when: pdns_rec_install_repo != ""
   tags:
     - install
     - repository

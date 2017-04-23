@@ -1,12 +1,12 @@
 ---
 
 # By default the PowerDNS Recursor is installed from the os default repositories.
-pdns_rec_install_repo: False
-#
+pdns_rec_install_repo: ""
+
 # Install the EPEL repository.
 # EPEL is needed to satisfy some PowerDNS Recursor dependencies like protobuf
 pdns_rec_install_epel: True
-#
+
 # You can install the PowerDNS Recursor package from the 'master' branch as
 # follows:
 # - hosts: all
