@@ -1,8 +1,11 @@
 ---
 
-ansible:
-   requirements_file: requirements.yml
-   # verbose: true
+#ansible:
+#   verbose: true
+
+dependency:
+  name: galaxy
+  requirements_file: requirements.yml
 
 driver:
   name: vagrant
