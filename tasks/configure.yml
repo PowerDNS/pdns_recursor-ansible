@@ -10,7 +10,7 @@
 - name: Generate the PowerDNS Recursor configuration
   template:
     src: recursor.conf.j2
-    dest: "{{ pdns_rec_config_dir }}/recursor.conf"
+    dest: "{{ pdns_rec_config_dir }}/{{ pdns_rec_config_file }}"
   notify: Restart PowerDNS Recursor
 
 - name: Generate the Lua config-file

@@ -44,8 +44,12 @@ pdns_rec_install_epel: True
 pdns_rec_user: "{{ default_pdns_rec_user }}"
 pdns_rec_group: "{{ default_pdns_rec_group }}"
 
+# Name of the PowerDNS Service
+pdns_rec_service_name: "pdns-recursor"
+
 # Configuration directory and files
 pdns_rec_config_dir: "{{ default_pdns_rec_config_dir }}"
+pdns_rec_config_file: "recursor.conf"
 pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
 pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
 

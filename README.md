@@ -69,7 +69,12 @@ The user and group the PowerDNS Recursor will run as.
 **NOTE**: This role does not create any user or group as we assume that they're created
 by the package or other roles.
 
+    pdns_rec_service_name: "pdns-recursor"
+
+The name of the PowerDNS Recursor service.
+
     pdns_rec_config_dir: "/etc/powerdns"
+    pdns_rec_config_file: "recursor.conf"
     pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
     pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
 

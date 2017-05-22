@@ -33,7 +33,7 @@
 
 - name: Start and enable the PowerDNS Recursor service
   service:
-    name: pdns-recursor
+    name: "{{ pdns_rec_service_name }}"
     state: started
     enabled: true
   tags:
