@@ -38,3 +38,7 @@
     enabled: true
   tags:
     - service
+
+- name: Force handlers flush
+  meta: flush_handlers
+  when: pdns_rec_flush_handlers
