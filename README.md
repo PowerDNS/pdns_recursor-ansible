@@ -20,7 +20,7 @@ Role Variables
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-    pdns_rec_install_repo: False
+    pdns_rec_install_repo: "" 
 
 By default the PowerDNS Recursor is installed from the os default repositories.
 You can install the PowerDNS Recursor package from official PowerDNS repository
