@@ -47,10 +47,10 @@ pdns_rec_group: "{{ default_pdns_rec_group }}"
 # Name of the PowerDNS Service
 pdns_rec_service_name: "pdns-recursor"
 
-# Force the execution of the handlers at the end of the role
-# This is required if configuring multiple recursor instances
-# to make sure that on configuration changes the right instance
-# is restarted by the restart handler if needed.
+# Force the execution of the handlers at the end of the role.
+# This is required if using this role to configure multiple recursor instances
+# in a single play to make sure that on configuration changes the correct pnds_recursor 
+# instance is restarted.
 pdns_rec_flush_handlers: False
 
 # Configuration directory and files

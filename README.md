@@ -76,9 +76,8 @@ The name of the PowerDNS Recursor service.
     pdns_rec_flush_handlers: False
 
 Force the execution of the flushing of the handlers at the end of the role.
-**NOTE:** This is required if configuring multiple recursor instances 
-to make sure that on configuration changes the correct instance is restarted 
-by the restart handler if needed.
+**NOTE:** This is required if using this role to configure multiple recursor instances
+in a single play to make sure that on configuration changes the correct pnds_recursor instance is restarted.
 
     pdns_rec_config_dir: "/etc/powerdns"
     pdns_rec_config_file: "recursor.conf"
