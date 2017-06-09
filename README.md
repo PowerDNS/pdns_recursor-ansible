@@ -135,10 +135,4 @@ Allow from multiple networks:
 License
 -------
 
-GPLv2
-
-Authors Informations
---------------------
-
-- Pieter Lexis <pieter.lexis@powerdns.com>
-- Andrea Tosatto <andrea.tosatto@open-xchange.com>
+MIT

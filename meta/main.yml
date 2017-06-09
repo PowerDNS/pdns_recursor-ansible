@@ -4,7 +4,7 @@ galaxy_info:
   author: PowerDNS Engineering Team
   description: PowerDNS Recursor Role
   company: PowerDNS.COM BV
-  license: GPLv2
+  license: MIT
   min_ansible_version: 2.0
   platforms:
     - name: EL
