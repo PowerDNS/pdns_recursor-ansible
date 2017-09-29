@@ -17,7 +17,7 @@ setgid={{ pdns_rec_group }}
 
 {{ config_item }}={{ pdns_rec_config[config_item] | string }}
     {%- elif pdns_rec_config[config_item] is sequence %}
-      {%- if pdns_recursor_version[0:3] in ['0.0', '3.6', '4.0'] %}
+      {%- if pdns_rec_package_version[0:3] in ['0.0', '3.6', '4.0'] %}
         {%- for config_item_item in value -%}
           {%- if loop.first %}
 
