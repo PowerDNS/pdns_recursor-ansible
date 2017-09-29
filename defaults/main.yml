@@ -36,6 +36,9 @@ pdns_rec_install_epel: True
 #   roles:
 #    - { role: PowerDNS.pdns_recursor }
 
+# The name of the PowerDNS package
+pdns_rec_package_name: "{{ default_rec_pdns_package_name }}"
+
 # The user and group the PowerDNS Recursor will run as.
 # NOTE: This role does not create any user as we assume the "pdns" user and group
 # to be created by the PowerDNS Recursor package or by an other role.

@@ -2,7 +2,7 @@
 
 - name: Extract the PowerDNS Recursor Version from APT
   apt_madison:
-    name: "pdns-recursor"
+    name: "{{ pdns_rec_package_name }}"
     update_cache: yes
   changed_when: False
   register: pdns_recursor_version_result
