@@ -3,22 +3,27 @@
 - name: Include OS-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
-- name: "Setup PowerDNS repo"
+- name: Setup the PowerDNS Recursor repo
   include: "repo-{{ ansible_os_family }}.yml"
   when: pdns_rec_install_repo != ""
   tags:
     - install
     - repository
 
-- name: "Inspect package versions"
+- name: Get the latest PowerDNS Recursor version from the Package Manager
   include: "inspect-{{ ansible_os_family }}.yml"
+  when: "pdns_rec_package_version == ''"
 
-- name: "Make configuration"
+- name: Append the version to the PowerDNS Recursor package name 
+  set_fact:
+    pdns_rec_package_name: "{{ pdns_rec_package_name }}-{{ pdns_rec_package_version }}"
+
+- name: Generate the PowerDNS Recursor configuration 
   include: configure.yml
   tags:
     - config
 
-- name: "Install EPEL (when required)"
+- name: Install EPEL (when required)
   include: install-epel.yml
   when: ansible_os_family == 'RedHat' and pdns_rec_install_epel
   tags:
