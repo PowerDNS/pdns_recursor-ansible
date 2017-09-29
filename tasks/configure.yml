@@ -13,6 +13,14 @@
     dest: "{{ pdns_rec_config_dir }}/{{ pdns_rec_config_file }}"
   notify: Restart PowerDNS Recursor
 
+- name: Ensure that the include-dir configuration directory exists 
+  file:
+    name: "{{ pdns_rec_config['include-dir'] }}"
+    state: directory
+    owner: root
+    group: root
+  when: "pdns_rec_config['include-dir'] is defined" 
+
 - name: Generate the Lua config-file
   copy:
     dest: "{{ pdns_rec_config_lua }}"
