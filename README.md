@@ -30,13 +30,13 @@ overriding the `pdns_rec_install_repo` variable value as follows:
     - hosts: pdns-recursors
       roles:
       - { role: PowerDNS.pdns_recursor,
-          pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_master }}"
+          pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_master }}" }
 
     # Install the PowerDNS Recursor from the '40' branch
     - hosts: pdns-recursors
       roles:
       - { role: PowerDNS.pdns_recursor,
-          pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_40 }}"
+          pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_40 }}" }
 
 The roles also supports custom repositories
 
