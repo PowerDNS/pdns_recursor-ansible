@@ -1,0 +1,26 @@
+---
+
+- block:
+
+  - name: Prefix the version with the correct separator on RedHat
+    set_fact:
+      pdns_rec_package_version: "-{{ pdns_rec_package_version }}"
+    when: ansible_os_family == 'RedHat'
+
+  - name: Prefix the version with the correct separator on Debian
+    set_fact:
+      pdns_rec_package_version: "={{ pdns_rec_package_version }}"
+    when: ansible_os_family == 'Debian'
+
+  when: pdns_rec_package_version != ''
+  tags:
+    - install
+
+- name: Install PowerDNS
+  package:
+    name: "{{ pdns_rec_package_name }}{{ pdns_rec_package_version }}"
+    state: present
+  tags:
+    - install
+
+

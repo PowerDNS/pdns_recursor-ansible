@@ -10,29 +10,7 @@
     - install
     - repository
 
-- name: Get the latest PowerDNS Recursor version from the Package Manager
-  include: "inspect-{{ ansible_os_family }}.yml"
-  when: "pdns_rec_package_version == ''"
-
-- name: Append the version to the PowerDNS Recursor package name 
-  set_fact:
-    pdns_rec_package_name: "{{ pdns_rec_package_name }}-{{ pdns_rec_package_version }}"
-
-- name: Generate the PowerDNS Recursor configuration 
-  include: configure.yml
-  tags:
-    - config
-
-- name: Install EPEL (when required)
-  include: install-epel.yml
-  when: ansible_os_family == 'RedHat' and pdns_rec_install_epel
-  tags:
-    - install
-
-- name: Install the PowerDNS Recursor package
-  package:
-    name: "{{ pdns_rec_package_name }}"
-    state: present
+- include: install-pdns.yml
   tags:
     - install
 
