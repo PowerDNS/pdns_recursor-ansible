@@ -26,6 +26,3 @@ galaxy_info:
     - pdns
     - powerdns
     - pdns-recursor
-
-dependencies:
-  - src: atosatto.packages-extras
