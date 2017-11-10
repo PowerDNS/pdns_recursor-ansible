@@ -1,0 +1,12 @@
+---
+
+default_rec_pdns_package_name: "powerdns-recursor"
+
+# Actually, the package (as of 2017-11-10) does not setuid/setgid at all.
+default_pdns_rec_user: "nobody"
+default_pdns_rec_group: "nobody"
+
+default_pdns_rec_config_dir: "/etc/powerdns"
+
+# We don't need a repo for Arch
+pdns_rec_install_repo: ""
