@@ -20,11 +20,12 @@
   tags:
     - install
 
-- name: Generate the PowerDNS Recursor configuration 
+- name: Generate the PowerDNS Recursor configuration
   include: configure.yml
   tags:
+    - configure
     - config
- 
+
 - name: Start and enable the PowerDNS Recursor service
   service:
     name: "{{ pdns_rec_service_name }}"
