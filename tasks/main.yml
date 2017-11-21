@@ -4,13 +4,13 @@
   include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Setup the PowerDNS Recursor repo
-  include: "repo-{{ ansible_os_family }}.yml"
+  include_tasks: "repo-{{ ansible_os_family }}.yml"
   when: pdns_rec_install_repo != ""
   tags:
     - install
     - repository
 
-- include: install-pdns.yml
+- import_tasks: install-pdns.yml
   tags:
     - install
 
