@@ -104,6 +104,11 @@ This will create a file called `dns-script.lua` into the `pdns_rec_config_dir`
 and add the configuration to load this script to the `recursor.conf`
 configuration file.
 
+    pdns_rec_service_overrides: {}
+
+Dict with overrides for the service (systemd only).
+This can be used to change any systemd settings in the `[Service]` category
+
 Example Playbook
 ----------------
 
