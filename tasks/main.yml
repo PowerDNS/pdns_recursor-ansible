@@ -26,7 +26,12 @@
   include: configure.yml
   tags:
     - config
- 
+
+- include: systemd.yml
+  when: ansible_service_mgr == 'systemd'
+  tags:
+    - service
+
 - name: Start and enable the PowerDNS Recursor service
   service:
     name: "{{ pdns_rec_service_name }}"
