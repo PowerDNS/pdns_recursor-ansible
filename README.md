@@ -48,6 +48,7 @@ The roles also supports custom repositories
           gpg_key: "http://my.repo.com/MYREPOGPGPUBKEY.asc" # repository public GPG key
           gpg_key_id: "MYREPOGPGPUBKEYID" # to avoid to reimport the key each time the role is executed
           yum_repo_baseurl: "http://my.repo.com/centos/$basearch/$releasever/pdns-recursor"
+          yum_repo_debug_symbols_baseurl: "http://my.repo.com/centos/$basearch/$releasever/pdns-recursor/debug"
           yum_repo_name: "powerdns-rec"   # used to select only the pdns-recursor packages coming from this repo
       roles:
       - { role: PowerDNS.pdns_recursor }
@@ -61,6 +62,12 @@ EPEL is needed to satisfy some PowerDNS Recursor dependencies like `protobuf`.
 If these dependencies are included into other repositories already configured in the
 host or in the custom `pdns_rec_install_epel`, override this variable to `False`
 to skip EPEL installation.
+
+    pdns_rec_install_debug_symbols_package: False
+    pdns_rec_debug_symbols_package_name
+
+Install de debug symbols. Optionally, set the name for the package.
+This role automatically selects the right one based on Operating System.
 
     pdns_rec_user: pdns   # pdns-recursor on CentOS/RHEL
     pdns_rec_group: pdns  # pdns-recursor on CentOS/RHEL

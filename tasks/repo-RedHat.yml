@@ -14,3 +14,15 @@
     gpgcheck: yes
     priority: 90
     state: present
+
+- name: Add the PowerDNS Recursor debug symbols YUM Repository
+  yum_repository:
+    name: "{{ pdns_rec_install_repo['name'] }}-debuginfo"
+    file: "{{ pdns_rec_install_repo['name'] }}"
+    description: PowerDNS pdns_rec Repository - debug symbols
+    baseurl: "{{ pdns_rec_install_repo['yum_debug_symbols_repo_baseurl'] }}"
+    gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"
+    gpgcheck: yes
+    priority: 90
+    state: present
+  when: pdns_rec_install_debug_symbols_package
