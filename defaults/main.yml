@@ -38,7 +38,7 @@ pdns_rec_install_epel: True
 #    - { role: PowerDNS.pdns_recursor }
 
 # The name of the PowerDNS package
-pdns_rec_package_name: "{{ default_rec_pdns_package_name }}"
+pdns_rec_package_name: "{{ default_pdns_rec_package_name }}"
 pdns_rec_package_version: ""
 
 # Install PowerDNS Recursor debug symbols package
@@ -60,7 +60,7 @@ pdns_rec_service_name: "pdns-recursor"
 
 # Force the execution of the handlers at the end of the role.
 # This is required if using this role to configure multiple recursor instances
-# in a single play to make sure that on configuration changes the correct pnds_recursor 
+# in a single play to make sure that on configuration changes the correct pnds_recursor
 # instance is restarted.
 pdns_rec_flush_handlers: False
 
@@ -68,31 +68,20 @@ pdns_rec_flush_handlers: False
 pdns_rec_config_dir: "{{ default_pdns_rec_config_dir }}"
 pdns_rec_config_file: "recursor.conf"
 pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
+pdns_rec_config_lua_file_content: ""
 pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
+pdns_rec_config_dns_script_file_content: ""
 
 # Dict containing all configuration options, except for the
 # "config-dir", "setuid" and "setgid" directives in YAML format.
-pdns_rec_config: { }
-#
-# Example:
+pdns_rec_config: {}
 # pdns_rec_config:
 #  allow-from: '127.0.0.1/8,192.168.2.0/24'
 #  local-address: 0.0.0.0
 #  server-id: 'nothing to see here'
 
-# String containing the content of the lua-config-file file.
-# NOTE: This will create a file called `config.lua` into the `pdns_rec_config_dir`
-# and add the configuration to the `recursor.conf` configuration file.
-# pdns_rec_lua_config_file_content: ""
-
-# String containing the content of the lua-dns-script file.
-# This will create a file called `dns-script.lua` into the `pdns_rec_config_dir`
-# and add the configuration to load this script to the `recursor.conf`
-# pdns_rec_lua_dns_script_content: ""
-
 # Dict with overrides for the service (systemd only)
 # Can be used to increase e.g. the number of FDs like this:
+pdns_rec_service_overrides: {}
 # pdns_rec_service_overrides:
 #   LimitNOFILE: 10000
-
-pdns_rec_service_overrides: {}

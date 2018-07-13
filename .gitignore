@@ -1,27 +1,15 @@
-### Vim ###
-[._]*.s[a-w][a-z]
-[._]s[a-w][a-z]
-*.un~
-Session.vim
-.netrwhist
-*~
-
-### Linux ###
-*~
-
-# KDE directory preferences
-.directory
-
-# Linux trash folder which might appear on any partition or disk
-.Trash-*
-
 ### Ansible ###
 *.retry
 
-### Test-Kitchen ###
-.kitchen/
-.kitchen.local.yml
+### Python ###
+# Byte-compiled / optimized / DLL files
+.pytest_cache/
+__pycache__/
+*.py[cod]
+*$py.class
 
 ### Molecule ###
-.vagrant/
-.molecule/
+.tox
+.cache
+.molecule
+.vagrant

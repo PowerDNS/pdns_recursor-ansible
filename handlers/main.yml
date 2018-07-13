@@ -1,10 +1,10 @@
 ---
 
-- name: Restart PowerDNS Recursor
+- name: restart PowerDNS Recursor
   service:
     name: "{{ pdns_rec_service_name }}"
     state: restarted
 
-- name: Reload systemd and restart PowerDNS Recursor
+- name: reload systemd and restart PowerDNS Recursor
   command: systemctl daemon-reload
-  notify: Restart PowerDNS Recursor
+  notify: restart PowerDNS Recursor

@@ -1,0 +1,32 @@
+---
+
+##
+# PowerDNS Recursor Configuration
+##
+
+pdns_rec_config:
+
+  # Listen Address
+  local-address: "127.0.0.1"
+  local-port: "53"
+
+  # Embedded webserver
+  webserver: yes
+  webserver-address: "0.0.0.0"
+  webserver-port: "8001"
+  api-key: "powerdns"
+
+  # Let the kernel do the distribution of queries
+  pdns-distributes-queries: "no"
+  reuseport: "yes"
+
+  # We need more mthreads to handle huge traffic load
+  threads: 5
+  max-mthreads: 8192
+
+pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/rpz.lua"
+pdns_rec_config_lua_file_content: |
+  rpzMaster("127.0.0.2", "rpz.test", {refresh=30})
+
+pdns_rec_service_overrides:
+  LimitCORE: infinity

@@ -2,17 +2,19 @@
 
 galaxy_info:
   author: PowerDNS Engineering Team
-  description: PowerDNS Recursor Role
+  description: Install and configure the PowerDNS Recursor
   company: PowerDNS.COM BV
   license: MIT
-  min_ansible_version: 2.0
+  min_ansible_version: 2.2
   platforms:
     - name: EL
       versions:
         - 7
+        - 6
     - name: Debian
       versions:
         - jessie
+        - stretch
     - name: Ubuntu
       versions:
         - trusty
@@ -26,6 +28,3 @@ galaxy_info:
     - pdns
     - powerdns
     - pdns-recursor
-
-dependencies:
-  - src: atosatto.packages-extras

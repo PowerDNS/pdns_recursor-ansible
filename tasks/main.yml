@@ -5,32 +5,19 @@
   tags:
     - always
 
-- name: Setup the PowerDNS Recursor repo
-  include: "repo-{{ ansible_os_family }}.yml"
+- include: "repo-{{ ansible_os_family }}.yml"
   when: pdns_rec_install_repo != ""
   tags:
     - install
     - repository
 
-- name: Install EPEL (when required)
-  include: install-epel.yml
-  when: ansible_os_family == 'RedHat' and pdns_rec_install_epel
+- include: install.yml
   tags:
     - install
 
-- include: install-pdns.yml
-  tags:
-    - install
-
-- name: Generate the PowerDNS Recursor configuration 
-  include: configure.yml
+- include: configure.yml
   tags:
     - config
-
-- include: systemd.yml
-  when: ansible_service_mgr == 'systemd'
-  tags:
-    - service
 
 - name: Start and enable the PowerDNS Recursor service
   service:
