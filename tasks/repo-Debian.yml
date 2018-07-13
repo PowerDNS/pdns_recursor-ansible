@@ -1,17 +1,33 @@
 ---
 
+- name: Install gnupg
+  package:
+    name: gnupg
+    state: present
+
 - name: Import the PowerDNS Recursor APT Repository key
   apt_key:
     url: "{{ pdns_rec_install_repo['gpg_key'] }}"
     id: "{{ pdns_rec_install_repo['gpg_key_id'] | default('') }}"
     state: present
+  register: _pdns_rec_apt_key
 
 - name: Add the PowerDNS Recursor APT Repository
   apt_repository:
+    filename: "{{ pdns_rec_install_repo['name'] }}"
     repo: "{{ pdns_rec_install_repo['apt_repo'] }}"
     state: present
+  register: _pdns_rec_apt_repo
 
-- name: Pin the PowerDNS Recursor to the given APT Repository
+- name: Update the APT cache
+  apt:
+    update_cache: yes
+  when: "_pdns_rec_apt_key.changed or _pdns_rec_apt_repo.changed"
+
+- name: Pin the PowerDNS Recursor APT Repository
   template:
     src: pdns-recursor.pin.j2
     dest: /etc/apt/preferences.d/pdns-recursor
+    owner: root
+    group: root
+    mode: 0644

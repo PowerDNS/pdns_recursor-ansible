@@ -2,43 +2,22 @@ config-dir={{ pdns_rec_config_dir }}
 setuid={{ pdns_rec_user }}
 setgid={{ pdns_rec_group }}
 
-{%- for config_item, value in pdns_rec_config.items() -%}
-  {%- if config_item not in ["config-dir", "setuid", "setgid"] -%}
-    {%- if value == True %}
+{% for config_item, value in pdns_rec_config.items() | sort() %}
+{% if config_item not in ["config-dir", "setuid", "setgid"] %}
+{% if value == True %}
+{{ config_item }}=yes
+{% elif value == False %}
+{{ config_item }}=no
+{% else %}
+{{ config_item }}={{ value | string }}
+{% endif %}
+{% endif %}
+{% endfor %}
 
-{{config_item}}=yes
-    {%- elif value == False %}
-
-{{config_item}}=no
-    {%- elif value == None %}
-
-{{config_item}}=
-    {%- elif value is string or value is number %}
-
-{{ config_item }}={{ pdns_rec_config[config_item] | string }}
-    {%- elif pdns_rec_config[config_item] is sequence %}
-      {%- if pdns_rec_package_version[0:3] in ['0.0', '3.6', '4.0'] %}
-        {%- for config_item_item in value -%}
-          {%- if loop.first %}
-
-{{ config_item }}={{ config_item_item | string }}
-          {%- else %}
-
-{{ config_item }}+={{ config_item_item | string }}
-          {%- endif -%}
-        {%- endfor -%}
-      {%- else %}
-
-{{ config_item }}={{ ', '.join(value) }}
-      {%- endif %}
-    {%- endif -%}
-  {%- endif -%}
-{%- endfor %}
-
-{% if pdns_rec_lua_config_file_content is defined %}
+{% if pdns_rec_config_lua_file_content != "" %}
 lua-config-file={{ pdns_rec_config_lua }}
 {% endif %}
 
-{% if pdns_rec_lua_dns_script_content is defined %}
+{% if pdns_rec_config_dns_script_file_content != "" %}
 lua-dns-script={{ pdns_rec_config_dns_script }}
 {% endif %}

@@ -1,36 +1,67 @@
 ---
 
-- name: Ensure that the PowerDNS configuration directory exists
+- block:
+
+  - name: Ensure the override directory exists (systemd)
+    file:
+      name: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d"
+      state: directory
+      owner: root
+      group: root
+
+  - name: Override the PowerDNS Recursor unit (systemd)
+    template:
+      src: "override-service.systemd.conf.j2"
+      dest: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf"
+      owner: root
+      group: root
+    notify: reload systemd and restart PowerDNS Recursor
+
+  when: pdns_rec_service_overrides != {}
+    and ansible_service_mgr == "systemd"
+
+- name: Ensure that the PowerDNS Recursor configuration directory exists
   file:
     name: "{{ pdns_rec_config_dir }}"
     state: directory
     owner: root
     group: root
+    mode: 0750
 
 - name: Generate the PowerDNS Recursor configuration
   template:
     src: recursor.conf.j2
     dest: "{{ pdns_rec_config_dir }}/{{ pdns_rec_config_file }}"
-  notify: Restart PowerDNS Recursor
+    owner: "root"
+    group: "root"
+    mode: 0640
+  notify: restart PowerDNS Recursor
 
-- name: Ensure that the include-dir configuration directory exists 
+- name: Ensure that the PowerDNS Recursor 'include-dir' directory exists
   file:
     name: "{{ pdns_rec_config['include-dir'] }}"
     state: directory
-    owner: root
-    group: root
-  when: "pdns_rec_config['include-dir'] is defined" 
+    owner: "root"
+    group: "root"
+    mode: 0755
+  when: "pdns_rec_config['include-dir'] is defined"
 
-- name: Generate the Lua config-file
+- name: Generate the PowerDNS Recursor Lua config-file
   copy:
     dest: "{{ pdns_rec_config_lua }}"
-    content: "{{ pdns_rec_lua_config_file_content }}"
-  when: pdns_rec_lua_config_file_content is defined
-  notify: Restart PowerDNS Recursor
+    content: "{{ pdns_rec_config_lua_file_content }}"
+    owner: "root"
+    group: "root"
+    mode: 0640
+  notify: restart PowerDNS Recursor
+  when: pdns_rec_config_lua_file_content != ""
 
-- name: Generate the Lua dns-script
+- name: Generate PowerDNS Recursor Lua dns-script
   copy:
     dest: "{{ pdns_rec_config_dns_script }}"
-    content: "{{ pdns_rec_lua_dns_script_content }}"
-  when: pdns_rec_lua_dns_script_content is defined
-  notify: Restart PowerDNS Recursor
+    content: "{{ }}"
+    owner: "root"
+    group: "root"
+    mode: 0640
+  notify: restart PowerDNS Recursor
+  when: pdns_rec_config_dns_script_file_content != ""

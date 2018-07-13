@@ -1,0 +1,18 @@
+---
+
+- name: Prepare the Molecule Test Resources
+  hosts: pdns-rec
+  tasks:
+    # Install rsyslog to capture the PowerDNS Recursor log messages
+    # when the service is not managed by systemd
+    - block:
+        - name: Install rsyslog
+          package:
+            name: rsyslog
+            state: present
+
+        - name: Start rsyslog
+          service:
+            name: rsyslog
+            state: started
+      when: ansible_service_mgr != 'systemd'
