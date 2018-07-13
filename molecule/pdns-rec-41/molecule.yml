@@ -32,6 +32,11 @@ platforms:
     groups:
       - pdns-rec
 
+  - name: ubuntu-1804
+    image: ubuntu:18.04
+    groups:
+      - pdns-rec
+
   - name: debian-8
     image: debian:8
     groups:
