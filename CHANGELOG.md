@@ -1,4 +1,4 @@
-## v1.0.0 (To be released)
+## v1.0.0 (2018-07-13)
 
 __BREAKING CHANGES__:
 - Rename the `pdns_rec_lua_config_file_content` to `pdns_rec_config_lua_file_content`
