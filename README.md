@@ -153,7 +153,9 @@ If `pdns_rec_config_dns_script_file_content` is not `""`, this will dump
 the content of this variable to the `pdns_rec_config_dns_script` file and
 define accordingly the `lua-dns-script` setting in the `recursor.conf` configuration file.
 
-    pdns_rec_service_overrides: {}
+```yaml
+pdns_rec_service_overrides: {}
+```
 
 Dict with overrides for the service (systemd only).
 This can be used to change any systemd settings in the `[Service]` category

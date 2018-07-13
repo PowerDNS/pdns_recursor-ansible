@@ -81,7 +81,6 @@ pdns_rec_config: {}
 #  server-id: 'nothing to see here'
 
 # Dict with overrides for the service (systemd only)
-# Can be used to increase e.g. the number of FDs like this:
 pdns_rec_service_overrides: {}
 # pdns_rec_service_overrides:
 #   LimitNOFILE: 10000
