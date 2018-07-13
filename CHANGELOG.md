@@ -7,7 +7,7 @@ __BREAKING CHANGES__:
 NEW FEATURES:
 - Continuos testing with molecule 2.14.0 ([\#39](https://github.com/PowerDNS/pdns-ansible/pull/39))
 - Install debuginfo packages ([\#38](https://github.com/PowerDNS/pdns-ansible/pull/38))
-- Allow to manage systemd units overrides ([\#37](https://github.com/PowerDNS/pdns-ansible/pull/37))
+- Allow to manage systemd overrides ([\#37](https://github.com/PowerDNS/pdns-ansible/pull/37))
 
 IMPROVEMENTS:
 - Improved documentation ([\#39](https://github.com/PowerDNS/pdns-ansible/pull/39))
