@@ -4,7 +4,9 @@ setgid={{ pdns_rec_group }}
 
 {% for config_item, value in pdns_rec_config.items() | sort() %}
 {% if config_item not in ["config-dir", "setuid", "setgid"] %}
-{% if value == True %}
+{%- if config_item == 'threads' %}
+{{ config_item }}={{ value | string }}
+{%- elif value == True %}
 {{ config_item }}=yes
 {% elif value == False %}
 {{ config_item }}=no
