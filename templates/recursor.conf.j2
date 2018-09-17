@@ -8,6 +8,10 @@ setgid={{ pdns_rec_group }}
 {{ config_item }}=yes
 {% elif value == False %}
 {{ config_item }}=no
+{% elif value is string %}
+{{ config_item }}={{ value | string }}
+{% elif value is sequence %}
+{{ config_item }}={{ value | join(',') }}
 {% else %}
 {{ config_item }}={{ value | string }}
 {% endif %}

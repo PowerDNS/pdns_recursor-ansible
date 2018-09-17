@@ -43,6 +43,8 @@ def test_config(host):
         assert fc.user == 'root'
         assert fc.group == 'root'
         assert 'lua-config-file=' + fr.path in fc.content
+        assert 'allow-from=127.0.0.0/24,127.0.1.0/24,2001:DB8:10::/64' in \
+            fc.content
 
         assert fr.exists
         assert fr.user == 'root'
