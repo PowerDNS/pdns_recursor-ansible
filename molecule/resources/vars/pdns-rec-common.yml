@@ -24,6 +24,12 @@ pdns_rec_config:
   threads: 5
   max-mthreads: 8192
 
+  # This tests that we expand lists to comma-separated configuration items
+  allow-from:
+    - 127.0.0.0/24
+    - 127.0.1.0/24
+    - '2001:DB8:10::/64'
+
 pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/rpz.lua"
 pdns_rec_config_lua_file_content: |
   rpzMaster("127.0.0.2", "rpz.test", {refresh=30})
