@@ -1,7 +1,7 @@
 ## v1.1.0 (Unreleased)
 
 NEW FEATURES:
-- Add an option (`pdns_rec_disable_handlers`) to disable the automated restart of the service on configuration changes ([\#41](https://github.com/PowerDNS/pdns_recursor-ansible/pull/41))
+- Add an option (`pdns_rec_disable_handlers`) to disable the automated restart of the service on configuration changes ([\#43](https://github.com/PowerDNS/pdns_recursor-ansible/pull/43))
 
 ## v1.0.0 (2018-07-13)
 
