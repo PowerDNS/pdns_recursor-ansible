@@ -64,6 +64,9 @@ pdns_rec_service_name: "pdns-recursor"
 # instance is restarted.
 pdns_rec_flush_handlers: False
 
+# When True, disable the automated restart of the PowerDNS Recursor service
+pdns_rec_disable_handlers: False
+
 # Configuration directory and files
 pdns_rec_config_dir: "{{ default_pdns_rec_config_dir }}"
 pdns_rec_config_file: "recursor.conf"

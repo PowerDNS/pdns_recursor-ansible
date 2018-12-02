@@ -122,6 +122,12 @@ Force the execution of the flushing of the handlers at the end of the role. <br 
 **NOTE:** This is required if using this role to configure multiple recursor instances in a single play
 
 ```yaml
+pdns_rec_disable_handlers: False
+```
+
+Disable automated service restart on configuration changes.
+
+```yaml
 pdns_rec_config_dir: "/etc/powerdns"
 pdns_rec_config_file: "recursor.conf"
 ```
