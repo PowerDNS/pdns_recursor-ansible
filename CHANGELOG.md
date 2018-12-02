@@ -1,7 +1,11 @@
-## v1.1.0 (Unreleased)
+## v1.1.0 (2018-12-02)
 
 NEW FEATURES:
 - Add an option (`pdns_rec_disable_handlers`) to disable the automated restart of the service on configuration changes ([\#43](https://github.com/PowerDNS/pdns_recursor-ansible/pull/43))
+
+BUG FIXES:
+- Handle correctly the `threads` variable in the PowerDNS Recursor configuration template ([\#41](https://github.com/PowerDNS/pdns_recursor-ansible/pull/41))
+- Ensure that lists are correctly expanded in the PowerDNS Recursor configuration template ([\#42](https://github.com/PowerDNS/pdns_recursor-ansible/pull/42))
 
 ## v1.0.0 (2018-07-13)
 
