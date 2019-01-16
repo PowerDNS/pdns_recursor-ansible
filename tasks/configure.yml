@@ -16,7 +16,6 @@
       owner: root
       group: root
     notify: reload systemd and restart PowerDNS Recursor
-
   when: pdns_rec_service_overrides != {}
     and ansible_service_mgr == "systemd"
 
@@ -24,9 +23,6 @@
   file:
     name: "{{ pdns_rec_config_dir }}"
     state: directory
-    owner: root
-    group: root
-    mode: 0750
 
 - name: Generate the PowerDNS Recursor configuration
   template:
