@@ -16,6 +16,7 @@
       owner: root
       group: root
     notify: reload systemd and restart PowerDNS Recursor
+
   when: pdns_rec_service_overrides != {}
     and ansible_service_mgr == "systemd"
 
