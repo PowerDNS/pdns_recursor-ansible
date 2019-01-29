@@ -1,3 +1,8 @@
+## v1.1.1 (2010-01-29)
+
+BUG FIXES:
+- Fix an issue with the recursor.conf Jinja2 template resulting in the `threads` configuration being rendered wrongly
+
 ## v1.1.0 (2018-12-02)
 
 NEW FEATURES:
