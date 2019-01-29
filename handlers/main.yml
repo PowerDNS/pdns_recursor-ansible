@@ -5,7 +5,9 @@
     name: "{{ pdns_rec_service_name }}"
     state: restarted
     sleep: 1                           # the sleep is needed to make sure the service has been
-  when: not pdns_rec_disable_handlers  # correctly started after being stopped during restarts
+                                       # correctly started after being stopped during restarts
+  when: pdns_rec_service_state != 'stopped' and
+    not pdns_rec_disable_handlers
 
 - name: reload systemd and restart PowerDNS Recursor
   command: systemctl daemon-reload
