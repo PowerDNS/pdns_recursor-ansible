@@ -59,7 +59,7 @@
 - name: Generate PowerDNS Recursor Lua dns-script
   copy:
     dest: "{{ pdns_rec_config_dns_script }}"
-    content: "{{ }}"
+    content: "{{ pdns_rec_config_dns_script_file_content }}"
     owner: "root"
     group: "root"
     mode: 0640
