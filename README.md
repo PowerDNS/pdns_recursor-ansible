@@ -122,6 +122,14 @@ Force the execution of the flushing of the handlers at the end of the role. <br 
 **NOTE:** This is required if using this role to configure multiple recursor instances in a single play
 
 ```yaml
+pdns_rec_service_state: "started"
+pdns_rec_service_enabled: "yes"
+```
+
+Allow to specify the desired state of the PowerDNS Recursor service.
+E.g. This allows to install and configure the PowerDNS Recursor without automatically starting the service.
+
+```yaml
 pdns_rec_disable_handlers: False
 ```
 

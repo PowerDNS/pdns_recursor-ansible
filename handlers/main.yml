@@ -1,11 +1,16 @@
 ---
 
+# The sleep in the restart "PowerDNS Recursor handler"
+# is needed to make sure to start correctly the service
+# after stopping it during restarts
+
 - name: restart PowerDNS Recursor
   service:
     name: "{{ pdns_rec_service_name }}"
     state: restarted
-    sleep: 1                           # the sleep is needed to make sure the service has been
-  when: not pdns_rec_disable_handlers  # correctly started after being stopped during restarts
+    sleep: 1
+  when: pdns_rec_service_state != 'stopped' and
+    not pdns_rec_disable_handlers
 
 - name: reload systemd and restart PowerDNS Recursor
   command: systemctl daemon-reload

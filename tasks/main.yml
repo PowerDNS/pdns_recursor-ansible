@@ -19,11 +19,11 @@
   tags:
     - config
 
-- name: Start and enable the PowerDNS Recursor service
+- name: Set the status of the PowerDNS Recursor service
   service:
     name: "{{ pdns_rec_service_name }}"
-    state: started
-    enabled: true
+    state: "{{ pdns_rec_service_state }}"
+    enabled: "{{ pdns_rec_service_enabled }}"
   tags:
     - service
 

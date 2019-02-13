@@ -27,11 +27,6 @@ platforms:
     groups:
       - pdns-rec
 
-  - name: ubuntu-1710
-    image: ubuntu:17.10
-    groups:
-      - pdns-rec
-
   - name: ubuntu-1804
     image: ubuntu:18.04
     groups:
