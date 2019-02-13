@@ -1,4 +1,9 @@
-## v1.1.1 (2010-01-29)
+## v1.2.0 (2019-02-13)
+
+NEW FEATURES:
+- Add some variables to allow to configure the status of the Recursor service ([\#45](https://github.com/PowerDNS/pdns_recursor-ansible/pull/45))
+
+## v1.1.1 (2019-01-29)
 
 BUG FIXES:
 - Fix an issue with the recursor.conf Jinja2 template resulting in the `threads` configuration being rendered wrongly
