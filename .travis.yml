@@ -13,10 +13,9 @@ services:
 # Ansible versions
 env:
   matrix:
-    - ANSIBLE=2.2
-    - ANSIBLE=2.3
-    - ANSIBLE=2.4
     - ANSIBLE=2.5
+    - ANSIBLE=2.6
+    - ANSIBLE=2.7
 
 # Install tox
 install:
