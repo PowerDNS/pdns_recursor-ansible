@@ -24,13 +24,16 @@
   file:
     name: "{{ pdns_rec_config_dir }}"
     state: directory
+    owner: root
+    group: root
+    mode: 0755
 
 - name: Generate the PowerDNS Recursor configuration
   template:
     src: recursor.conf.j2
     dest: "{{ pdns_rec_config_dir }}/{{ pdns_rec_config_file }}"
     owner: "root"
-    group: "root"
+    group: "{{ pdns_rec_group }}"
     mode: 0640
   notify: restart PowerDNS Recursor
 
@@ -48,7 +51,7 @@
     dest: "{{ pdns_rec_config_lua }}"
     content: "{{ pdns_rec_config_lua_file_content }}"
     owner: "root"
-    group: "root"
+    group: "{{ pdns_rec_group }}"
     mode: 0640
   notify: restart PowerDNS Recursor
   when: pdns_rec_config_lua_file_content != ""
@@ -58,7 +61,7 @@
     dest: "{{ pdns_rec_config_dns_script }}"
     content: "{{ pdns_rec_config_dns_script_file_content }}"
     owner: "root"
-    group: "root"
+    group: "{{ pdns_rec_group }}"
     mode: 0640
   notify: restart PowerDNS Recursor
   when: pdns_rec_config_dns_script_file_content != ""
