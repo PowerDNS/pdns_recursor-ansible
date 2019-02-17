@@ -1,6 +1,31 @@
+import os
+import yaml
+import pytest
+import testinfra.utils.ansible_runner
+
+
+testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
+    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
+
 
 debian_os = ['debian', 'ubuntu']
 rhel_os = ['redhat', 'centos']
+
+
+@pytest.fixture()
+def AnsibleVars(host):
+    varsFiles = ["../../vars/main.yml"]
+    if host.system_info.distribution.lower() in debian_os:
+        varsFiles.append("../../vars/Debian.yml")
+    if host.system_info.distribution.lower() in rhel_os:
+        varsFiles.append("../../vars/RedHat.yml")
+
+    ansibleVars = {}
+    for f in varsFiles:
+        with open(f, 'r') as stream:
+            ansibleVars.update(yaml.load(stream))
+
+    return ansibleVars
 
 
 def test_distribution(host):
@@ -29,7 +54,7 @@ def test_service(host):
     assert s["changed"] is False
 
 
-def test_config(host):
+def test_config(host, AnsibleVars):
     with host.sudo():
         fc = fr = None
         if host.system_info.distribution.lower() in debian_os:
@@ -41,14 +66,16 @@ def test_config(host):
 
         assert fc.exists
         assert fc.user == 'root'
-        assert fc.group == 'root'
+        assert fc.group == AnsibleVars['default_pdns_rec_group']
+        assert oct(fc.mode) == '0640'
         assert 'lua-config-file=' + fr.path in fc.content
         assert 'allow-from=127.0.0.0/24,127.0.1.0/24,2001:DB8:10::/64' in \
             fc.content
 
         assert fr.exists
         assert fr.user == 'root'
-        assert fr.group == 'root'
+        assert fr.group == AnsibleVars['default_pdns_rec_group']
+        assert oct(fr.mode) == '0640'
 
 
 def systemd_override(host):
