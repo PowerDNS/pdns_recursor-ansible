@@ -1,3 +1,8 @@
+## v1.2.1 (2019-02-18)
+
+IMPROVEMENTS:
+- Improved PowerDNS config files and directories permissions handling ([\#44](https://github.com/PowerDNS/pdns_recursor-ansible/pull/44))
+
 ## v1.2.0 (2019-02-13)
 
 NEW FEATURES:
@@ -20,11 +25,11 @@ BUG FIXES:
 ## v1.0.0 (2018-07-13)
 
 __BREAKING CHANGES__:
-- Rename the `pdns_rec_lua_config_file_content` to `pdns_rec_config_lua_file_content`
-- Rename the `pdns_rec_lua_dns_script_content` to `pdns_rec_config_lua_dns_script_file_content`
+- Rename the `pdns_rec_lua_config_file_content` variable to `pdns_rec_config_lua_file_content`
+- Rename the `pdns_rec_lua_dns_script_content` variable to `pdns_rec_config_lua_dns_script_file_content`
 
 NEW FEATURES:
-- Continuos testing with molecule 2.14.0 ([\#39](https://github.com/PowerDNS/pdns_recursor-ansible/pull/39))
+- CI with molecule 2.14.0 ([\#39](https://github.com/PowerDNS/pdns_recursor-ansible/pull/39))
 - Install debuginfo packages ([\#38](https://github.com/PowerDNS/pdns_recursor-ansible/pull/38))
 - Allow to manage systemd overrides ([\#37](https://github.com/PowerDNS/pdns_recursor-ansible/pull/37))
 
