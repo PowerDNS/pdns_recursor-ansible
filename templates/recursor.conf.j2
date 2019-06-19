@@ -20,6 +20,12 @@ setgid={{ pdns_rec_group }}
 {% endif %}
 {% endfor %}
 
+{% for zone in pdns_rec_forward_zones | sort () -%}
+forward-zones+={{ zone }}
+{% endfor %}
+
+
+
 {% if pdns_rec_config_lua_file_content != "" %}
 lua-config-file={{ pdns_rec_config_lua }}
 {% endif %}

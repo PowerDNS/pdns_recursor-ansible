@@ -6,15 +6,15 @@
     file:
       name: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d"
       state: directory
-      owner: root
-      group: root
+      owner: "{{ pdns_fileowner.user }}"
+      group: "{{ pdns_fileowner.group }}"
 
   - name: Override the PowerDNS Recursor unit (systemd)
     template:
       src: "override-service.systemd.conf.j2"
       dest: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf"
-      owner: root
-      group: root
+      owner: "{{ pdns_fileowner.user }}"
+      group: "{{ pdns_fileowner.group }}"
     notify: reload systemd and restart PowerDNS Recursor
 
   when: pdns_rec_service_overrides != {}
@@ -24,15 +24,15 @@
   file:
     name: "{{ pdns_rec_config_dir }}"
     state: directory
-    owner: root
-    group: root
+    owner: "{{ pdns_fileowner.user }}"
+    group: "{{ pdns_fileowner.group }}"
     mode: 0755
 
 - name: Generate the PowerDNS Recursor configuration
   template:
     src: recursor.conf.j2
     dest: "{{ pdns_rec_config_dir }}/{{ pdns_rec_config_file }}"
-    owner: "root"
+    owner: "{{ pdns_rec_user }}"
     group: "{{ pdns_rec_group }}"
     mode: 0640
   notify: restart PowerDNS Recursor
@@ -41,8 +41,8 @@
   file:
     name: "{{ pdns_rec_config['include-dir'] }}"
     state: directory
-    owner: "root"
-    group: "root"
+    owner: "{{ pdns_fileowner.user }}"
+    group: "{{ pdns_fileowner.group }}"
     mode: 0755
   when: "pdns_rec_config['include-dir'] is defined"
 
@@ -50,7 +50,7 @@
   copy:
     dest: "{{ pdns_rec_config_lua }}"
     content: "{{ pdns_rec_config_lua_file_content }}"
-    owner: "root"
+    owner: "{{ pdns_rec_user }}"
     group: "{{ pdns_rec_group }}"
     mode: 0640
   notify: restart PowerDNS Recursor
@@ -60,7 +60,7 @@
   copy:
     dest: "{{ pdns_rec_config_dns_script }}"
     content: "{{ pdns_rec_config_dns_script_file_content }}"
-    owner: "root"
+    owner: "{{ pdns_rec_user }}"
     group: "{{ pdns_rec_group }}"
     mode: 0640
   notify: restart PowerDNS Recursor

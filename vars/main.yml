@@ -2,6 +2,10 @@
 
 default_pdns_rec_package_name: "pdns-recursor"
 
+pdns_fileowner:
+  user: root
+  group: root
+
 pdns_rec_powerdns_repo_master:
   apt_repo_origin: "repo.powerdns.com"
   apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-master main"
