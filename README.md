@@ -64,6 +64,7 @@ The roles also supports custom repositories
   roles:
   - { role: PowerDNS.pdns_recursor }
 ```
+**Note:** these options are not honored on FreeBSD. 
 
 It is also possible to install the PowerDNS Recursor from custom repositories as demonstrated in the example above.
 
