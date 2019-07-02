@@ -5,6 +5,5 @@ default_pdns_rec_group: "pdns"
 default_pdns_rec_config_dir: "/usr/local/etc/pdns"
 default_pdns_rec_package_name: "powerdns-recursor"
 
-pdns_fileowner:
-  user: root
-  group: wheel
+pdns_rec_file_owner: root
+pdns_rec_file_group: wheel

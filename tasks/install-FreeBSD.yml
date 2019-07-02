@@ -4,4 +4,3 @@
   pkgng:
     name: "{{ pdns_rec_package_name }}"
     state: present
-

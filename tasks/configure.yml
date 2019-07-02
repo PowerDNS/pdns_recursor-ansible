@@ -6,15 +6,15 @@
     file:
       name: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d"
       state: directory
-      owner: "{{ pdns_fileowner.user }}"
-      group: "{{ pdns_fileowner.group }}"
+      owner: "{{ pdns_rec_file_owner }}"
+      group: "{{ pdns_rec_file_group }}"
 
   - name: Override the PowerDNS Recursor unit (systemd)
     template:
       src: "override-service.systemd.conf.j2"
       dest: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf"
-      owner: "{{ pdns_fileowner.user }}"
-      group: "{{ pdns_fileowner.group }}"
+      owner: "{{ pdns_rec_file_owner }}"
+      group: "{{ pdns_rec_file_group }}"
     notify: reload systemd and restart PowerDNS Recursor
 
   when: pdns_rec_service_overrides != {}
@@ -24,8 +24,8 @@
   file:
     name: "{{ pdns_rec_config_dir }}"
     state: directory
-    owner: "{{ pdns_fileowner.user }}"
-    group: "{{ pdns_fileowner.group }}"
+    owner: "{{ pdns_rec_file_owner }}"
+    group: "{{ pdns_rec_file_group }}"
     mode: 0750
 
 - name: Generate the PowerDNS Recursor configuration
@@ -41,8 +41,8 @@
   file:
     name: "{{ pdns_rec_config['include-dir'] }}"
     state: directory
-    owner: "{{ pdns_fileowner.user }}"
-    group: "{{ pdns_fileowner.group }}"
+    owner: "{{ pdns_rec_file_owner }}"
+    group: "{{ pdns_rec_file_group }}"
     mode: 0750
   when: "pdns_rec_config['include-dir'] is defined"
 

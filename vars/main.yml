@@ -2,9 +2,8 @@
 
 default_pdns_rec_package_name: "pdns-recursor"
 
-pdns_fileowner:
-  user: root
-  group: root
+pdns_rec_file_owner: root
+pdns_rec_file_group: root
 
 pdns_rec_powerdns_repo_master:
   apt_repo_origin: "repo.powerdns.com"

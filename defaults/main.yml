@@ -91,3 +91,5 @@ pdns_rec_config: {}
 pdns_rec_service_overrides: {}
 # pdns_rec_service_overrides:
 #   LimitNOFILE: 10000
+
+pdns_rec_forward_zones: []
