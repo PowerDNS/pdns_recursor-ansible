@@ -32,8 +32,8 @@
   template:
     src: recursor.conf.j2
     dest: "{{ pdns_rec_config_dir }}/{{ pdns_rec_config_file }}"
-    owner: "{{ pdns_rec_user }}"
-    group: "{{ pdns_rec_group }}"
+    owner: "{{ pdns_rec_file_owner }}"
+    group: "{{ pdns_rec_file_group }}"
     mode: 0640
   notify: restart PowerDNS Recursor
 
@@ -50,8 +50,8 @@
   copy:
     dest: "{{ pdns_rec_config_lua }}"
     content: "{{ pdns_rec_config_lua_file_content }}"
-    owner: "{{ pdns_rec_user }}"
-    group: "{{ pdns_rec_group }}"
+    owner: "{{ pdns_rec_file_owner }}"
+    group: "{{ pdns_rec_file_group }}"
     mode: 0640
   notify: restart PowerDNS Recursor
   when: pdns_rec_config_lua_file_content != ""
@@ -60,8 +60,8 @@
   copy:
     dest: "{{ pdns_rec_config_dns_script }}"
     content: "{{ pdns_rec_config_dns_script_file_content }}"
-    owner: "{{ pdns_rec_user }}"
-    group: "{{ pdns_rec_group }}"
+    owner: "{{ pdns_rec_file_owner }}"
+    group: "{{ pdns_rec_file_group }}"
     mode: 0640
   notify: restart PowerDNS Recursor
   when: pdns_rec_config_dns_script_file_content != ""
