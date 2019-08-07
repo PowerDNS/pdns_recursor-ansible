@@ -5,5 +5,5 @@ default_pdns_rec_group: "pdns-recursor"
 default_pdns_rec_config_dir: "/etc/pdns-recursor"
 default_pdns_rec_debug_symbols_package_name: "pdns-recursor-debuginfo"
 
-pdns_rec_file_owner: "{{ default_pdns_rec_user | root }}"
-pdns_rec_file_group: "{{ default_pdns_rec_user | root }}"
+pdns_rec_file_owner: "{{ default_pdns_rec_user | 'root' }}"
+pdns_rec_file_group: "{{ default_pdns_rec_user | 'root' }}"
