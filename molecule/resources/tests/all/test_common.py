@@ -69,7 +69,8 @@ def test_config(host, AnsibleVars):
         assert fc.group == AnsibleVars['default_pdns_rec_group']
         assert fc.mode == 0o640
         assert fc.contains('lua-config-file=' + fr.path)
-        assert fc.contains('allow-from=127.0.0.0/24,127.0.1.0/24,2001:DB8:10::/64')
+        assert fc.contains(
+                'allow-from=127.0.0.0/24,127.0.1.0/24,2001:DB8:10::/64')
 
         assert fr.exists
         assert fr.user == 'root'
