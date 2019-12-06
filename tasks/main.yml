@@ -26,7 +26,3 @@
     enabled: "{{ pdns_rec_service_enabled }}"
   tags:
     - service
-
-- name: Force handlers flush
-  meta: flush_handlers
-  when: pdns_rec_flush_handlers

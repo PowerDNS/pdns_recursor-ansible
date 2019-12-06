@@ -115,13 +115,6 @@ pdns_rec_service_name: "pdns_recursor-recursor"
 The name of the PowerDNS Recursor service.
 
 ```yaml
-pdns_rec_flush_handlers: False
-```
-
-Force the execution of the flushing of the handlers at the end of the role. <br />
-**NOTE:** This is required if using this role to configure multiple recursor instances in a single play
-
-```yaml
 pdns_rec_service_state: "started"
 pdns_rec_service_enabled: "yes"
 ```
