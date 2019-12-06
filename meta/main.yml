@@ -28,4 +28,4 @@ galaxy_info:
     - dns
     - pdns
     - powerdns
-    - pdns-recursor
+    - recursor
