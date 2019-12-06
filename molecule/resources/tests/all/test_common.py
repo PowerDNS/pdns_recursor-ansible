@@ -23,7 +23,7 @@ def AnsibleVars(host):
     ansibleVars = {}
     for f in varsFiles:
         with open(f, 'r') as stream:
-            ansibleVars.update(yaml.load(stream))
+            ansibleVars.update(yaml.load(stream, Loader=yaml.FullLoader))
 
     return ansibleVars
 
@@ -67,15 +67,14 @@ def test_config(host, AnsibleVars):
         assert fc.exists
         assert fc.user == 'root'
         assert fc.group == AnsibleVars['default_pdns_rec_group']
-        assert oct(fc.mode) == '0640'
-        assert 'lua-config-file=' + fr.path in fc.content
-        assert 'allow-from=127.0.0.0/24,127.0.1.0/24,2001:DB8:10::/64' in \
-            fc.content
+        assert fc.mode == 0o640
+        assert fc.contains('lua-config-file=' + fr.path)
+        assert fc.contains('allow-from=127.0.0.0/24,127.0.1.0/24,2001:DB8:10::/64')
 
         assert fr.exists
         assert fr.user == 'root'
         assert fr.group == AnsibleVars['default_pdns_rec_group']
-        assert oct(fr.mode) == '0640'
+        assert fr.mode == 0o640
 
 
 def systemd_override(host):

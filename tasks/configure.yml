@@ -59,7 +59,7 @@
     group: "{{ pdns_rec_group }}"
     mode: 0640
   register: _pdns_recursor_lua_file_configuraton
-  when: pdns_rec_config_lua_file_content
+  when: "pdns_rec_config_lua_file_content | length > 0"
 
 - name: Generate PowerDNS Recursor Lua dns-script
   copy:
@@ -69,7 +69,7 @@
     group: "{{ pdns_rec_group }}"
     mode: 0640
   register: _pdns_recursor_dns_script_configuration
-  when: pdns_rec_config_dns_script_file_content
+  when: "pdns_rec_config_dns_script_file_content | length > 0"
 
 - name: Restart PowerDNS Recursor
   service:
