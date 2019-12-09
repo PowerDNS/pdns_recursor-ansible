@@ -38,6 +38,9 @@ provisioner:
   options:
     diff: True
     v: True
+  inventory:
+    links:
+      host_vars: ../resources/host_vars/
   playbooks:
     create: ../resources/create.yml
     destroy: ../resources/destroy.yml
