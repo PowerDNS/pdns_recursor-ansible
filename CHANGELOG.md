@@ -1,3 +1,12 @@
+## v1.3.0 (2019-12-09)
+
+IMPROVEMENTS:
+- Add the `pdns_rec_powerdns_repo_42` and `pdns_rec_powerdns_repo_43` variables to install the 4.2.x and 4.3.x PowerDNS Recursor releases ([\#48](https://github.com/PowerDNS/pdns_recursor-ansible/pull/48))
+- Stop interpreting 0 & 1 as no & yes ([\#49](https://github.com/PowerDNS/pdns_recursor-ansible/pull/49))
+
+BUG FIXES:
+- Fix service restart in case of multiple instances running on the same host ([\#50](https://github.com/PowerDNS/pdns_recursor-ansible/pull/50))
+
 ## v1.2.1 (2019-02-18)
 
 IMPROVEMENTS:
