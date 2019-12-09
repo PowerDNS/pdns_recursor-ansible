@@ -54,8 +54,11 @@ provisioner:
   lint:
     name: ansible-lint
     options:
-      # excludes "systemctl used in place of systemd module"
-      x: ["ANSIBLE0006"]
+      x:
+        # "systemctl used in place of systemd module"
+        - "ANSIBLE0006"
+        # "Tasks that run when changed should likely be handlers"
+        - "ANSIBLE0016"
 
 lint:
   name: yamllint

@@ -2,7 +2,7 @@
 
 - block:
 
-  - name: Ensure the override directory exists (systemd)
+  - name: Ensure the PowerDNS Recursor drop-in unit overrides directory exists (systemd)
     file:
       name: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d"
       state: directory
@@ -15,10 +15,15 @@
       dest: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf"
       owner: root
       group: root
-    notify: reload systemd and restart PowerDNS Recursor
+    register: _pdns_recursor_override_unit
 
-  when: pdns_rec_service_overrides != {}
-    and ansible_service_mgr == "systemd"
+  - name: Reload systemd
+    command: systemctl daemon-reload
+    when: not pdns_rec_disable_handlers
+      and _pdns_recursor_override_unit.changed
+
+  when: ansible_service_mgr == "systemd"
+    and pdns_rec_service_overrides != {}
 
 - name: Ensure that the PowerDNS Recursor configuration directory exists
   file:
@@ -35,7 +40,7 @@
     owner: "root"
     group: "{{ pdns_rec_group }}"
     mode: 0640
-  notify: restart PowerDNS Recursor
+  register: _pdns_recursor_configuration
 
 - name: Ensure that the PowerDNS Recursor 'include-dir' directory exists
   file:
@@ -53,8 +58,8 @@
     owner: "root"
     group: "{{ pdns_rec_group }}"
     mode: 0640
-  notify: restart PowerDNS Recursor
-  when: pdns_rec_config_lua_file_content != ""
+  register: _pdns_recursor_lua_file_configuraton
+  when: "pdns_rec_config_lua_file_content | length > 0"
 
 - name: Generate PowerDNS Recursor Lua dns-script
   copy:
@@ -63,5 +68,16 @@
     owner: "root"
     group: "{{ pdns_rec_group }}"
     mode: 0640
-  notify: restart PowerDNS Recursor
-  when: pdns_rec_config_dns_script_file_content != ""
+  register: _pdns_recursor_dns_script_configuration
+  when: "pdns_rec_config_dns_script_file_content | length > 0"
+
+- name: Restart PowerDNS Recursor
+  service:
+    name: "{{ pdns_rec_service_name }}"
+    state: restarted
+    sleep: 1
+  when: not pdns_rec_disable_handlers
+    and pdns_rec_service_state != 'stopped'
+    and (_pdns_recursor_configuration.changed
+      or _pdns_recursor_lua_file_configuraton.changed
+      or _pdns_recursor_dns_script_configuration.changed)
