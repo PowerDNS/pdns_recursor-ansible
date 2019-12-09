@@ -1,6 +1,6 @@
 ---
 
-- hosts: pdns-rec
+- hosts: all
   vars_files:
     - ../resources/vars/pdns-rec-common.yml
     - ../resources/vars/pdns-rec-repo-master.yml

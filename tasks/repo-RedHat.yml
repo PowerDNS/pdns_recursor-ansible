@@ -21,6 +21,7 @@
     name: yum-plugin-priorities
     state: present
   when: ansible_distribution in [ 'CentOS' ]
+    and ansible_pkg_mgr in [ 'yum' ]
 
 - name: Add the PowerDNS Recursor YUM Repository
   yum_repository:
@@ -30,7 +31,7 @@
     baseurl: "{{ pdns_rec_install_repo['yum_repo_baseurl'] }}"
     gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"
     gpgcheck: yes
-    priority: 90
+    priority: "90"
     state: present
 
 - name: Add the PowerDNS Recursor debug symbols YUM Repository
@@ -41,6 +42,6 @@
     baseurl: "{{ pdns_rec_install_repo['yum_debug_symbols_repo_baseurl'] }}"
     gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"
     gpgcheck: yes
-    priority: 90
+    priority: "90"
     state: present
   when: pdns_rec_install_debug_symbols_package
