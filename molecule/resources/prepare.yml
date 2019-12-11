@@ -1,7 +1,7 @@
 ---
 
 - name: Prepare the Molecule Test Resources
-  hosts: pdns-rec
+  hosts: all
   tasks:
     # Install rsyslog to capture the PowerDNS Recursor log messages
     # when the service is not managed by systemd

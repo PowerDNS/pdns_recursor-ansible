@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-41
+  name: pdns-rec-42
 
 driver:
   name: docker
@@ -12,41 +12,45 @@ dependency:
 platforms:
   - name: centos-6
     image: centos:6
-    groups:
-      - pdns-rec
 
   - name: centos-7
     image: centos:7
     dockerfile_tpl: centos-systemd
-    groups:
-      - pdns-rec
 
-  - name: ubuntu-1604
-    image: ubuntu:16.04
-    dockerfile_tpl: debian-systemd
-    groups:
-      - pdns-rec
+  # Temporarely disable CentOS 8 due to:
+  # https://github.com/ansible/ansible/issues/64963
+  # - name: centos-8
+  #   image: centos:8
+  #   dockerfile_tpl: centos-systemd
 
   - name: ubuntu-1804
     image: ubuntu:18.04
-    groups:
-      - pdns-rec
-
-  - name: debian-8
-    image: debian:8
-    groups:
-      - pdns-rec
+    dockerfile_tpl: debian-systemd
 
   - name: debian-9
     image: debian:9
-    groups:
-      - pdns-rec
+    dockerfile_tpl: debian-systemd
+
+  - name: debian-10
+    image: debian:10
+    dockerfile_tpl: debian-systemd
 
 provisioner:
   name: ansible
   options:
     diff: True
     v: True
+  config_options:
+    defaults:
+      gathering: smart
+      fact_caching: jsonfile
+      fact_caching_connection: .ansible_cache
+      fact_caching_timeout: 7200
+    ssh_connection:
+      pipelining: true
+  inventory:
+    links:
+      host_vars: ../resources/host_vars/
   playbooks:
     create: ../resources/create.yml
     destroy: ../resources/destroy.yml
@@ -66,11 +70,10 @@ lint:
 verifier:
   name: testinfra
   options:
-    hosts: pdns-rec
     vvv: True
   directory: ../resources/tests/all
   additional_files_or_dirs:
-    # path relative to 'directory'
-    - ../repo-41/
+    # path relative to '../resources/tests/all'
+    - ../repo-42/
   lint:
     name: flake8

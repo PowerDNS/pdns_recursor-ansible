@@ -87,4 +87,4 @@ def systemd_override(host):
         assert f.exists
         assert f.user == 'root'
         assert f.group == 'root'
-        assert 'LimitCORE=infinity' in f.content
+        assert f.contains('LimitCORE=infinity')
