@@ -78,6 +78,7 @@
     sleep: 1
   when: not pdns_rec_disable_handlers
     and pdns_rec_service_state != 'stopped'
-    and (_pdns_recursor_configuration.changed
+    and (_pdns_recursor_override_unit.changed
+      or _pdns_recursor_configuration.changed
       or _pdns_recursor_lua_file_configuraton.changed
       or _pdns_recursor_dns_script_configuration.changed)
