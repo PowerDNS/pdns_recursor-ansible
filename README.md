@@ -109,7 +109,7 @@ The user and group the PowerDNS Recursor will run as, `pdns-recursor` on RedHat-
 by the package or other roles.
 
 ```yaml
-pdns_rec_service_name: "pdns_recursor-recursor"
+pdns_rec_service_name: "pdns-recursor"
 ```
 
 The name of the PowerDNS Recursor service.
@@ -129,11 +129,11 @@ pdns_rec_disable_handlers: False
 Disable automated service restart on configuration changes.
 
 ```yaml
-pdns_rec_config_dir: "/etc/powerdns"
+pdns_rec_config_dir: "{{ default_pdns_rec_config_dir }}"
 pdns_rec_config_file: "recursor.conf"
 ```
 
-The PowerDNS Recursor configuration files and directories.
+The PowerDNS Recursor configuration files and directories, where `default_pdns_rec_config_dir` is `/etc/powerdns` on Debian and `/etc/pdns-recursor` on RedHat.
 
 ```yaml
 pdns_rec_config: { }
