@@ -7,8 +7,8 @@ pdns_rec_powerdns_repo_master:
   apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-master main"
   gpg_key: "http://repo.powerdns.com/CBC8B383-pub.asc"
   gpg_key_id: "D47975F8DAE32700A563E64FFF389421CBC8B383"
-  yum_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/rec-master"
-  yum_debug_symbols_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/rec-master/debug"
+  yum_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-master"
+  yum_debug_symbols_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-master/debug"
   name: "powerdns-rec-master"
 
 pdns_rec_powerdns_repo_40:
@@ -16,8 +16,8 @@ pdns_rec_powerdns_repo_40:
   apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-40 main"
   gpg_key: "http://repo.powerdns.com/FD380FBB-pub.asc"
   gpg_key_id: "9FAAA5577E8FCF62093D036C1B0C6205FD380FBB"
-  yum_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/rec-40"
-  yum_debug_symbols_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/rec-40/debug"
+  yum_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-40"
+  yum_debug_symbols_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-40/debug"
   name: "powerdns-rec-40"
 
 pdns_rec_powerdns_repo_41:
@@ -25,8 +25,8 @@ pdns_rec_powerdns_repo_41:
   apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-41 main"
   gpg_key: "http://repo.powerdns.com/FD380FBB-pub.asc"
   gpg_key_id: "9FAAA5577E8FCF62093D036C1B0C6205FD380FBB"
-  yum_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/rec-41"
-  yum_debug_symbols_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/rec-41/debug"
+  yum_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-41"
+  yum_debug_symbols_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-41/debug"
   name: "powerdns-rec-41"
 
 pdns_rec_powerdns_repo_42:
@@ -34,8 +34,8 @@ pdns_rec_powerdns_repo_42:
   apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-42 main"
   gpg_key: "http://repo.powerdns.com/FD380FBB-pub.asc"
   gpg_key_id: "9FAAA5577E8FCF62093D036C1B0C6205FD380FBB"
-  yum_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/rec-42"
-  yum_debug_symbols_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/rec-42/debug"
+  yum_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-42"
+  yum_debug_symbols_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-42/debug"
   name: "powerdns-rec-42"
 
 pdns_rec_powerdns_repo_43:
@@ -43,6 +43,6 @@ pdns_rec_powerdns_repo_43:
   apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-43 main"
   gpg_key: "http://repo.powerdns.com/FD380FBB-pub.asc"
   gpg_key_id: "9FAAA5577E8FCF62093D036C1B0C6205FD380FBB"
-  yum_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/rec-43"
-  yum_debug_symbols_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/rec-43/debug"
+  yum_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-43"
+  yum_debug_symbols_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-43/debug"
   name: "powerdns-rec-43"
