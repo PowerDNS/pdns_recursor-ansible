@@ -1,3 +1,11 @@
+## v1.3.2 (2020-03-06)
+
+IMPROVEMENTS:
+- Use HTTPs everywhere to connect to the PowerDNS repositories ([\#55](https://github.com/PowerDNS/pdns_recursor-ansible/pull/55),[\#57](https://github.com/PowerDNS/pdns_recursor-ansible/pull/57))
+
+BUG FIXES:
+- Fix the default `pdns_rec_service_overrides` to work with the Recursor 4.3.x ([\#56](https://github.com/PowerDNS/pdns_recursor-ansible/pull/56))
+
 ## v1.3.1 (2019-12-11)
 
 IMPROVEMENTS:
