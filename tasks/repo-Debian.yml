@@ -5,6 +5,11 @@
     name: gnupg
     state: present
 
+- name: Install apt-transport-https
+  package:
+    name: apt-transport-https
+    state: present
+
 - name: Import the PowerDNS Recursor APT Repository key
   apt_key:
     url: "{{ pdns_rec_install_repo['gpg_key'] }}"
