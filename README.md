@@ -161,7 +161,9 @@ the content of this variable to the `pdns_rec_config_dns_script` file and
 define accordingly the `lua-dns-script` setting in the `recursor.conf` configuration file.
 
 ```yaml
-pdns_rec_service_overrides: {}
+pdns_rec_service_overrides:
+  User: "{{ pdns_rec_user }}"
+  Group: "{{ pdns_rec_group }}"
 ```
 
 Dict with overrides for the service (systemd only).

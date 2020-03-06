@@ -82,6 +82,8 @@ pdns_rec_config: {}
 #  server-id: 'nothing to see here'
 
 # Dict with overrides for the service (systemd only)
-pdns_rec_service_overrides: {}
+pdns_rec_service_overrides:
+  User: "{{ pdns_rec_user }}"
+  Group: "{{ pdns_rec_group }}"
 # pdns_rec_service_overrides:
 #   LimitNOFILE: 10000
