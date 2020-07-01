@@ -46,3 +46,10 @@ pdns_rec_powerdns_repo_43:
   yum_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-43"
   yum_debug_symbols_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-43/debug"
   name: "powerdns-rec-43"
+
+default_pdns_rec_service_overrides: >-
+  {{  { 'User'  : pdns_rec_user
+      , 'Group' : pdns_rec_group
+      } if _pdns_rec_version is version('4.3', operator='ge')
+        else {}
+  }}
