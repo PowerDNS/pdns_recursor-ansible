@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-master
+  name: pdns-rec-43
 
 driver:
   name: docker
@@ -10,9 +10,6 @@ dependency:
   name: galaxy
 
 platforms:
-  - name: centos-6
-    image: centos:6
-
   - name: centos-7
     image: centos:7
     dockerfile_tpl: centos-systemd
@@ -20,10 +17,6 @@ platforms:
   - name: centos-8
     image: centos:8
     dockerfile_tpl: centos-systemd
-
-  - name: ubuntu-1804
-    image: ubuntu:18.04
-    dockerfile_tpl: debian-systemd
 
   - name: ubuntu-2004
     image: ubuntu:20.04
@@ -69,6 +62,5 @@ verifier:
     vvv: True
   directory: ../resources/tests/all
   additional_files_or_dirs:
-    # path relative to '../resources/tests/all'
-    - ../repo-master/
+    - ../repo-43/
   lint: flake8
