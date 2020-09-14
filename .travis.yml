@@ -4,7 +4,6 @@ os: linux
 dist: focal
 language: python
 python:
-  - "2.7"
   - "3.6"
 
 # Enable the docker service
@@ -22,9 +21,17 @@ before_install:
 # Ansible versions
 env:
   jobs:
-    - ANSIBLE=2.7
-    - ANSIBLE=2.8
-    - ANSIBLE=2.9
+    - ANSIBLE=2.7 REC_VERSION=42
+    - ANSIBLE=2.7 REC_VERSION=43
+    - ANSIBLE=2.7 REC_VERSION=master
+
+    - ANSIBLE=2.8 REC_VERSION=42
+    - ANSIBLE=2.8 REC_VERSION=43
+    - ANSIBLE=2.8 REC_VERSION=master
+
+    - ANSIBLE=2.9 REC_VERSION=42
+    - ANSIBLE=2.9 REC_VERSION=43
+    - ANSIBLE=2.9 REC_VERSION=master
 
 jobs:
   allow_failures:
@@ -36,7 +43,7 @@ install:
 
 # Test the current PowerDNS Recursor stable release
 script:
-  - tox -- molecule test -s pdns-rec-43
+  - tox -- molecule test -s pdns-rec-${REC_VERSION}
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
