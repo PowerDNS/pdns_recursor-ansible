@@ -31,3 +31,11 @@ def test_pdns_version(host):
 
     assert 'PowerDNS Recursor' in cmd.stderr
     assert '4.2' in cmd.stderr
+
+
+def systemd_override(host):
+    fname = '/etc/systemd/system/pdns-recursor.service.d/override.conf'
+    f = host.file(fname)
+
+    assert not f.contains('User=')
+    assert not f.contains('Group=')
