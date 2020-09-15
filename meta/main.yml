@@ -11,18 +11,17 @@ galaxy_info:
       versions:
         - 7
         - 6
+        - 8
     - name: Debian
       versions:
         - jessie
         - stretch
+        - buster
     - name: Ubuntu
       versions:
         - trusty
-        - utopic
-        - vivid
-        - wily
-        - xenial
         - bionic
+        - focal
     - name: FreeBSD
       versions:
         - 11
