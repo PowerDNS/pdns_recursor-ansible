@@ -1,3 +1,12 @@
+## v1.4.0 (2020-09-16)
+
+NEW FEATURES:
+- FreeBSD support created by @Godwottery ([\#47](https://github.com/PowerDNS/pdns_recursor-ansible/pull/47) and [\#64](https://github.com/PowerDNS/pdns_recursor-ansible/pull/64))
+- Support for "Other" distributions ([\#61](https://github.com/PowerDNS/pdns_recursor-ansible/pull/61))
+
+IMPROVEMENTS:
+- Repositories for PowerDNS Recursor 4.4 added ([\#62](https://github.com/PowerDNS/pdns_recursor-ansible/pull/62))
+
 ## v1.3.2 (2020-03-06)
 
 IMPROVEMENTS:
