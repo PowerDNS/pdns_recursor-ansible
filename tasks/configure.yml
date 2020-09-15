@@ -23,7 +23,6 @@
       and _pdns_recursor_override_unit.changed
 
   when: ansible_service_mgr == "systemd"
-    and pdns_rec_service_overrides != {}
 
 - name: Ensure that the PowerDNS Recursor configuration directory exists
   file:

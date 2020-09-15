@@ -24,3 +24,22 @@
     name: "{{ pdns_rec_debug_symbols_package_name }}{{ _pdns_rec_package_version | default('') }}"
     state: present
   when: pdns_rec_install_debug_symbols_package
+
+- block:
+    - name: Obtain pdns version string
+      command:
+        argv:
+          - "{{ pdns_rec_bin_name }}"
+          - '--version'
+      register: pdns_rec_ver_output
+      changed_when: false
+      when: pdns_rec_package_version | length == 0
+
+    - name: Set pdns version
+      set_fact:
+        _pdns_rec_version: >-
+          {{ pdns_rec_ver_output.stderr_lines[0]
+                | regex_search("(?<=PowerDNS Recursor )[0-9.]+(?= )")
+              if pdns_rec_package_version | length == 0
+              else pdns_rec_package_version
+          }}
