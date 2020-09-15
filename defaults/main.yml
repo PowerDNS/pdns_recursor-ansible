@@ -87,6 +87,9 @@ pdns_rec_config: {}
 #  allow-from: '127.0.0.1/8,192.168.2.0/24'
 #  local-address: 0.0.0.0
 #  server-id: 'nothing to see here'
+#  forward-zones:
+#    - "example.com=192.0.2.2:5300;192.0.2.128"
+#    - "foo.example.com=2001:db8::abcd:1;[2001:db8::ef99]:5300"
 
 # Dict with overrides for the service (systemd only)
 pdns_rec_service_overrides: "{{ default_pdns_rec_service_overrides }}"

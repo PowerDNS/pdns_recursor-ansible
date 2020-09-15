@@ -71,6 +71,9 @@ def test_config(host, AnsibleVars):
         assert fc.contains('lua-config-file=' + fr.path)
         assert fc.contains(
                 'allow-from=127.0.0.0/24,127.0.1.0/24,2001:DB8:10::/64')
+        assert fc.contains("forward-zones=foo.example=192.0.2.1;192.0.2.2" +
+                           ",bar.example=192.0.2.224:5300")
+        assert fc.contains("forward-zones-recurse=quux.example=192.0.2.15")
 
         assert fr.exists
         assert fr.user == 'root'

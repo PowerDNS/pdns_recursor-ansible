@@ -206,6 +206,19 @@ Allow traffic from multiple networks and set some custom ulimits overriding the 
     - { role: PowerDNS.pdns_recursor }
 ```
 
+Forward queries for corp.example.net to a nameserver on localhost and queries for foo.example to other nameservers:
+
+```yaml
+- hosts: pdns-recursors
+  vars:
+    pdns_rec_config:
+      forward-zones:
+        - "corp.example.net=127.0.0.1:5300"
+        - "foo.example=192.0.2.3;2001:db8::2:3"
+  roles:
+    - { role: PowerDNS.pdns_recursor }
+```
+
 ## Changelog
 
 A detailed changelog of all the changes applied to the role is available [here](./CHANGELOG.md).
