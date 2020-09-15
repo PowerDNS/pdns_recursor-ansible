@@ -109,6 +109,13 @@ The user and group the PowerDNS Recursor will run as, `pdns-recursor` on RedHat-
 by the package or other roles.
 
 ```yaml
+pdns_rec_file_owner: "root"
+pdns_rec_file_group: "{{ default_pdns_file_group }}"
+```
+
+User and group owning the configuration files and directories.
+
+```yaml
 pdns_rec_service_name: "pdns-recursor"
 ```
 
@@ -195,6 +202,19 @@ Allow traffic from multiple networks and set some custom ulimits overriding the 
       local-address: "203.0.113.53:5300"
       pdns_rec_service_overrides:
         LimitNOFILE: 10000
+  roles:
+    - { role: PowerDNS.pdns_recursor }
+```
+
+Forward queries for corp.example.net to a nameserver on localhost and queries for foo.example to other nameservers:
+
+```yaml
+- hosts: pdns-recursors
+  vars:
+    pdns_rec_config:
+      forward-zones:
+        - "corp.example.net=127.0.0.1:5300"
+        - "foo.example=192.0.2.3;2001:db8::2:3"
   roles:
     - { role: PowerDNS.pdns_recursor }
 ```

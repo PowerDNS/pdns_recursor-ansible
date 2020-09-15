@@ -30,6 +30,13 @@ pdns_rec_config:
     - 127.0.1.0/24
     - '2001:DB8:10::/64'
 
+  forward-zones:
+    - "foo.example=192.0.2.1;192.0.2.2"
+    - "bar.example=192.0.2.224:5300"
+
+  forward-zones-recurse:
+    - "quux.example=192.0.2.15"
+
 pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/rpz.lua"
 pdns_rec_config_lua_file_content: |
   rpzMaster("127.0.0.2", "rpz.test", {refresh=30})
