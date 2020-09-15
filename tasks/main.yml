@@ -14,7 +14,7 @@
     - install
     - repository
 
-- include: install.yml
+- include: "install-{{ansible_system}}.yml"
   tags:
     - install
 

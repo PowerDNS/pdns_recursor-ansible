@@ -1,6 +1,7 @@
 ---
 
 # By default the PowerDNS Recursor is installed from the os default repositories.
+# This setting has no effect on FreeBSD
 pdns_rec_install_repo: ""
 
 # Install the EPEL repository.
@@ -54,6 +55,10 @@ pdns_rec_debug_symbols_package_name: "{{ default_pdns_rec_debug_symbols_package_
 # applying this role
 pdns_rec_user: "{{ default_pdns_rec_user }}"
 pdns_rec_group: "{{ default_pdns_rec_group }}"
+
+# The user and group that own the configuration files
+pdns_rec_file_owner: "root"
+pdns_rec_file_group: "{{ default_pdns_rec_file_group }}"
 
 # Name of the PowerDNS Service
 pdns_rec_service_name: "pdns-recursor"

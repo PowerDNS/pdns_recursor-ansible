@@ -109,6 +109,13 @@ The user and group the PowerDNS Recursor will run as, `pdns-recursor` on RedHat-
 by the package or other roles.
 
 ```yaml
+pdns_rec_file_owner: "root"
+pdns_rec_file_group: "{{ default_pdns_file_group }}"
+```
+
+User and group owning the configuration files and directories.
+
+```yaml
 pdns_rec_service_name: "pdns-recursor"
 ```
 

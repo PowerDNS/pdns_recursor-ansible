@@ -23,6 +23,10 @@ galaxy_info:
         - wily
         - xenial
         - bionic
+    - name: FreeBSD
+      versions:
+        - 11
+        - 12
   galaxy_tags:
     - system
     - dns
