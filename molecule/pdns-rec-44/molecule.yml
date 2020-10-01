@@ -70,4 +70,5 @@ verifier:
   directory: ../resources/tests/all
   additional_files_or_dirs:
     - ../repo-44/
+    - ../systemd-overrides
   lint: flake8

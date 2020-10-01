@@ -79,15 +79,3 @@ def test_config(host, AnsibleVars):
         assert fr.user == 'root'
         assert fr.group == AnsibleVars['default_pdns_rec_group']
         assert fr.mode == 0o640
-
-
-def systemd_override(host):
-    smgr = host.ansible("setup")["ansible_facts"]["ansible_service_mgr"]
-    if smgr == 'systemd':
-        fname = '/etc/systemd/system/pdns-recursor.service.d/override.conf'
-        f = host.file(fname)
-
-        assert f.exists
-        assert f.user == 'root'
-        assert f.group == 'root'
-        assert f.contains('LimitCORE=infinity')

@@ -21,24 +21,26 @@ before_install:
 # Ansible versions
 env:
   jobs:
-    - ANSIBLE=2.7 REC_VERSION=42
-    - ANSIBLE=2.7 REC_VERSION=43
-    - ANSIBLE=2.7 REC_VERSION=44
-    - ANSIBLE=2.7 REC_VERSION=master
+    - ANSIBLE=2.7 TEST_SCENARIO=pdns-rec-42
+    - ANSIBLE=2.7 TEST_SCENARIO=pdns-rec-43
+    - ANSIBLE=2.7 TEST_SCENARIO=pdns-rec-44
+    - ANSIBLE=2.7 TEST_SCENARIO=pdns-rec-master
 
-    - ANSIBLE=2.8 REC_VERSION=42
-    - ANSIBLE=2.8 REC_VERSION=43
-    - ANSIBLE=2.8 REC_VERSION=44
-    - ANSIBLE=2.8 REC_VERSION=master
+    - ANSIBLE=2.8 TEST_SCENARIO=pdns-rec-42
+    - ANSIBLE=2.8 TEST_SCENARIO=pdns-rec-43
+    - ANSIBLE=2.8 TEST_SCENARIO=pdns-rec-44
+    - ANSIBLE=2.8 TEST_SCENARIO=pdns-rec-master
 
-    - ANSIBLE=2.9 REC_VERSION=42
-    - ANSIBLE=2.9 REC_VERSION=43
-    - ANSIBLE=2.9 REC_VERSION=44
-    - ANSIBLE=2.9 REC_VERSION=master
+    - ANSIBLE=2.9 TEST_SCENARIO=pdns-rec-42
+    - ANSIBLE=2.9 TEST_SCENARIO=pdns-rec-43
+    - ANSIBLE=2.9 TEST_SCENARIO=pdns-rec-44
+    - ANSIBLE=2.9 TEST_SCENARIO=pdns-rec-master
+
+    - ANSIBLE=2.9 TEST_SCENARIO=pdns-rec-43-no-sd-overrides
 
 jobs:
   allow_failures:
-    - env: REC_VERSION=master
+    - env: TEST_SCENARIO=pdns-rec-master
 
 # Install tox
 install:
@@ -46,7 +48,7 @@ install:
 
 # Test the current PowerDNS Recursor stable release
 script:
-  - tox -- molecule test -s pdns-rec-${REC_VERSION}
+  - tox -- molecule test -s ${TEST_SCENARIO}
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
