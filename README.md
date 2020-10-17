@@ -9,7 +9,7 @@ An Ansible role created by the folks behind PowerDNS to setup the [PowerDNS Recu
 
 ## Requirements
 
-An Ansible 2.2 or higher installation.
+An Ansible 2.7 or higher installation.
 
 ## Dependencies
 
@@ -32,17 +32,17 @@ By default, the PowerDNS Recursor is installed from the software repositories co
   - { role: PowerDNS.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_master }}" }
 
-# Install the PowerDNS Recursor from the '4.1.x' official repository
+# Install the PowerDNS Recursor from the '4.3.x' official repository
 - hosts: pdns-recursors
   roles:
   - { role: PowerDNS.pdns_recursor,
-      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_41 }}" }
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_43 }}" }
 
-# Install the PowerDNS Recursor from the '4.2.x' official repository
+# Install the PowerDNS Recursor from the '4.4.x' official repository
 - hosts: pdns-recursors
   roles:
   - { role: PowerDNS.pdns_recursor,
-      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_42 }}" }
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_44 }}" }
 ```
 
 The examples above, show how to install the PowerDNS Recursor from the official PowerDNS repositories
@@ -206,6 +206,23 @@ Allow traffic from multiple networks and set some custom ulimits overriding the 
     - { role: PowerDNS.pdns_recursor }
 ```
 
+Allow traffic from multiple networks and set some custom ulimits overriding the default systemd service,
+but keeping in the default overrides from this role. This is recommended when using PowerDNS 4.3 and up.
+
+```yaml
+- hosts: pdns-recursors
+  vars:
+    pdns_rec_config:
+      allow-from:
+        - "198.51.100.0/24"
+        - "203.0.113.53/24"
+      local-address: "203.0.113.53:5300"
+      pdns_rec_service_overrides: '{{ default_pdns_rec_service_overrides | combine({"LimitNOFILE": 10000})'
+  roles:
+    - { role: PowerDNS.pdns_recursor }
+```
+
+
 Forward queries for corp.example.net to a nameserver on localhost and queries for foo.example to other nameservers:
 
 ```yaml
@@ -235,7 +252,7 @@ To test all the scenarios run
 
 To run a custom molecule command
 
-    $ tox -e py27-ansible22 -- molecule test -s pdns-rec-42
+    $ tox -e py36-ansible28 -- molecule test -s pdns-rec-42
 
 ## License
 
