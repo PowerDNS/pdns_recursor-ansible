@@ -15,6 +15,7 @@
       dest: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf"
       owner: root
       group: root
+    when: pdns_rec_service_overrides | length > 0
     register: _pdns_recursor_override_unit
 
   - name: Reload systemd

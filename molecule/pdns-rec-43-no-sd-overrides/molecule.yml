@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-43
+  name: pdns-rec-43-no-sd-overrides
 
 driver:
   name: docker
@@ -62,6 +62,5 @@ verifier:
     vvv: True
   directory: ../resources/tests/all
   additional_files_or_dirs:
-    - ../repo-43/
-    - ../systemd-overrides
+    - ../no-systemd-overrides
   lint: flake8

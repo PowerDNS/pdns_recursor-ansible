@@ -61,4 +61,5 @@ verifier:
   additional_files_or_dirs:
     # path relative to '../resources/tests/all'
     - ../repo-42/
+    - ../systemd-overrides
   lint: flake8
