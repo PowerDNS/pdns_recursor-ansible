@@ -35,3 +35,5 @@
     - name: Set pdns version
       set_fact:
         _pdns_rec_version: "{{ _pdns_rec_ver_output['stdout'] | regex_replace('-[.\\d\\w]+$', '') }}"
+      when: not ansible_check_mode
+

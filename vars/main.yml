@@ -44,3 +44,7 @@ default_pdns_rec_service_overrides: >-
       } if _pdns_rec_version is version('4.3', operator='ge')
         else {}
   }}
+
+# Default value intended to be used during check mode, when proper version
+# detection does not run.
+_pdns_rec_version: "{{ pdns_rec_package_version if pdns_rec_package_version != '' else 0 }}"
