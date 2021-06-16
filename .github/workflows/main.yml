@@ -14,9 +14,9 @@ jobs:
           - '2.10'
           - '2.11'
         scenario:
-          - pdns-rec-42
           - pdns-rec-43
           - pdns-rec-44
+          - pdns-rec-45
           - pdns-rec-master
           - pdns-rec-43-no-sd-overrides
     steps:

@@ -1,6 +1,6 @@
 # Ansible Role: PowerDNS Recursor
 
-[![Build Status](https://travis-ci.org/PowerDNS/pdns_recursor-ansible.svg?branch=master)](https://travis-ci.org/PowerDNS/pdns_recursor-ansible)
+[![Build Status](https://github.com/PowerDNS/pdns_recursor-ansible/actions/workflows/main.yml/badge.svg)](https://github.com/PowerDNS/pdns_recursor-ansible)
 [![License](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)](https://opensource.org/licenses/MIT)
 [![Ansible Role](https://img.shields.io/badge/ansible%20role-PowerDNS.pdns_recursor-blue.svg)](https://galaxy.ansible.com/PowerDNS/pdns_recursor)
 [![GitHub tag](https://img.shields.io/github/tag/PowerDNS/pdns_recursor-ansible.svg)](https://github.com/PowerDNS/pdns_recursor-ansible/tags)
@@ -43,6 +43,12 @@ By default, the PowerDNS Recursor is installed from the software repositories co
   roles:
   - { role: PowerDNS.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_44 }}" }
+
+# Install the PowerDNS Recursor from the '4.5.x' official repository
+- hosts: pdns-recursors
+  roles:
+  - { role: PowerDNS.pdns_recursor,
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_45 }}" }
 ```
 
 The examples above, show how to install the PowerDNS Recursor from the official PowerDNS repositories
@@ -252,7 +258,7 @@ To test all the scenarios run
 
 To run a custom molecule command
 
-    $ tox -e py36-ansible28 -- molecule test -s pdns-rec-42
+    $ tox -e ansible210 -- molecule test -s pdns-rec-45
 
 ## License
 
