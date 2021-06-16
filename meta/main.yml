@@ -5,21 +5,18 @@ galaxy_info:
   description: Install and configure the PowerDNS Recursor
   company: PowerDNS.COM BV
   license: MIT
-  min_ansible_version: 2.2
+  min_ansible_version: 2.7
   platforms:
     - name: EL
       versions:
         - 7
-        - 6
         - 8
     - name: Debian
       versions:
-        - jessie
         - stretch
         - buster
     - name: Ubuntu
       versions:
-        - trusty
         - bionic
         - focal
     - name: FreeBSD

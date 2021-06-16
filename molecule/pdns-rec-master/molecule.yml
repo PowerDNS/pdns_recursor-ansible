@@ -10,9 +10,6 @@ dependency:
   name: galaxy
 
 platforms:
-  - name: centos-6
-    image: centos:6
-
   - name: centos-7
     image: centos:7
     dockerfile_tpl: centos-systemd
