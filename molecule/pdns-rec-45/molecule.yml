@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-42
+  name: pdns-rec-45
 
 driver:
   name: docker
@@ -10,19 +10,20 @@ dependency:
   name: galaxy
 
 platforms:
-  - name: centos-6
-    image: centos:6
-
   - name: centos-7
     image: centos:7
+    dockerfile_tpl: centos-systemd
+
+  - name: centos-8
+    image: centos:8
     dockerfile_tpl: centos-systemd
 
   - name: ubuntu-1804
     image: ubuntu:18.04
     dockerfile_tpl: debian-systemd
 
-  - name: debian-9
-    image: debian:9
+  - name: ubuntu-2004
+    image: ubuntu:20.04
     dockerfile_tpl: debian-systemd
 
   - name: debian-10
@@ -49,6 +50,8 @@ provisioner:
     create: ../resources/create.yml
     destroy: ../resources/destroy.yml
     prepare: ../resources/prepare.yml
+  # ANSIBLE0006 "systemctl used in place of systemd module"
+  # ANSIBLE0016 "Tasks that run when changed should likely be handlers"
   lint: ansible-lint -x ANSIBLE0006 ANSIBLE0016
 
 lint: yamllint vars tasks defaults meta
@@ -59,7 +62,6 @@ verifier:
     vvv: True
   directory: ../resources/tests/all
   additional_files_or_dirs:
-    # path relative to '../resources/tests/all'
-    - ../repo-42/
+    - ../repo-45/
     - ../systemd-overrides
   lint: flake8
