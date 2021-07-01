@@ -1,3 +1,14 @@
+## v1.5.0 (2021-07-02)
+
+NEW FEATURES:
+- Add 4.5 repositories ([\#72](https://github.com/PowerDNS/pdns_recursor-ansible/pull/72))
+
+IMPROVEMENTS:
+- Fix check-mode ([\#71](https://github.com/PowerDNS/pdns_recursor-ansible/pull/71), [\#73](https://github.com/PowerDNS/pdns_recursor-ansible/pull/73))
+
+REMOVED FEATURES:
+- Remove 4.0, 4.1, 4.2 repositories ([\#68](https://github.com/PowerDNS/pdns_recursor-ansible/pull/68) and [\#72](https://github.com/PowerDNS/pdns_recursor-ansible/pull/72))
+
 ## v1.4.0 (2020-09-16)
 
 NEW FEATURES:
