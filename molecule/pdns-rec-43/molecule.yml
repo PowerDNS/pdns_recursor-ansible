@@ -14,8 +14,8 @@ platforms:
     image: centos:7
     dockerfile_tpl: centos-systemd
 
-  - name: centos-8
-    image: centos:8
+  - name: oraclelinux-8
+    image: oraclelinux:8
     dockerfile_tpl: centos-systemd
 
   - name: ubuntu-2004
