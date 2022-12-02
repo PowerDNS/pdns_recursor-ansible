@@ -13,4 +13,4 @@ updates:
   schedule:
     interval: daily
     timezone: Europe/Amsterdam
-  open-pull-requests-limit: 0
+  open-pull-requests-limit: 5
