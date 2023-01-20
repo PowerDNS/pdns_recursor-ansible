@@ -10,15 +10,14 @@ jobs:
     strategy:
       matrix:
         ansible:
-          - '2.9'
-          - '2.10'
           - '2.11'
+          - '2.12'
+          - '2.13'
         scenario:
-          - pdns-rec-43
-          - pdns-rec-44
-          - pdns-rec-45
+          - pdns-rec-46
+          - pdns-rec-47
+          - pdns-rec-48
           - pdns-rec-master
-          - pdns-rec-43-no-sd-overrides
     steps:
       - name: checkout
         uses: actions/checkout@v3
