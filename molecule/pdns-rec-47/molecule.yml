@@ -1,0 +1,67 @@
+---
+
+scenario:
+  name: pdns-rec-47
+
+driver:
+  name: docker
+
+dependency:
+  name: galaxy
+
+platforms:
+  - name: centos-7
+    image: centos:7
+    dockerfile_tpl: centos-systemd
+
+  - name: oraclelinux-8
+    image: oraclelinux:8
+    dockerfile_tpl: centos-systemd
+
+  - name: ubuntu-1804
+    image: ubuntu:18.04
+    dockerfile_tpl: debian-systemd
+
+  - name: ubuntu-2004
+    image: ubuntu:20.04
+    dockerfile_tpl: debian-systemd
+
+  - name: debian-10
+    image: debian:10
+    dockerfile_tpl: debian-systemd
+
+provisioner:
+  name: ansible
+  options:
+    diff: True
+    v: True
+  config_options:
+    defaults:
+      gathering: smart
+      fact_caching: jsonfile
+      fact_caching_connection: .ansible_cache
+      fact_caching_timeout: 7200
+    ssh_connection:
+      pipelining: true
+  inventory:
+    links:
+      host_vars: ../resources/host_vars/
+  playbooks:
+    create: ../resources/create.yml
+    destroy: ../resources/destroy.yml
+    prepare: ../resources/prepare.yml
+  # ANSIBLE0006 "systemctl used in place of systemd module"
+  # ANSIBLE0016 "Tasks that run when changed should likely be handlers"
+  lint: ansible-lint -x ANSIBLE0006 ANSIBLE0016
+
+lint: yamllint vars tasks defaults meta
+
+verifier:
+  name: testinfra
+  options:
+    vvv: True
+  directory: ../resources/tests/all
+  additional_files_or_dirs:
+    - ../repo-47/
+    - ../systemd-overrides
+  lint: flake8
