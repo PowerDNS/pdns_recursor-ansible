@@ -74,7 +74,7 @@
     loop: "{{ pdns_rec_config_from_files }}"
     register: _pdns_recursor_configuration_from_files
 
-  when: pdns_rec_config_from_files | length > 0
+  when: "pdns_rec_config_from_files | length > 0"
 
 - name: Generate the PowerDNS Recursor Lua config-file
   copy:

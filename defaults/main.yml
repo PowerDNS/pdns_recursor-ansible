@@ -80,10 +80,10 @@ pdns_rec_config_lua_file_content: ""
 pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
 pdns_rec_config_dns_script_file_content: ""
 
-# Mode for directories from include-dir
+# Mode for directories from include-dir
 pdns_rec_config_include_dir_mode: 0750
 
-# Directories and files required by recursor configuration
+# Directories and files required by recursor configuration
 pdns_rec_config_from_files_dir_mode: 0750
 pdns_rec_config_from_files: []
 
