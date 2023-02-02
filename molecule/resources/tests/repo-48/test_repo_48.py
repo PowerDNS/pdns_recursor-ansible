@@ -6,9 +6,9 @@ rhel_os = ['redhat', 'centos', 'ol']
 def test_repo_file(host):
     f = None
     if host.system_info.distribution.lower() in debian_os:
-        f = host.file('/etc/apt/sources.list.d/powerdns-rec-44.list')
+        f = host.file('/etc/apt/sources.list.d/powerdns-rec-48.list')
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-44.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-rec-48.repo')
 
     assert f.exists
     assert f.user == 'root'
@@ -18,24 +18,24 @@ def test_repo_file(host):
 def test_pdns_repo(host):
     f = None
     if host.system_info.distribution.lower() in debian_os:
-        f = host.file('/etc/apt/sources.list.d/powerdns-rec-44.list')
+        f = host.file('/etc/apt/sources.list.d/powerdns-rec-48.list')
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-44.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-rec-48.repo')
 
     assert f.exists
-    assert f.contains('rec-44')
+    assert f.contains('rec-48')
 
 
 def test_pdns_version(host):
     cmd = host.run('/usr/sbin/pdns_recursor --version')
 
     assert 'PowerDNS Recursor' in cmd.stderr
-    assert '4.4' in cmd.stderr
+    assert '4.8' in cmd.stderr
 
 
 def systemd_override(host):
     fname = '/etc/systemd/system/pdns-recursor.service.d/override.conf'
     f = host.file(fname)
 
-    assert f.contains('User=')
-    assert f.contains('Group=')
+    assert not f.contains('User=')
+    assert not f.contains('Group=')

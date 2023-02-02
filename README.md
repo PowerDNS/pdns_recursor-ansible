@@ -32,23 +32,23 @@ By default, the PowerDNS Recursor is installed from the software repositories co
   - { role: PowerDNS.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_master }}" }
 
-# Install the PowerDNS Recursor from the '4.3.x' official repository
+# Install the PowerDNS Recursor from the '4.6.x' official repository
 - hosts: pdns-recursors
   roles:
   - { role: PowerDNS.pdns_recursor,
-      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_43 }}" }
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_46 }}" }
 
-# Install the PowerDNS Recursor from the '4.4.x' official repository
+# Install the PowerDNS Recursor from the '4.7.x' official repository
 - hosts: pdns-recursors
   roles:
   - { role: PowerDNS.pdns_recursor,
-      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_44 }}" }
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_47 }}" }
 
-# Install the PowerDNS Recursor from the '4.5.x' official repository
+# Install the PowerDNS Recursor from the '4.8.x' official repository
 - hosts: pdns-recursors
   roles:
   - { role: PowerDNS.pdns_recursor,
-      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_45 }}" }
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_48 }}" }
 ```
 
 The examples above, show how to install the PowerDNS Recursor from the official PowerDNS repositories
@@ -258,7 +258,7 @@ To test all the scenarios run
 
 To run a custom molecule command
 
-    $ tox -e ansible210 -- molecule test -s pdns-rec-45
+    $ tox -e ansible210 -- molecule test -s pdns-rec-48
 
 ## License
 

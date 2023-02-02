@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-45
+  name: pdns-rec-48
 
 driver:
   name: docker
@@ -62,6 +62,6 @@ verifier:
     vvv: True
   directory: ../resources/tests/all
   additional_files_or_dirs:
-    - ../repo-45/
+    - ../repo-48/
     - ../systemd-overrides
   lint: flake8

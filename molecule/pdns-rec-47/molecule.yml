@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-43-no-sd-overrides
+  name: pdns-rec-47
 
 driver:
   name: docker
@@ -18,12 +18,12 @@ platforms:
     image: oraclelinux:8
     dockerfile_tpl: centos-systemd
 
-  - name: ubuntu-2004
-    image: ubuntu:20.04
+  - name: ubuntu-1804
+    image: ubuntu:18.04
     dockerfile_tpl: debian-systemd
 
-  - name: debian-9
-    image: debian:9
+  - name: ubuntu-2004
+    image: ubuntu:20.04
     dockerfile_tpl: debian-systemd
 
   - name: debian-10
@@ -62,5 +62,6 @@ verifier:
     vvv: True
   directory: ../resources/tests/all
   additional_files_or_dirs:
-    - ../no-systemd-overrides
+    - ../repo-47/
+    - ../systemd-overrides
   lint: flake8

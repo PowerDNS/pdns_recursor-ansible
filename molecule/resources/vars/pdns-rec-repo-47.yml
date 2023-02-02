@@ -1,0 +1,7 @@
+---
+
+##
+# PowerDNS Recursor 4.7.x Repository
+##
+
+pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_47 }}"
