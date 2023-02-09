@@ -191,7 +191,7 @@ pdns_rec_config_from_files: []
 ```
 
 List of files to copy to the PowerDNS Recursor instance, could be used for the `*-from-file` settings in the `recursor.conf` configuration file.
-The `pdns_rec_config_from_files_dir_mode` allow to change the mode of files if required.
+The variable `pdns_rec_config_from_files_dir_mode` allows to change the ownership mode of files, if required.
 
 ```yaml
 pdns_rec_config_include_dir_mode: 0750
