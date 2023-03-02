@@ -2,26 +2,26 @@
 
 - block:
 
-  - name: Ensure the PowerDNS Recursor drop-in unit overrides directory exists (systemd)
-    file:
-      name: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d"
-      state: directory
-      owner: root
-      group: root
+    - name: Ensure the PowerDNS Recursor drop-in unit overrides directory exists (systemd)
+      file:
+        name: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d"
+        state: directory
+        owner: root
+        group: root
 
-  - name: Override the PowerDNS Recursor unit (systemd)
-    template:
-      src: "override-service.systemd.conf.j2"
-      dest: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf"
-      owner: root
-      group: root
-    when: pdns_rec_service_overrides | length > 0
-    register: _pdns_recursor_override_unit
+    - name: Override the PowerDNS Recursor unit (systemd)
+      template:
+        src: "override-service.systemd.conf.j2"
+        dest: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf"
+        owner: root
+        group: root
+      when: pdns_rec_service_overrides | length > 0
+      register: _pdns_recursor_override_unit
 
-  - name: Reload systemd
-    command: systemctl daemon-reload
-    when: not pdns_rec_disable_handlers
-      and _pdns_recursor_override_unit.changed
+    - name: Reload systemd
+      command: systemctl daemon-reload
+      when: not pdns_rec_disable_handlers
+        and _pdns_recursor_override_unit.changed
 
   when: ansible_service_mgr == "systemd"
 
@@ -54,25 +54,25 @@
 
 - block:
 
-  - name: Ensure that the PowerDNS Recursor configuration from-files directory exists
-    ansible.builtin.file:
-      name: "{{ item.dest | dirname }}"
-      state: directory
-      owner: "{{ pdns_rec_file_owner }}"
-      group: "{{ pdns_rec_file_group }}"
-      mode: "{{ pdns_rec_config_from_files_dir_mode }}"
-    loop: "{{ pdns_rec_config_from_files }}"
+    - name: Ensure that the PowerDNS Recursor configuration from-files directory exists
+      ansible.builtin.file:
+        name: "{{ item.dest | dirname }}"
+        state: directory
+        owner: "{{ pdns_rec_file_owner }}"
+        group: "{{ pdns_rec_file_group }}"
+        mode: "{{ pdns_rec_config_from_files_dir_mode }}"
+      loop: "{{ pdns_rec_config_from_files }}"
 
-  - name: Copy the PowerDNS Recursor configuration from-files files
-    ansible.builtin.copy:
-      content: "{{ item.content | default(omit) }}"
-      src: "{{ item.src | default(omit) }}"
-      dest: "{{ item.dest }}"
-      owner: "{{ pdns_rec_file_owner }}"
-      group: "{{ pdns_rec_file_group }}"
-      mode: "{{ pdns_rec_config_from_files_dir_mode }}"
-    loop: "{{ pdns_rec_config_from_files }}"
-    register: _pdns_recursor_configuration_from_files
+    - name: Copy the PowerDNS Recursor configuration from-files files
+      ansible.builtin.copy:
+        content: "{{ item.content | default(omit) }}"
+        src: "{{ item.src | default(omit) }}"
+        dest: "{{ item.dest }}"
+        owner: "{{ pdns_rec_file_owner }}"
+        group: "{{ pdns_rec_file_group }}"
+        mode: "{{ pdns_rec_config_from_files_dir_mode }}"
+      loop: "{{ pdns_rec_config_from_files }}"
+      register: _pdns_recursor_configuration_from_files
 
   when: "pdns_rec_config_from_files | length > 0"
 
