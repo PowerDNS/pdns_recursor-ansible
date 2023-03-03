@@ -5,3 +5,4 @@ molecule[docker]==4.0.0
 molecule[lint]==4.0.0
 pytest-testinfra==6.8.0
 docker==6.0.1
+markupsafe==2.0.1
