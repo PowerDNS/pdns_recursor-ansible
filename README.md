@@ -78,7 +78,7 @@ pdns_rec_install_epel: True
 ```
 
 By default, install EPEL to satisfy some PowerDNS Recursor dependencies like `protobuf`.
-To skip the installtion of EPEL set `pdns_rec_install_epel` to `False`.
+To skip the installation of EPEL set `pdns_rec_install_epel` to `False`.
 
 ```yaml
 pdns_rec_package_name: "{{ default_pdns_rec_package_name }}"
@@ -181,6 +181,23 @@ pdns_rec_service_overrides:
 
 Dict with overrides for the service (systemd only).
 This can be used to change any systemd settings in the `[Service]` category
+
+```yaml
+pdns_rec_config_from_files_dir_mode: 0750
+pdns_rec_config_from_files: []
+#pdns_rec_config_from_files:
+#  - dest: "/var/lib/pdns-recursor/from-files/forward-zones.txt"
+#    src: "files/forward-zones/forward.txt"
+```
+
+List of files to copy to the PowerDNS Recursor instance, could be used for the `*-from-file` settings in the `recursor.conf` configuration file.
+The variable `pdns_rec_config_from_files_dir_mode` allows to change the ownership mode of files, if required.
+
+```yaml
+pdns_rec_config_include_dir_mode: 0750
+```
+
+The `pdns_rec_config_include_dir_mode` will change the mode of directories form `include-dir` settings, in case one of them required some writing permissions.
 
 ## Example Playbooks
 
