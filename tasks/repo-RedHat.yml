@@ -2,24 +2,24 @@
 
 - block:
 
-  - name: Install epel-release on CentOS
-    package:
-      name: epel-release
-      state: present
-    when: ansible_distribution in [ 'CentOS' ]
+    - name: Install epel-release on CentOS
+      package:
+        name: epel-release
+        state: present
+      when: ansible_distribution in [ 'CentOS' ]
 
-  - name: Install epel-release on RHEL
-    package:
-      name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
-      state: present
-    when: ansible_distribution in [ 'RedHat' ]
+    - name: Install epel-release on RHEL
+      package:
+        name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+        state: present
+      when: ansible_distribution in [ 'RedHat' ]
 
-  # FIXME: this only works for 8
-  - name: Install epel-release on OracleLinux
-    package:
-      name: oracle-epel-release-el8
-      state: present
-    when: ansible_distribution in [ 'OracleLinux' ]
+    # FIXME: this only works for 8
+    - name: Install epel-release on OracleLinux
+      package:
+        name: oracle-epel-release-el8
+        state: present
+      when: ansible_distribution in [ 'OracleLinux' ]
 
   when: pdns_rec_install_epel
 
