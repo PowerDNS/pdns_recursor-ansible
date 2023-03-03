@@ -1,7 +1,8 @@
 ---
 
 galaxy_info:
-  role_name: pdns_recursor
+  role_name: "pdns_recursor"
+  namespace: "powerdns"
   author: PowerDNS Engineering Team
   description: Install and configure the PowerDNS Recursor
   company: PowerDNS.COM BV
