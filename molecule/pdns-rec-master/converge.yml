@@ -5,4 +5,4 @@
     - ../resources/vars/pdns-rec-common.yml
     - ../resources/vars/pdns-rec-repo-master.yml
   roles:
-    - { role: powerdns.pdns_recursor-ansible }
+    - { role: pdns_recursor-ansible }
