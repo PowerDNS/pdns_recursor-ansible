@@ -1,3 +1,18 @@
+## v1.6.0 (2023-03-08)
+
+NEW FEATURES:
+- Added 4.6 and 4.7 repositories ([\#77](https://github.com/PowerDNS/pdns_recursor-ansible/pull/77))
+- Replaced centos8 with OracleLinux8 in CI ([\#78](https://github.com/PowerDNS/pdns_recursor-ansible/pull/78))
+- rec: add copy files for *-from-file configuration directives ([\#94](https://github.com/PowerDNS/pdns_recursor-ansible/pull/94))
+
+IMPROVEMENTS:
+- Bump CI checkout actions to v3 ([\#79](https://github.com/PowerDNS/pdns_recursor-ansible/pull/79))
+- Bump CI setup Python to v4 ([\#80](https://github.com/PowerDNS/pdns_recursor-ansible/pull/80))
+- Bump CI yamllint to 1.28.0 ([\#84](https://github.com/PowerDNS/pdns_recursor-ansible/pull/84))
+
+REMOVED FEATURES:
+- EOL repositories (v4.3 v4.4 v4.5) have been removed - CI have been modified as well ([\#93](https://github.com/PowerDNS/pdns_recursor-ansible/pull/93))
+
 ## v1.5.0 (2021-07-02)
 
 NEW FEATURES:
