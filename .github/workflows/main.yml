@@ -4,15 +4,21 @@ on:
   pull_request:
 
 jobs:
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run ansible-lint
+        uses: ansible-community/ansible-lint-action@main
   Tests:
     name: Test role
     runs-on: ubuntu-20.04
     strategy:
       matrix:
         ansible:
-          - '2.12'
-          - '2.13'
-          - '3.0'
+          - "2.12"
+          - "2.13"
+          - "2.14"
         scenario:
           - pdns-rec-46
           - pdns-rec-47
