@@ -2,6 +2,7 @@
 
 NEW FEATURES:
 - Added 4.6 and 4.7 repositories ([\#77](https://github.com/PowerDNS/pdns_recursor-ansible/pull/77))
+- Added 4.8 repositories ([\#93](https://github.com/PowerDNS/pdns_recursor-ansible/pull/93))
 - Replaced centos8 with OracleLinux8 in CI ([\#78](https://github.com/PowerDNS/pdns_recursor-ansible/pull/78))
 - rec: add copy files for *-from-file configuration directives ([\#94](https://github.com/PowerDNS/pdns_recursor-ansible/pull/94))
 
