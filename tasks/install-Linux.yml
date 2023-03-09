@@ -2,15 +2,15 @@
 
 - block:
 
-  - name: Prefix the version of the PowerDNS Recursor package with the correct separator on RedHat
-    set_fact:
-      _pdns_rec_package_version: "-{{ pdns_rec_package_version }}"
-    when: ansible_os_family == 'RedHat'
+    - name: Prefix the version of the PowerDNS Recursor package with the correct separator on RedHat
+      set_fact:
+        _pdns_rec_package_version: "-{{ pdns_rec_package_version }}"
+      when: ansible_os_family == 'RedHat'
 
-  - name: Prefix the version of the PowerDNS Recursor package with the correct separator on Debian
-    set_fact:
-      _pdns_rec_package_version: "={{ pdns_rec_package_version }}"
-    when: ansible_os_family == 'Debian'
+    - name: Prefix the version of the PowerDNS Recursor package with the correct separator on Debian
+      set_fact:
+        _pdns_rec_package_version: "={{ pdns_rec_package_version }}"
+      when: ansible_os_family == 'Debian'
 
   when: "pdns_rec_package_version | length > 0"
 
