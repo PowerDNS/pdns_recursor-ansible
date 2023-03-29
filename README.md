@@ -224,7 +224,7 @@ Allow traffic from multiple networks and set some custom ulimits overriding the 
         - "203.0.113.53/24"
       local-address: "203.0.113.53:5300"
     pdns_rec_service_overrides:
-        LimitNOFILE: 10000
+      LimitNOFILE: 10000
   roles:
     - { role: PowerDNS.pdns_recursor }
 ```
