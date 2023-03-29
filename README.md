@@ -223,7 +223,7 @@ Allow traffic from multiple networks and set some custom ulimits overriding the 
         - "198.51.100.0/24"
         - "203.0.113.53/24"
       local-address: "203.0.113.53:5300"
-      pdns_rec_service_overrides:
+    pdns_rec_service_overrides:
         LimitNOFILE: 10000
   roles:
     - { role: PowerDNS.pdns_recursor }
@@ -240,7 +240,7 @@ but keeping in the default overrides from this role. This is recommended when us
         - "198.51.100.0/24"
         - "203.0.113.53/24"
       local-address: "203.0.113.53:5300"
-      pdns_rec_service_overrides: '{{ default_pdns_rec_service_overrides | combine({"LimitNOFILE": 10000})'
+    pdns_rec_service_overrides: '{{ default_pdns_rec_service_overrides | combine({"LimitNOFILE": 10000})'
   roles:
     - { role: PowerDNS.pdns_recursor }
 ```
