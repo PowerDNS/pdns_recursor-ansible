@@ -50,9 +50,6 @@ provisioner:
     create: ../resources/create.yml
     destroy: ../resources/destroy.yml
     prepare: ../resources/prepare.yml
-  # ANSIBLE0006 "systemctl used in place of systemd module"
-  # ANSIBLE0016 "Tasks that run when changed should likely be handlers"
-  lint: ansible-lint -x ANSIBLE0006 ANSIBLE0016
 
 lint: yamllint vars tasks defaults meta
 
