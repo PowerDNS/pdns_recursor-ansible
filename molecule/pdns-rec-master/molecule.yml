@@ -26,10 +26,6 @@ platforms:
     image: ubuntu:20.04
     dockerfile_tpl: debian-systemd
 
-  - name: debian-9
-    image: debian:9
-    dockerfile_tpl: debian-systemd
-
   - name: debian-10
     image: debian:10
     dockerfile_tpl: debian-systemd
