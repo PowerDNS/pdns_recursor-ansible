@@ -61,4 +61,4 @@ verifier:
   additional_files_or_dirs:
     - ../repo-48/
     - ../systemd-overrides
-  lint: flake8
+
