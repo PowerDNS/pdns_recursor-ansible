@@ -9,7 +9,7 @@ An Ansible role created by the folks behind PowerDNS to setup the [PowerDNS Recu
 
 ## Requirements
 
-An Ansible 2.7 or higher installation.
+An Ansible 2.12 or higher installation.
 
 ## Dependencies
 
@@ -43,6 +43,12 @@ By default, the PowerDNS Recursor is installed from the software repositories co
   roles:
   - { role: PowerDNS.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_48 }}" }
+
+# Install the PowerDNS Recursor from the '4.9.x' official repository
+- hosts: pdns-recursors
+  roles:
+  - { role: PowerDNS.pdns_recursor,
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_49 }}" }
 ```
 
 The examples above, show how to install the PowerDNS Recursor from the official PowerDNS repositories
@@ -269,7 +275,7 @@ To test all the scenarios run
 
 To run a custom molecule command
 
-    $ tox -e ansible210 -- molecule test -s pdns-rec-48
+    $ tox -e ansible210 -- molecule test -s pdns-rec-49
 
 ## License
 
