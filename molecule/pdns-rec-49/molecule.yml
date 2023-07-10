@@ -24,7 +24,7 @@ platforms:
 
   - name: ubuntu-2004
     image: ubuntu:20.04
-    dockerfile_tpl: debian-systemd
+    dockerfile_tpl: ubuntu-systemd
 
   - name: ubuntu-2204
     image: ubuntu:22.04
