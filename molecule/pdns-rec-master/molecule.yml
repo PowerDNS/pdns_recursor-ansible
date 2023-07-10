@@ -20,11 +20,15 @@ platforms:
 
   - name: ubuntu-1804
     image: ubuntu:18.04
-    dockerfile_tpl: debian-systemd
+    dockerfile_tpl: ubuntu-systemd
 
   - name: ubuntu-2004
     image: ubuntu:20.04
-    dockerfile_tpl: debian-systemd
+    dockerfile_tpl: ubuntu-systemd
+
+  - name: ubuntu-2204
+    image: ubuntu:22.04
+    dockerfile_tpl: ubuntu-systemd
 
   - name: debian-10
     image: debian:10
