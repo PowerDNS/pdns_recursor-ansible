@@ -21,6 +21,7 @@ galaxy_info:
       versions:
         - bionic
         - focal
+        - jammy
     - name: FreeBSD
       versions:
         - 11
