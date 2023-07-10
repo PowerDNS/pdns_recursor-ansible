@@ -16,6 +16,7 @@ jobs:
         scenario:
           - pdns-rec-47
           - pdns-rec-48
+          - pdns-rec-49
           - pdns-rec-master
     steps:
       - name: checkout
