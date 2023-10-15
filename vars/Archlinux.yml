@@ -1,0 +1,7 @@
+---
+
+default_pdns_rec_user: "pdns-recursor"
+default_pdns_rec_group: "pdns-recursor"
+default_pdns_rec_file_group: "{{ default_pdns_rec_group }}"
+default_pdns_rec_config_dir: "/etc/powerdns"
+default_pdns_recorsor_debug_symbols_package_name: "pdns-recursor-dbg"
