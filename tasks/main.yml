@@ -8,17 +8,20 @@
   tags:
     - always
 
-- include: "repo-{{ ansible_os_family }}.yml"
+- name: Include repo
+  ansible.builtin.include_tasks: "repo-{{ ansible_os_family }}.yml"
   when: "pdns_rec_install_repo | length > 0"
   tags:
     - install
     - repository
 
-- include: "install-{{ansible_system}}.yml"
+- name: Include install
+  ansible.builtin.include_tasks: "install-{{ansible_system}}.yml"
   tags:
     - install
 
-- include: configure.yml
+- name: Include configure
+  ansible.builtin.include_tasks: configure.yml
   tags:
     - config
 
