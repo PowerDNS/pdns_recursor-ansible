@@ -17,6 +17,7 @@ jobs:
           - pdns-rec-47
           - pdns-rec-48
           - pdns-rec-49
+          - pdns-rec-50
           - pdns-rec-master
     steps:
       - name: checkout
