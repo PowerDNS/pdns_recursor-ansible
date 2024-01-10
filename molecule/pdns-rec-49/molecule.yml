@@ -17,10 +17,6 @@ platforms:
   - name: oraclelinux-8
     image: oraclelinux:8
     dockerfile_tpl: centos-systemd
-  
-  - name: ubi9
-    image: redhat/ubi
-    dockerfile_tpl: centos-systemd
 
   - name: ubuntu-1804
     image: ubuntu:18.04
@@ -70,4 +66,3 @@ verifier:
   additional_files_or_dirs:
     - ../repo-49/
     - ../systemd-overrides
-
