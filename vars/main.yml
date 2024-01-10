@@ -11,15 +11,6 @@ pdns_rec_powerdns_repo_master:
   yum_debug_symbols_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-master/debug"
   name: "powerdns-rec-master"
 
-pdns_rec_powerdns_repo_47:
-  apt_repo_origin: "repo.powerdns.com"
-  apt_repo: "deb [arch=amd64] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-47 main"
-  gpg_key: "https://repo.powerdns.com/FD380FBB-pub.asc"
-  gpg_key_id: "9FAAA5577E8FCF62093D036C1B0C6205FD380FBB"
-  yum_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-47"
-  yum_debug_symbols_repo_baseurl: "https://repo.powerdns.com/centos/$basearch/$releasever/rec-47/debug"
-  name: "powerdns-rec-47"
-
 pdns_rec_powerdns_repo_48:
   apt_repo_origin: "repo.powerdns.com"
   apt_repo: "deb [arch=amd64] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-48 main"

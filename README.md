@@ -32,12 +32,6 @@ By default, the PowerDNS Recursor is installed from the software repositories co
   - { role: PowerDNS.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_master }}" }
 
-# Install the PowerDNS Recursor from the '4.7.x' official repository
-- hosts: pdns-recursors
-  roles:
-  - { role: PowerDNS.pdns_recursor,
-      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_47 }}" }
-
 # Install the PowerDNS Recursor from the '4.8.x' official repository
 - hosts: pdns-recursors
   roles:
@@ -49,6 +43,12 @@ By default, the PowerDNS Recursor is installed from the software repositories co
   roles:
   - { role: PowerDNS.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_49 }}" }
+
+# Install the PowerDNS Recursor from the '5.0.x' official repository
+- hosts: pdns-recursors
+  roles:
+  - { role: PowerDNS.pdns_recursor,
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_50 }}" }
 ```
 
 The examples above, show how to install the PowerDNS Recursor from the official PowerDNS repositories
