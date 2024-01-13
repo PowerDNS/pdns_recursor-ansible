@@ -1,3 +1,22 @@
+## v1.7.0 (2024-01-12)
+
+NEW FEATURES:
+- Added 4.9 repositories ([\#131](https://github.com/PowerDNS/pdns_recursor-ansible/pull/131))
+- Added Ubuntu 22.04 to CI ([\#132](https://github.com/PowerDNS/pdns_recursor-ansible/pull/132))
+- Added 5.0 repositories ([\#154](https://github.com/PowerDNS/pdns_recursor-ansible/pull/154))
+- Added Debian bullseye and bookworm to CI ([\#155](https://github.com/PowerDNS/pdns_recursor-ansible/pull/155))
+
+IMPROVEMENTS:
+- Bump CI pytest-testinfra ([\#105](https://github.com/PowerDNS/pdns_recursor-ansible/pull/105))
+- Fix indentation for pdns_rec_service_overrides. ([\#109](https://github.com/PowerDNS/pdns_recursor-ansible/pull/109))
+- Bump CI ([\#130](https://github.com/PowerDNS/pdns_recursor-ansible/pull/130))
+- Bump CI ansible-lint ([\#130](https://github.com/PowerDNS/pdns_recursor-ansible/pull/137))
+
+REMOVED FEATURES:
+- EOL repositories (v4.6) have been removed - CI have been modified as well ([\#129](https://github.com/PowerDNS/pdns_recursor-ansible/pull/129))
+- EOL repositories (v4.7) have been removed - CI have been modified as well ([\#154](https://github.com/PowerDNS/pdns_recursor-ansible/pull/154))
+- EOL Ubuntu 18.04 removed from CI ([\#154](https://github.com/PowerDNS/pdns_recursor-ansible/pull/154))
+
 ## v1.6.0 (2023-03-08)
 
 NEW FEATURES:
