@@ -18,10 +18,6 @@ platforms:
     image: oraclelinux:8
     dockerfile_tpl: centos-systemd
 
-  - name: ubuntu-1804
-    image: ubuntu:18.04
-    dockerfile_tpl: ubuntu-systemd
-
   - name: ubuntu-2004
     image: ubuntu:20.04
     dockerfile_tpl: ubuntu-systemd
@@ -33,6 +29,14 @@ platforms:
   - name: debian-10
     image: debian:10
     dockerfile_tpl: debian-systemd
+
+  - name: debian-11
+    image: debian:11
+    dockerfile_tpl: debian-python3
+
+  - name: debian-12
+    image: debian:12
+    dockerfile_tpl: debian-python3
 
 provisioner:
   name: ansible

@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-47
+  name: pdns-rec-50
 
 driver:
   name: docker
@@ -17,11 +17,7 @@ platforms:
   - name: oraclelinux-8
     image: oraclelinux:8
     dockerfile_tpl: centos-systemd
-
-  - name: ubuntu-1804
-    image: ubuntu:18.04
-    dockerfile_tpl: ubuntu-systemd
-
+  
   - name: ubuntu-2004
     image: ubuntu:20.04
     dockerfile_tpl: ubuntu-systemd
@@ -33,6 +29,14 @@ platforms:
   - name: debian-10
     image: debian:10
     dockerfile_tpl: debian-systemd
+
+  - name: debian-11
+    image: debian:11
+    dockerfile_tpl: debian-python3
+
+  - name: debian-12
+    image: debian:12
+    dockerfile_tpl: debian-python3
 
 provisioner:
   name: ansible
@@ -55,7 +59,7 @@ provisioner:
     destroy: ../resources/destroy.yml
     prepare: ../resources/prepare.yml
   lint: ansible-lint -x ANSIBLE0006 ANSIBLE0016
-    
+
 lint: yamllint vars tasks defaults meta
 
 verifier:
@@ -64,5 +68,5 @@ verifier:
     vvv: True
   directory: ../resources/tests/all
   additional_files_or_dirs:
-    - ../repo-47/
+    - ../repo-50/
     - ../systemd-overrides

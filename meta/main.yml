@@ -15,11 +15,11 @@ galaxy_info:
         - 8
     - name: Debian
       versions:
-        - buster
         - bullseye
+        - buster
+        - bookworm
     - name: Ubuntu
       versions:
-        - bionic
         - focal
         - jammy
     - name: FreeBSD
