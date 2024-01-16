@@ -9,7 +9,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 debian_os = ['debian', 'ubuntu']
-rhel_os = ['redhat', 'centos', 'ol']
+rhel_os = ['redhat', 'centos', 'ol', 'rocky', 'almalinux']
 
 
 @pytest.fixture()
