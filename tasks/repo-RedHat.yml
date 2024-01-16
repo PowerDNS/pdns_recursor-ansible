@@ -6,7 +6,7 @@
       package:
         name: epel-release
         state: present
-      when: ansible_distribution in [ 'CentOS' ]
+      when: ansible_distribution in [ 'CentOS', 'Rocky', 'AlmaLinux' ]
 
     - name: Install epel-release on RHEL
       package:
@@ -14,10 +14,11 @@
         state: present
       when: ansible_distribution in [ 'RedHat' ]
 
-    # FIXME: this only works for 8
     - name: Install epel-release on OracleLinux
       package:
-        name: oracle-epel-release-el8
+        name:
+        - "oracle-epel-release-el{{ ansible_distribution_major_version }}"
+        - hostname
         state: present
       when: ansible_distribution in [ 'OracleLinux' ]
 
@@ -27,8 +28,9 @@
   package:
     name: yum-plugin-priorities
     state: present
-  when: ansible_distribution in [ 'CentOS' ]
-    and ansible_pkg_mgr in [ 'yum' ]
+  when:
+    - ansible_distribution in [ 'CentOS', 'Rocky', 'AlmaLinux' ]
+    - ansible_distribution_major_version | int < 8
 
 - name: Add the PowerDNS Recursor YUM Repository
   yum_repository:
