@@ -1,29 +1,31 @@
 ---
-
 - name: Include OS-specific variables
-  include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_os_family }}.yml"
     - Other.yml
   tags:
     - always
 
-- include_tasks: "repo-{{ ansible_os_family }}.yml"
-  when: "pdns_rec_install_repo | length > 0"
+- name: Include OS specific repo tasks
+  ansible.builtin.include_tasks: repo-{{ ansible_os_family }}.yml
+  when: pdns_rec_install_repo | length > 0
   tags:
     - install
     - repository
 
-- include_tasks: "install-{{ansible_system}}.yml"
+- name: Include OS specific installation tasks
+  ansible.builtin.include_tasks: install-{{ ansible_system }}.yml
   tags:
     - install
 
-- include_tasks: configure.yml
+- name: Include configuration tasks
+  ansible.builtin.include_tasks: configure.yml
   tags:
     - config
 
 - name: Set the status of the PowerDNS Recursor service
-  service:
+  ansible.builtin.service:
     name: "{{ pdns_rec_service_name }}"
     state: "{{ pdns_rec_service_state }}"
     enabled: "{{ pdns_rec_service_enabled }}"

@@ -6,7 +6,7 @@ pdns_rec_install_repo: ""
 
 # Install the EPEL repository.
 # EPEL is needed to satisfy some PowerDNS Recursor dependencies like protobuf
-pdns_rec_install_epel: True
+pdns_rec_install_epel: true
 
 # You can install the PowerDNS Recursor package from the 'master' branch as
 # follows:
@@ -43,7 +43,7 @@ pdns_rec_package_name: "{{ default_pdns_rec_package_name }}"
 pdns_rec_package_version: ""
 
 # Install PowerDNS Recursor debug symbols package
-pdns_rec_install_debug_symbols_package: False
+pdns_rec_install_debug_symbols_package: false
 
 # The name of the PowerDNS Recursor debug symbols package
 pdns_rec_debug_symbols_package_name: "{{ default_pdns_rec_debug_symbols_package_name }}"
@@ -57,36 +57,35 @@ pdns_rec_user: "{{ default_pdns_rec_user }}"
 pdns_rec_group: "{{ default_pdns_rec_group }}"
 
 # The user and group that own the configuration files
-pdns_rec_file_owner: "root"
+pdns_rec_file_owner: root
 pdns_rec_file_group: "{{ default_pdns_rec_file_group }}"
 
 # Name of the PowerDNS Service
-pdns_rec_service_name: "pdns-recursor"
+pdns_rec_service_name: pdns-recursor
 # Name of the PowerDNS binary.
-pdns_rec_bin_name: "pdns_recursor"
+pdns_rec_bin_name: pdns_recursor
 
 # State of the PowerDNS Recursor service
-pdns_rec_service_state: "started"
+pdns_rec_service_state: started
 pdns_rec_service_enabled: "yes"
 
 # When True, disable the automated restart of the PowerDNS Recursor service
-pdns_rec_disable_handlers: False
+pdns_rec_disable_handlers: false
 
 # Configuration directory and files
 pdns_rec_config_dir: "{{ default_pdns_rec_config_dir }}"
-pdns_rec_config_file: "recursor.conf"
+pdns_rec_config_file: recursor.conf
 pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
 pdns_rec_config_lua_file_content: ""
 pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
 pdns_rec_config_dns_script_file_content: ""
 
 # Mode for directories from include-dir
-pdns_rec_config_include_dir_mode: 0750
+pdns_rec_config_include_dir_mode: "0750"
 
 # Directories and files required by recursor configuration
-pdns_rec_config_from_files_dir_mode: 0750
+pdns_rec_config_from_files_dir_mode: "0750"
 pdns_rec_config_from_files: []
-
 # Dict containing all configuration options, except for the
 # "config-dir", "setuid" and "setgid" directives in YAML format.
 pdns_rec_config: {}
