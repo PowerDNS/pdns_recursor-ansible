@@ -1,3 +1,16 @@
+## v1.7.1 (2024-04-04)
+
+NEW FEATURES:
+- Added OL9, Rocky9 AlmaLinux8 and AlamLinux9 to CI ([\#157](https://github.com/PowerDNS/pdns_recursor-ansible/pull/157))
+
+IMPROVEMENTS:
+- Bump CI actions/checkout from 3 to 4 ([\#140](https://github.com/PowerDNS/pdns_recursor-ansible/pull/140))
+- Replace the deprecated include with include_task ([\#152](https://github.com/PowerDNS/pdns_recursor-ansible/pull/152))
+- Bump CI actions/setup-python from 4 to 5 ([\#160](https://github.com/PowerDNS/pdns_recursor-ansible/pull/160))
+- Bump CI pytest-testinfra from 8.1.0 to 10.1.0 ([\#165](https://github.com/PowerDNS/pdns_recursor-ansible/pull/165))
+- Fix all non line-length related ansible linting errors ([\#166](https://github.com/PowerDNS/pdns_recursor-ansible/pull/166))
+- Bump CI ansible-lint from 6.18.0 to 24.2.1 ([\#167](https://github.com/PowerDNS/pdns_recursor-ansible/pull/167))
+
 ## v1.7.0 (2024-01-12)
 
 NEW FEATURES:
