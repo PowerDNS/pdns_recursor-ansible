@@ -21,7 +21,7 @@
       register: _pdns_recursor_override_unit
 
     - name: Reload systemd
-      ansible.builtin.systemd_service:
+      ansible.builtin.systemd:
         daemon_reload: true
       when: not pdns_rec_disable_handlers and _pdns_recursor_override_unit.changed
 
