@@ -29,6 +29,8 @@
       ansible.builtin.shell: |
         set -o pipefail
         {{ pdns_rec_bin_name }} --version 2>&1 | awk '/PowerDNS Recursor / {print $6}'
+      args:
+        executable: /bin/bash
       register: _pdns_rec_ver_output
       changed_when: false
 
