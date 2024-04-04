@@ -1,59 +1,60 @@
 ---
-
-- block:
-
+- name: Configure systemd
+  when: ansible_service_mgr == "systemd"
+  block:
     - name: Ensure the PowerDNS Recursor drop-in unit overrides directory exists (systemd)
-      file:
-        name: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d"
+      ansible.builtin.file:
+        name: /etc/systemd/system/{{ pdns_rec_service_name }}.service.d
         state: directory
         owner: root
         group: root
+        mode: "0750"
 
     - name: Override the PowerDNS Recursor unit (systemd)
-      template:
-        src: "override-service.systemd.conf.j2"
-        dest: "/etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf"
+      ansible.builtin.template:
+        src: override-service.systemd.conf.j2
+        dest: /etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf
         owner: root
         group: root
+        mode: "0640"
       when: pdns_rec_service_overrides | length > 0
       register: _pdns_recursor_override_unit
 
     - name: Reload systemd
-      command: systemctl daemon-reload
-      when: not pdns_rec_disable_handlers
-        and _pdns_recursor_override_unit.changed
-
-  when: ansible_service_mgr == "systemd"
+      ansible.builtin.systemd:
+        daemon_reload: true
+      when: not pdns_rec_disable_handlers and _pdns_recursor_override_unit.changed
 
 - name: Ensure that the PowerDNS Recursor configuration directory exists
-  file:
+  ansible.builtin.file:
     name: "{{ pdns_rec_config_dir }}"
     state: directory
     owner: "{{ pdns_rec_file_owner }}"
     group: "{{ pdns_rec_file_group }}"
-    mode: 0750
+    mode: "0750"
 
 - name: Generate the PowerDNS Recursor configuration
-  template:
+  ansible.builtin.template:
     src: recursor.conf.j2
     dest: "{{ pdns_rec_config_dir }}/{{ pdns_rec_config_file }}"
     owner: "{{ pdns_rec_file_owner }}"
     group: "{{ pdns_rec_file_group }}"
-    mode: 0640
+    mode: "0640"
   register: _pdns_recursor_configuration
 
 - name: Ensure that the PowerDNS Recursor 'include-dir' directory exists
-  file:
+  ansible.builtin.file:
     name: "{{ pdns_rec_config['include-dir'] }}"
     state: directory
     owner: "{{ pdns_rec_file_owner }}"
     group: "{{ pdns_rec_file_group }}"
     mode: "{{ pdns_rec_config_include_dir_mode }}"
-  when: "pdns_rec_config['include-dir'] is defined"
+  when: pdns_rec_config['include-dir'] is defined
   register: _pdns_recursor_configuration_include_dir
 
-- block:
-
+- name: Configure from-files
+  when: pdns_rec_config_from_files | length > 0
+  block:
     - name: Ensure that the PowerDNS Recursor configuration from-files directory exists
       ansible.builtin.file:
         name: "{{ item.dest | dirname }}"
@@ -74,38 +75,36 @@
       loop: "{{ pdns_rec_config_from_files }}"
       register: _pdns_recursor_configuration_from_files
 
-  when: "pdns_rec_config_from_files | length > 0"
-
 - name: Generate the PowerDNS Recursor Lua config-file
-  copy:
+  ansible.builtin.copy:
     dest: "{{ pdns_rec_config_lua }}"
     content: "{{ pdns_rec_config_lua_file_content }}"
     owner: "{{ pdns_rec_file_owner }}"
     group: "{{ pdns_rec_file_group }}"
-    mode: 0640
+    mode: "0640"
   register: _pdns_recursor_lua_file_configuraton
-  when: "pdns_rec_config_lua_file_content | length > 0"
+  when: pdns_rec_config_lua_file_content | length > 0
 
 - name: Generate PowerDNS Recursor Lua dns-script
-  copy:
+  ansible.builtin.copy:
     dest: "{{ pdns_rec_config_dns_script }}"
     content: "{{ pdns_rec_config_dns_script_file_content }}"
     owner: "{{ pdns_rec_file_owner }}"
     group: "{{ pdns_rec_file_group }}"
-    mode: 0640
+    mode: "0640"
   register: _pdns_recursor_dns_script_configuration
-  when: "pdns_rec_config_dns_script_file_content | length > 0"
+  when: pdns_rec_config_dns_script_file_content | length > 0
 
 - name: Restart PowerDNS Recursor
-  service:
+  ansible.builtin.service:
     name: "{{ pdns_rec_service_name }}"
     state: restarted
     sleep: 1
   when: not pdns_rec_disable_handlers
     and pdns_rec_service_state != 'stopped'
     and (_pdns_recursor_override_unit.changed
-      or _pdns_recursor_configuration_include_dir.changed
-      or _pdns_recursor_configuration.changed
-      or _pdns_recursor_configuration_from_files.changed
-      or _pdns_recursor_lua_file_configuraton.changed
-      or _pdns_recursor_dns_script_configuration.changed)
+    or _pdns_recursor_configuration_include_dir.changed
+    or _pdns_recursor_configuration.changed
+    or _pdns_recursor_configuration_from_files.changed
+    or _pdns_recursor_lua_file_configuraton.changed
+    or _pdns_recursor_dns_script_configuration.changed)

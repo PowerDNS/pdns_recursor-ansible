@@ -1,31 +1,29 @@
 ---
-
-- block:
-
+- name: Install epel-release package depending on OS
+  when: pdns_rec_install_epel
+  block:
     - name: Install epel-release on CentOS
-      package:
+      ansible.builtin.package:
         name: epel-release
         state: present
       when: ansible_distribution in [ 'CentOS', 'Rocky', 'AlmaLinux' ]
 
     - name: Install epel-release on RHEL
-      package:
-        name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+      ansible.builtin.package:
+        name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm
         state: present
       when: ansible_distribution in [ 'RedHat' ]
 
     - name: Install epel-release on OracleLinux
-      package:
+      ansible.builtin.package:
         name:
-        - "oracle-epel-release-el{{ ansible_distribution_major_version }}"
-        - hostname
+          - oracle-epel-release-el{{ ansible_distribution_major_version }}
+          - hostname
         state: present
       when: ansible_distribution in [ 'OracleLinux' ]
 
-  when: pdns_rec_install_epel
-
 - name: Install yum-plugin-priorities
-  package:
+  ansible.builtin.package:
     name: yum-plugin-priorities
     state: present
   when:
@@ -33,24 +31,24 @@
     - ansible_distribution_major_version | int < 8
 
 - name: Add the PowerDNS Recursor YUM Repository
-  yum_repository:
+  ansible.builtin.yum_repository:
     name: "{{ pdns_rec_install_repo['name'] }}"
     file: "{{ pdns_rec_install_repo['name'] }}"
     description: PowerDNS Recursor
     baseurl: "{{ pdns_rec_install_repo['yum_repo_baseurl'] }}"
     gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"
-    gpgcheck: yes
+    gpgcheck: true
     priority: "90"
     state: present
 
 - name: Add the PowerDNS Recursor debug symbols YUM Repository
-  yum_repository:
+  ansible.builtin.yum_repository:
     name: "{{ pdns_rec_install_repo['name'] }}-debuginfo"
     file: "{{ pdns_rec_install_repo['name'] }}"
     description: PowerDNS Recursor - debug symbols
     baseurl: "{{ pdns_rec_install_repo['yum_debug_symbols_repo_baseurl'] }}"
     gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"
-    gpgcheck: yes
+    gpgcheck: true
     priority: "90"
     state: present
   when: pdns_rec_install_debug_symbols_package
