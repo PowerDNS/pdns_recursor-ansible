@@ -4,4 +4,4 @@ molecule-plugins[docker]==23.4.1
 molecule-plugins[lint]==23.4.1
 molecule==5.1.0
 pytest-testinfra==10.1.0
-docker==7.0.0
+docker==7.1.0
