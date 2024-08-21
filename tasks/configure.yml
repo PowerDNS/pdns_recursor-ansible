@@ -8,7 +8,7 @@
         state: directory
         owner: root
         group: root
-        mode: "0750"
+        mode: "0755"
 
     - name: Override the PowerDNS Recursor unit (systemd)
       ansible.builtin.template:
@@ -16,7 +16,7 @@
         dest: /etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf
         owner: root
         group: root
-        mode: "0640"
+        mode: "0644"
       when: pdns_rec_service_overrides | length > 0
       register: _pdns_recursor_override_unit
 
