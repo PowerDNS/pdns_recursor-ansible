@@ -5,3 +5,6 @@
 ##
 
 pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_48 }}"
+
+pdns_rec_service_overrides:
+  LimitCORE: infinity
