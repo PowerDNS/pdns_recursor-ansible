@@ -29,5 +29,5 @@ def test_pdns_repo(host):
 def test_pdns_version(host):
     cmd = host.run('/usr/sbin/pdns_recursor --version')
 
-    assert 'PowerDNS Recursor' in cmd.stderr
-    assert 'master' in cmd.stderr
+    assert 'PowerDNS Recursor' in cmd.stderr or 'PowerDNS Recursor' in cmd.stdout
+    assert 'master' in cmd.stderr or 'master' in cmd.stdout
