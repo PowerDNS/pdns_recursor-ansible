@@ -22,6 +22,7 @@ galaxy_info:
       versions:
         - focal
         - jammy
+        - noble
     - name: FreeBSD
       versions:
         - "11.0"
