@@ -30,7 +30,7 @@ def test_pdns_version(host):
     cmd = host.run('/usr/sbin/pdns_recursor --version')
 
     assert 'PowerDNS Recursor' in cmd.stderr
-    assert '5.0' in cmd.stderr
+    assert '5.1' in cmd.stderr
 
 
 def systemd_override(host):
