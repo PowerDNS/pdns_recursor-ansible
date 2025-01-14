@@ -10,10 +10,6 @@ dependency:
   name: galaxy
 
 platforms:
-  - name: centos-7
-    image: centos:7
-    dockerfile_tpl: centos-systemd
-
   - name: oraclelinux-8
     image: oraclelinux:8
     dockerfile_tpl: centos-systemd
@@ -29,10 +25,6 @@ platforms:
   - name: ubuntu-2204
     image: ubuntu:22.04
     dockerfile_tpl: ubuntu-systemd
-
-  - name: debian-10
-    image: debian:10
-    dockerfile_tpl: debian-systemd
 
   - name: debian-11
     image: debian:11
