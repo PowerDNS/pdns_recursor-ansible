@@ -74,7 +74,7 @@ pdns_rec_disable_handlers: false
 
 # Configuration directory and files
 pdns_rec_config_dir: "{{ default_pdns_rec_config_dir }}"
-pdns_rec_config_file: recursor.conf
+# pdns_rec_config_file: recursor.conf
 pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
 pdns_rec_config_lua_file_content: ""
 pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
@@ -99,3 +99,7 @@ pdns_rec_config: {}
 
 # Dict with overrides for the service (systemd only)
 pdns_rec_service_overrides: "{{ default_pdns_rec_service_overrides }}"
+
+# yaml config file - starting from 5.2 version yaml will be default and legacy is deprecated
+pdns_rec_config_yaml_config: "{{ pdns_rec_package_version >= '5.2' }}"
+pdns_rec_config_file: "{{ 'recursor.yaml' if pdns_rec_config_yaml_config == True else 'recursor.conf' }}"
