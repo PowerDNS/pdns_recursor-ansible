@@ -81,21 +81,34 @@ pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
 pdns_rec_config_dns_script_file_content: ""
 
 # Mode for directories from include-dir
-pdns_rec_config_include_dir_mode: "0750"
+pns_rec_config_include_dir_mode: "0750"
 
 # Directories and files required by recursor configuration
 pdns_rec_config_from_files_dir_mode: "0750"
 pdns_rec_config_from_files: []
-# Dict containing all configuration options, except for the
-# "config-dir", "setuid" and "setgid" directives in YAML format.
-pdns_rec_config: {}
-# pdns_rec_config:
-#  allow-from: '127.0.0.1/8,192.168.2.0/24'
-#  local-address: 0.0.0.0
-#  server-id: 'nothing to see here'
-#  forward-zones:
-#    - "example.com=192.0.2.2:5300;192.0.2.128"
-#    - "foo.example.com=2001:db8::abcd:1;[2001:db8::ef99]:5300"
+# map containing all configuration options execpted
+#    config-dir, setuid, setguid, lua_config_file, lua_dns_script
+pdns_rec_custom_config:
+#  dnssec:
+#    validation: "off"
+#  recursor:
+#    forward_zones:
+#      - zone: consul
+#        forwarders:
+#          - 127.0.0.1:8600
+#      - zone: ducamps.eu
+#        forwarders:
+#          - 192.168.1.5
+#      - zone: lan.ducamps.eu
+#        forwarders:
+#          - 192.168.1.5
+#      - zone: 1.168.192.in-addr.arpa
+#        forwarders:
+#          - 192.168.1.5
+#  incoming:
+#    listen:
+#      - 192.168.1.40
+
 
 # Dict with overrides for the service (systemd only)
 pdns_rec_service_overrides: "{{ default_pdns_rec_service_overrides }}"
