@@ -20,6 +20,7 @@ jobs:
           - pdns-rec-49
           - pdns-rec-50
           - pdns-rec-51
+          - pdns-rec-52
           - pdns-rec-master
       fail-fast: false
     steps:
