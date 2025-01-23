@@ -16,6 +16,7 @@ jobs:
     name: Test role on different ansible versions
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         ansible:
           - "2.14"
@@ -27,7 +28,6 @@ jobs:
           - pdns-rec-50
           - pdns-rec-51
           - pdns-rec-master
-      fail-fast: false
     steps:
       - name: checkout
         uses: actions/checkout@v4
