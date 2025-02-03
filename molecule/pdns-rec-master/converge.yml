@@ -1,8 +1,9 @@
 ---
 
-- hosts: all
+- name: PDNS Recursor Master
+  hosts: all
   vars_files:
     - ../resources/vars/pdns-rec-common.yml
     - ../resources/vars/pdns-rec-repo-master.yml
   roles:
-    - { role: pdns_recursor-ansible }
+    - { role: powerdns.pdns_recursor }

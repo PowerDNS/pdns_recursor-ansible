@@ -82,4 +82,3 @@ verifier:
     # path relative to '../resources/tests/all'
     - ../repo-master/
     - ../systemd-overrides
-
