@@ -14,11 +14,11 @@ rhel_os = ['redhat', 'centos', 'ol', 'rocky', 'almalinux']
 
 @pytest.fixture()
 def AnsibleVars(host):
-    varsFiles = ["vars/main.yml"]
+    varsFiles = ["../../vars/main.yml"]
     if host.system_info.distribution.lower() in debian_os:
-        varsFiles.append("vars/Debian.yml")
+        varsFiles.append("../../vars/Debian.yml")
     if host.system_info.distribution.lower() in rhel_os:
-        varsFiles.append("vars/RedHat.yml")
+        varsFiles.append("../../vars/RedHat.yml")
 
     ansibleVars = {}
     for f in varsFiles:
