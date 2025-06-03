@@ -33,7 +33,7 @@
     group: "{{ pdns_rec_file_group }}"
     mode: "0750"
 
-- name: Generate the PowerDNS Recursor configuration
+- name: Generate the PowerDNS Recursor legacy configuration
   ansible.builtin.template:
     src: recursor.conf.j2
     dest: "{{ pdns_rec_config_dir }}/{{ pdns_rec_config_file }}"
@@ -41,6 +41,17 @@
     group: "{{ pdns_rec_file_group }}"
     mode: "0640"
   register: _pdns_recursor_configuration
+  when: not pdns_rec_config_yaml_config
+
+- name: Generate the PowerDNS Recursor yaml configuration
+  ansible.builtin.template:
+    src: recursor.yaml.j2
+    dest: "{{ pdns_rec_config_dir }}/{{ pdns_rec_config_file }}"
+    owner: "{{ pdns_rec_file_owner }}"
+    group: "{{ pdns_rec_file_group }}"
+    mode: "0640"
+  register: _pdns_recursor_configuration
+  when: pdns_rec_config_yaml_config
 
 - name: Ensure that the PowerDNS Recursor 'include-dir' directory exists
   ansible.builtin.file:
