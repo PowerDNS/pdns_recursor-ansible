@@ -79,3 +79,38 @@ def test_config(host, AnsibleVars):
         assert fr.user == 'root'
         assert fr.group == AnsibleVars['default_pdns_rec_group']
         assert fr.mode == 0o640
+
+def test_dns_resolution(host):
+    import socket
+    import subprocess
+
+    # testing URL - example.com :)
+    test_url = "example.com"
+
+    with host.sudo():
+        cmd = host.run("""python3 -c "
+import socket
+import dns.resolver
+
+resolver = dns.resolver.Resolver()
+resolver.nameservers = ['127.0.0.1']
+
+# Test IPv4
+try:
+    answers_a = resolver.resolve('example.com', 'A')
+    if len(answers_a) > 0:
+        print(f'A record: {answers_a[0].address}')
+except Exception as e:
+    print(f'Error querying IPv4 record: {e}')
+    exit(1)
+
+# Test IPv6
+try:
+    answers_aaaa = resolver.resolve('example.com', 'AAAA')
+    if len(answers_aaaa) > 0:
+        print(f'AAAA record: {answers_aaaa[0].address}')
+    else:
+    print(f'Error querying IPv6 record: {e}')
+    exit (1)
+""")
+
