@@ -84,9 +84,9 @@ def test_dns_resolution(host):
     import socket
     import subprocess
 
-    # testing URL - powerdns.com :)
-    test_url = "powerdns.com"
-    
+    # testing URL - example.com :)
+    test_url = "example.com"
+
     with host.sudo():
         cmd = host.run("""python3 -c "
 import socket
@@ -97,7 +97,7 @@ resolver.nameservers = ['127.0.0.1']
 
 # Test IPv4
 try:
-    answers_a = resolver.resolve('powerdns.com', 'A')
+    answers_a = resolver.resolve('example.com', 'A')
     if len(answers_a) > 0:
         print(f'A record: {answers_a[0].address}')
 except Exception as e:
@@ -106,7 +106,7 @@ except Exception as e:
 
 # Test IPv6
 try:
-    answers_aaaa = resolver.resolve('powerdns.com', 'AAAA')
+    answers_aaaa = resolver.resolve('example.com', 'AAAA')
     if len(answers_aaaa) > 0:
         print(f'AAAA record: {answers_aaaa[0].address}')
     else:
