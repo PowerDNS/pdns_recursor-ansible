@@ -42,7 +42,7 @@
 
 - name: "Installing repository {{ ansible_facts['distribution'] }}"
   ansible.builtin.copy:
-    dest: "/etc/apt/sources.list.d/{{ pdns_rec_install_repo['name'] }}.sources"
+    dest: "/etc/apt/sources.list.d/powerdns-recursor.sources"
     owner: root
     group: root
     mode: 0644

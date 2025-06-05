@@ -5,4 +5,4 @@ default_pdns_rec_file_group: "{{ default_pdns_rec_group }}"
 default_pdns_rec_config_dir: /etc/powerdns
 default_pdns_recorsor_debug_symbols_package_name: pdns-recursor-dbg
 default_pdns_rec_apt_repo_keyring_path: /etc/apt/keyrings/
-default_pdns_rec_apt_repo_gpg_key: "{{ default_pdns_rec_apt_repo_keyring_path + pdns_rec_install_repo['name'] }}.asc"
+default_pdns_rec_apt_repo_gpg_key: "{{ default_pdns_rec_apt_repo_keyring_path }}powerdns-recursor.asc"
