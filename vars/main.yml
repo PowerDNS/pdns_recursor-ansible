@@ -8,7 +8,7 @@ pdns_recursor_apt_repo_deb_component: main
 pdns_rec_powerdns_repo_master:
   apt_repo_suite: "{{ ansible_distribution_release | lower }}-rec-master"
   apt_repo: https://{{ pdns_recursor_apt_repo_origin }}/{{ ansible_distribution | lower }}
-  gpg_key: https://{{ pdns_recursor_apt_repo_origin }}/FD380FBB-pub.asc
+  gpg_key: https://{{ pdns_recursor_apt_repo_origin }}/CBC8B383-pub.asc
   gpg_key_id: D47975F8DAE32700A563E64FFF389421CBC8B383
   yum_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-master
   yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-master/debug
