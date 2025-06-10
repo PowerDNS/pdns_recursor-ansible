@@ -11,7 +11,7 @@ dependency:
 
 platforms:
   - name: oraclelinux-8
-    image: oraclelinux:8
+    image: ghcr.io/oracle/oraclelinux:8
     dockerfile_tpl: centos-systemd
 
   - name: oraclelinux-9
