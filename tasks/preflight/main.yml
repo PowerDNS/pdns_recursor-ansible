@@ -1,0 +1,23 @@
+---
+- name: Ensure pdns_rec_service_overrides is a dict
+  ansible.builtin.assert:
+    that: pdns_rec_service_overrides is mapping
+
+- name: Ensure pdns_rec_config is a dict
+  ansible.builtin.assert:
+    that: pdns_rec_config is mapping
+
+- name: Ensure pdns_rec_config_from_files is a list
+  ansible.builtin.assert:
+    that: pdns_rec_config_from_files is sequence
+
+- name: Ensure pdns_rec_config_from_files define a string .dest
+  loop: "{{ pdns_rec_config_from_files }}"
+  ansible.builtin.assert:
+    quiet: true
+    that:
+      - item.dest is defined
+      - item.dest is string
+
+- name: Legacy configuration pre-flight checks
+  ansible.builtin.import_tasks: legacy.yml
