@@ -86,29 +86,29 @@ pdns_rec_config_include_dir_mode: "0750"
 # Directories and files required by recursor configuration
 pdns_rec_config_from_files_dir_mode: "0750"
 pdns_rec_config_from_files: []
-# map containing all configuration options execpted
-#    config-dir, setuid, setguid, lua_config_file, lua_dns_script
+# map containing all configuration options execpt
+#   config-dir, setuid, setguid, lua_config_file, lua_dns_script
+# Example config from:
+# https://doc.powerdns.com/recursor/yamlsettings.html#yaml-settings-file
 pdns_rec_custom_config:
 #  dnssec:
-#    validation: "off"
-#  recursor:
-#    forward_zones:
-#      - zone: consul
-#        forwarders:
-#          - 127.0.0.1:8600
-#      - zone: ducamps.eu
-#        forwarders:
-#          - 192.168.1.5
-#      - zone: lan.ducamps.eu
-#        forwarders:
-#          - 192.168.1.5
-#      - zone: 1.168.192.in-addr.arpa
-#        forwarders:
-#          - 192.168.1.5
+#    log_bogus: true
 #  incoming:
 #    listen:
-#      - 192.168.1.40
-
+#      - 0.0.0.0:5301
+#      - '[::]:5301'
+#  recursor:
+#    extended_resolution_errors: true
+#    forward_zones:
+#      - zone: example.com
+#        forwarders:
+#          - 127.0.0.1:5301
+#  outgoing:
+#    source_address:
+#      - 0.0.0.0
+#      - '::'
+#  logging:
+#    loglevel: 6
 
 # Dict with overrides for the service (systemd only)
 pdns_rec_service_overrides: "{{ default_pdns_rec_service_overrides }}"
