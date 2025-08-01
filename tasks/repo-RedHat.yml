@@ -36,7 +36,7 @@
     file: "{{ pdns_rec_install_repo['name'] }}"
     description: PowerDNS Recursor
     baseurl: "{{ pdns_rec_install_repo['yum_repo_baseurl'] }}"
-    gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"
+    gpgkey: "{{ pdns_rec_install_repo['gpg_key_url'] }}"
     gpgcheck: true
     priority: "90"
     state: present
@@ -47,7 +47,7 @@
     file: "{{ pdns_rec_install_repo['name'] }}"
     description: PowerDNS Recursor - debug symbols
     baseurl: "{{ pdns_rec_install_repo['yum_debug_symbols_repo_baseurl'] }}"
-    gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"
+    gpgkey: "{{ pdns_rec_install_repo['gpg_key_url'] }}"
     gpgcheck: true
     priority: "90"
     state: present
