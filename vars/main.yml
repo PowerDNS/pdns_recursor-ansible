@@ -44,7 +44,7 @@ pdns_rec_powerdns_repo_50:
 
 pdns_rec_powerdns_repo_51:
   apt_repo_origin: repo.powerdns.com
-  apt-version: rec-51
+  apt_version: rec-51
   gpg_key_url: https://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_file: rec-51-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
@@ -54,7 +54,7 @@ pdns_rec_powerdns_repo_51:
 
 pdns_rec_powerdns_repo_52:
   apt_repo_origin: repo.powerdns.com
-  apt-version: rec-52
+  apt_version: rec-52
   gpg_key_url: https://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_file: rec-52-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
