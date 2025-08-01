@@ -39,4 +39,4 @@ pdns_rec_config:
 
 pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/rpz.lua"
 pdns_rec_config_lua_file_content: |
-  rpzPrimary("127.0.0.2", "rpz.test", {refresh=30})
+  rpzMaster("127.0.0.2", "rpz.test", {refresh=30})
