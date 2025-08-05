@@ -13,16 +13,20 @@
   tags:
     - install
     - repository
+    - pdns_rec
 
 - name: Include OS specific installation tasks
   ansible.builtin.include_tasks: install-{{ ansible_system }}.yml
   tags:
     - install
+    - pdns_rec
 
 - name: Include configuration tasks
   ansible.builtin.include_tasks: configure.yml
   tags:
     - config
+    - pdns_rec_config
+    - pdns_rec
 
 - name: Set the status of the PowerDNS Recursor service
   ansible.builtin.service:
@@ -31,3 +35,4 @@
     enabled: "{{ pdns_rec_service_enabled }}"
   tags:
     - service
+    - pdns_rec
