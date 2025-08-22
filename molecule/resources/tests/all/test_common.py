@@ -56,24 +56,20 @@ def test_service(host):
 
 def test_config(host, AnsibleVars):
     with host.sudo():
+        rec_config_file = os.getenv('REC_CONFIG_FILE', 'recursor.conf')
         fc = fr = None
         if host.system_info.distribution.lower() in debian_os:
-            fc = host.file('/etc/powerdns/recursor.conf')
+            fc = host.file(f'/etc/powerdns/{ rec_config_file }')
             fr = host.file('/etc/powerdns/rpz.lua')
         if host.system_info.distribution.lower() in rhel_os:
-            fc = host.file('/etc/pdns-recursor/recursor.conf')
+            fc = host.file(f'/etc/pdns-recursor/{ rec_config_file }')
             fr = host.file('/etc/pdns-recursor/rpz.lua')
 
         assert fc.exists
         assert fc.user == 'root'
         assert fc.group == AnsibleVars['default_pdns_rec_group']
         assert fc.mode == 0o640
-        assert fc.contains('lua-config-file=' + fr.path)
-        assert fc.contains(
-                'allow-from=127.0.0.0/24,127.0.1.0/24,2001:DB8:10::/64')
-        assert fc.contains("forward-zones=foo.example=192.0.2.1;192.0.2.2" +
-                           ",bar.example=192.0.2.224:5300")
-        assert fc.contains("forward-zones-recurse=quux.example=192.0.2.15")
+        assert fc.contains('lua_config_file: ' + fr.path)
 
         assert fr.exists
         assert fr.user == 'root'

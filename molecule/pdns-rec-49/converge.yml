@@ -1,9 +1,0 @@
----
-
-- name: PDNS Recursor 4.9
-  hosts: all
-  vars_files:
-    - ../resources/vars/pdns-rec-common.yml
-    - ../resources/vars/pdns-rec-repo-49.yml
-  roles:
-    - { role: powerdns.pdns_recursor }
