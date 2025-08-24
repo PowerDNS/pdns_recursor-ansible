@@ -1,0 +1,21 @@
+---
+- name: Ensure pdns_rec_config.config-dir is not defined
+  ansible.builtin.assert:
+    that: not(pdns_rec_config["config-dir"] is defined)
+    fail_msg: >-
+      Configuration variable 'pdns_rec_config.config-dir' is not supported.
+      Please use variable 'pdns_rec_config_dir' instead.
+
+- name: Ensure pdns_rec_config.setuid is not defined
+  ansible.builtin.assert:
+    that: not(pdns_rec_config.setuid is defined)
+    fail_msg: >-
+      Configuration variable 'pdns_rec_config.setuid' is not supported.
+      Please use variable 'pdns_rec_user' instead.
+
+- name: Ensure pdns_rec_config.setgid is not defined
+  ansible.builtin.assert:
+    that: not(pdns_rec_config.setgid is defined)
+    fail_msg: >-
+      Configuration variable 'pdns_rec_config.setgid' is not supported.
+      Please use variable 'pdns_rec_group' instead.
