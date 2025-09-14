@@ -28,7 +28,7 @@
     - name: Obtain pdns version string
       ansible.builtin.shell: |
         set -o pipefail
-        {{ pdns_rec_bin_name }} --version 2>&1 | awk '/PowerDNS Recursor / {print $6}'
+        {{ pdns_rec_bin_name }} --version 2>&1 | grep 'PowerDNS Recursor ' | grep -oE '[0-9]+(\.[0-9]+)+'
       args:
         executable: /bin/bash
       register: _pdns_rec_ver_output
