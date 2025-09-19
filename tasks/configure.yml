@@ -95,6 +95,14 @@
   register: _pdns_recursor_dns_script_configuration
   when: pdns_rec_config_dns_script_file_content | length > 0
 
+- name: Test PowerDNS Recursor configuration
+  when: not ansible_check_mode
+  become: true
+  become_user: "{{ default_pdns_rec_user }}"
+  ansible.builtin.command:
+    cmd: "/usr/sbin/pdns_recursor --config=check"
+  changed_when: false
+
 - name: Restart PowerDNS Recursor
   ansible.builtin.service:
     name: "{{ pdns_rec_service_name }}"

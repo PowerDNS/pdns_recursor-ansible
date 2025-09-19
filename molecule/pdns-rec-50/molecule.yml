@@ -17,13 +17,13 @@ platforms:
   - name: oraclelinux-9
     image: oraclelinux:9
     dockerfile_tpl: centos-systemd
-  
-  - name: ubuntu-2004
-    image: ubuntu:20.04
-    dockerfile_tpl: ubuntu-systemd
 
   - name: ubuntu-2204
     image: ubuntu:22.04
+    dockerfile_tpl: ubuntu-systemd
+
+  - name: ubuntu-2404
+    image: ubuntu:24.04
     dockerfile_tpl: ubuntu-systemd
 
   - name: debian-11
@@ -78,6 +78,8 @@ verifier:
   name: testinfra
   options:
     vvv: True
+  env:
+    REC_CONFIG_FILE: 'recursor.yml'
   directory: ../resources/tests/all
   additional_files_or_dirs:
     - ../repo-50/

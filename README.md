@@ -32,23 +32,23 @@ By default, the PowerDNS Recursor is installed from the software repositories co
   - { role: PowerDNS.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_master }}" }
 
-# Install the PowerDNS Recursor from the '4.8.x' official repository
-- hosts: pdns-recursors
-  roles:
-  - { role: PowerDNS.pdns_recursor,
-      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_48 }}" }
-
-# Install the PowerDNS Recursor from the '4.9.x' official repository
-- hosts: pdns-recursors
-  roles:
-  - { role: PowerDNS.pdns_recursor,
-      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_49 }}" }
-
 # Install the PowerDNS Recursor from the '5.0.x' official repository
 - hosts: pdns-recursors
   roles:
   - { role: PowerDNS.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_50 }}" }
+
+# Install the PowerDNS Recursor from the '5.1.x' official repository
+- hosts: pdns-recursors
+  roles:
+  - { role: PowerDNS.pdns_recursor,
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_51 }}" }
+
+# Install the PowerDNS Recursor from the '5.2.x' official repository
+- hosts: pdns-recursors
+  roles:
+  - { role: PowerDNS.pdns_recursor,
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_52 }}" }
 ```
 
 The examples above, show how to install the PowerDNS Recursor from the official PowerDNS repositories
@@ -275,7 +275,7 @@ To test all the scenarios run
 
 To run a custom molecule command
 
-    $ tox -e ansible210 -- molecule test -s pdns-rec-49
+    $ tox -e ansible216 -- molecule test -s pdns-rec-52
 
 ## License
 
