@@ -9,18 +9,31 @@
     name: apt-transport-https
     state: present
 
-- name: Import the PowerDNS Recursor APT Repository key
-  ansible.builtin.apt_key:
-    url: "{{ pdns_rec_install_repo['gpg_key'] }}"
-    id: "{{ pdns_rec_install_repo['gpg_key_id'] | default('') }}"
-    state: present
+- name: Ensure keyring directory exists.
+  ansible.builtin.file:
+    name: '/etc/apt/keyrings'
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Download the PowerDNS Recursor APT Repository key
+  ansible.builtin.get_url:
+    url: "{{ pdns_rec_install_repo['gpg_key_url'] }}"
+    dest: "/etc/apt/keyrings/{{ pdns_rec_install_repo['gpg_key_file'] }}"
+    owner: root
+    group: root
+    mode: '0644'
   register: _pdns_rec_apt_key
 
-- name: Add the PowerDNS Recursor APT Repository
-  ansible.builtin.apt_repository:
-    filename: "{{ pdns_rec_install_repo['name'] }}"
-    repo: "{{ pdns_rec_install_repo['apt_repo'] }}"
-    state: present
+# Ansible-lint fails to load on the dest line, citing 'did not find expected key'
+- name: Create the PowerDNS Recursor APT repository Deb822 source
+  ansible.builtin.template:
+    src: 'pdns-recursor.sources.j2'
+    dest: "/etc/apt/sources.list.d/{{ pdns_rec_install_repo['name'] }}.sources"
+    owner: root
+    group: root
+    mode: '0644'
   register: _pdns_rec_apt_repo
 
 - name: Update the APT cache
