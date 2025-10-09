@@ -54,7 +54,7 @@
     mode: "0755"
   when:
     - pdns_recursor_apt_repo_priority is defined
-    - pdns_recursor_apt_repo_priority | int
+    - (pdns_recursor_apt_repo_priority | int) | bool
 
 - name: "Configuring the weight for APT"
   ansible.builtin.copy:
@@ -67,9 +67,8 @@
     mode: "0644"
   when:
     - pdns_recursor_apt_repo_priority is defined
-    - pdns_recursor_apt_repo_priority | int
+    - (pdns_recursor_apt_repo_priority | int) | bool
     - pdns_rec_package_name is defined
-    - pdns_rec_package_name
 
 - name: "Update apt cache if repo was added"
   ansible.builtin.apt:

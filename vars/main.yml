@@ -1,7 +1,7 @@
 ---
 default_pdns_rec_package_name: pdns-recursor
 pdns_recursor_apt_repo_origin: repo.powerdns.com
-pdns_recursor_apt_repo_priority: "600"
+pdns_recursor_apt_repo_priority: 600
 pdns_recursor_apt_repo_arch: amd64
 pdns_recursor_apt_repo_deb_component: main
 
