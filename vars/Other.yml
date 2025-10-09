@@ -1,5 +1,4 @@
 ---
-
 default_pdns_rec_user: pdns
 default_pdns_rec_group: pdns
 default_pdns_rec_file_group: "{{ default_pdns_rec_group }}"
