@@ -49,12 +49,23 @@ default_pdns_rec_service_overrides: >-
 # detection does not run.
 _pdns_rec_version: "{{ pdns_rec_package_version if pdns_rec_package_version != '' else 0 }}"
 
+# Determine if we have base lua or dns script config to add to the base config
+_pdns_rec_base_lua_cfg: "{{ pdns_rec_config_lua_file_content | default('', true) | length > 0 }}"
+_pdns_rec_base_dns_script: "{{ pdns_rec_config_dns_script_file_content | default('', true) | length > 0 }}"
+# Combine the base recursor config options
+_pdns_rec_base_config: >-
+  {{
+    {
+      'config_dir': pdns_rec_config_dir,
+      'setuid': pdns_rec_user,
+      'setgid': pdns_rec_group,
+    }
+    | combine(_pdns_rec_base_lua_cfg | ternary({'lua_config_file': pdns_rec_config_lua}, {}))
+    | combine(_pdns_rec_base_dns_script | ternary({'lua_dns_script': pdns_rec_config_dns_script}, {}))
+  }}
+
 pdns_rec_base_config:
-  recursor:
-    config_dir: "{{ pdns_rec_config_dir }}"
-    setuid: "{{ pdns_rec_user }}"
-    setgid: "{{ pdns_rec_group }}"
-    lua_config_file: "{{ pdns_rec_config_lua if pdns_rec_config_lua_file_content }}"
-    lua_dns_script: "{{ pdns_rec_config_dns_script if pdns_rec_config_dns_script_file_content }}"
+  recursor: "(( _pdns_rec_base_config }}"
+
 
 pdns_rec_template_config: "{{ pdns_rec_base_config | ansible.builtin.combine(pdns_rec_custom_config, recursive=true) }}"
