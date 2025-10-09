@@ -1,0 +1,11 @@
+---
+
+##
+# PowerDNS Recursor 5.3.x Repository
+##
+
+pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_53 }}"
+
+pdns_rec_service_overrides:
+  LimitCORE: infinity
+  ExecStart: /usr/sbin/pdns_recursor --daemon=no --write-pid=no --disable-syslog --log-timestamp=no

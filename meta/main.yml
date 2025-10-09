@@ -17,14 +17,11 @@ galaxy_info:
       versions:
         - bullseye
         - bookworm
+        - trixie
     - name: Ubuntu
       versions:
         - focal
         - jammy
-    - name: FreeBSD
-      versions:
-        - "11.0"
-        - "12.0"
   galaxy_tags:
     - system
     - dns

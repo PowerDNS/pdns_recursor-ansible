@@ -8,7 +8,7 @@ def test_repo_file(host):
     if host.system_info.distribution.lower() in debian_os:
         f = host.file('/etc/apt/sources.list.d/powerdns-recursor.sources')
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-50.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-rec-53.repo')
 
     assert f.exists
     assert f.user == 'root'
@@ -20,17 +20,17 @@ def test_pdns_repo(host):
     if host.system_info.distribution.lower() in debian_os:
         f = host.file('/etc/apt/sources.list.d/powerdns-recursor.sources')
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-50.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-rec-53.repo')
 
     assert f.exists
-    assert f.contains('rec-50')
+    assert f.contains('rec-53')
 
 
 def test_pdns_version(host):
     cmd = host.run('/usr/sbin/pdns_recursor --version')
 
-    assert 'PowerDNS Recursor' in cmd.stderr
-    assert '5.0' in cmd.stderr
+    assert 'PowerDNS Recursor' in cmd.stderr or 'PowerDNS Recursor' in cmd.stdout
+    assert '5.3' in cmd.stderr or '5.3' in cmd.stdout
 
 
 def systemd_override(host):
