@@ -2,10 +2,10 @@
 
 galaxy_info:
   role_name: pdns_recursor
-  namespace: powerdns
-  author: PowerDNS Engineering Team
-  description: Install and configure the PowerDNS Recursor
-  company: PowerDNS.COM BV
+  namespace: sol1-ansible
+  author: Sol1 Team
+  description: Install and configure the PowerDNS Recursor - This is a fork of the PowerDNS Ansible role with added features and fixes.
+  company: Sol1 Pty Ltd
   license: MIT
   min_ansible_version: "2.12"
   platforms:
@@ -22,10 +22,6 @@ galaxy_info:
       versions:
         - focal
         - jammy
-    - name: FreeBSD
-      versions:
-        - "11.0"
-        - "12.0"
   galaxy_tags:
     - system
     - dns

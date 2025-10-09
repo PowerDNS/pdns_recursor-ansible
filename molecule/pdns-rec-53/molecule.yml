@@ -34,6 +34,10 @@ platforms:
     image: debian:12
     dockerfile_tpl: debian-python3
 
+  - name: debian-13
+    image: debian:13
+    dockerfile_tpl: debian-python3
+
   - name: rockylinux-8
     image: rockylinux:8
     dockerfile_tpl: centos-systemd

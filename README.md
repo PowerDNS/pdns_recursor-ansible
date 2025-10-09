@@ -156,7 +156,7 @@ Dictionary containing in YAML format the custom configuration of PowerDNS Recurs
 **NOTE**: You should not set the `config-dir`, `lua_config_file`,`lua_dns_script`, `set-uid` and `set-gid` because are set by other role variables (respectively `pdns_rec_config_dir`, `pdns_rec_user`, `pdns_rec_group`).
 
 ```yaml
-pdns_res_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
+pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
 pdns_rec_config_lua_file_content: ""
 ```
 
