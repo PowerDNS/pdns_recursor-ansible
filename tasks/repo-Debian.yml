@@ -1,9 +1,8 @@
 ---
-- name: Install gnupg # and apt-transport-https
+- name: Install gnupg
   ansible.builtin.package:
     name:
       - gnupg
-      # - apt-transport-https
     state: present
 
 - name: Import the PowerDNS Recursor APT Repository key
