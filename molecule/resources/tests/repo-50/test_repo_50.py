@@ -6,9 +6,9 @@ rhel_os = ['redhat', 'centos', 'ol', 'rocky', 'almalinux']
 def test_repo_file(host):
     f = None
     if host.system_info.distribution.lower() in debian_os:
-        f = host.file('/etc/apt/sources.list.d/powerdns-rec-50.list')
+        f = host.file('/etc/apt/sources.list.d/powerdns-rec-53.list')
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-50.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-rec-53.repo')
 
     assert f.exists
     assert f.user == 'root'
@@ -18,12 +18,12 @@ def test_repo_file(host):
 def test_pdns_repo(host):
     f = None
     if host.system_info.distribution.lower() in debian_os:
-        f = host.file('/etc/apt/sources.list.d/powerdns-rec-50.list')
+        f = host.file('/etc/apt/sources.list.d/powerdns-rec-53.list')
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-50.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-rec-53.repo')
 
     assert f.exists
-    assert f.contains('rec-50')
+    assert f.contains('rec-53')
 
 
 def test_pdns_version(host):

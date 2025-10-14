@@ -23,7 +23,7 @@ jobs:
           - "2.15"
           - "2.16"
         scenario:
-          - pdns-rec-50
+          - pdns-rec-53
           - pdns-rec-51
           - pdns-rec-52
           - pdns-rec-master

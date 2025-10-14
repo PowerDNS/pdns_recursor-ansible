@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-50
+  name: pdns-rec-53
 
 driver:
   name: docker
