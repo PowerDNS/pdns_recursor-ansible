@@ -15,7 +15,7 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 # Install sudo and disable requiretty
-RUN yum -y install sudo
+RUN dnf -y install sudo || (dnf -y install epel-release && dnf -y install sudo)
 RUN /usr/bin/sed -i -e 's/^\(Defaults\s*requiretty\)/#--- \1/' /etc/sudoers
 
 VOLUME [ "/sys/fs/cgroup" ]
