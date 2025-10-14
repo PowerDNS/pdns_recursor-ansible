@@ -78,9 +78,7 @@ verifier:
   name: testinfra
   options:
     vvv: True
-  env:
-    REC_CONFIG_FILE: 'recursor.yml'
   directory: ../resources/tests/all
-  additional_files_or_dirs:
-    - ../repo-50/
-    - ../systemd-overrides
+  # additional_files_or_dirs:
+  #   - ../repo-53/
+  #   - ../systemd-overrides

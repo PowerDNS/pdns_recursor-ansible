@@ -39,6 +39,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install tox tox-gh-actions
       - name: Run the tests
-        run: tox -- molecule -vvv --debug test -s ${{ matrix.scenario }} --destroy=always
+        run: tox -- molecule test -s ${{ matrix.scenario }} --destroy=always
         env:
           ANSIBLE: ${{ matrix.ansible }}

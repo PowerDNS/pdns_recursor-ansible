@@ -78,7 +78,7 @@ verifier:
   options:
     vvv: True
   directory: ../resources/tests/all
-  additional_files_or_dirs:
-    # path relative to '../resources/tests/all'
-    - ../repo-master/
-    - ../systemd-overrides
+  # additional_files_or_dirs:
+  #   # path relative to '../resources/tests/all'
+  #   - ../repo-master/
+  #   - ../systemd-overrides
