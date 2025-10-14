@@ -7,7 +7,7 @@ galaxy_info:
   description: Install and configure the PowerDNS Recursor
   company: PowerDNS.COM BV
   license: MIT
-  min_ansible_version: "2.12"
+  min_ansible_version: "2.14"
   platforms:
     - name: EL
       versions:
