@@ -4,7 +4,7 @@ default_pdns_rec_package_name: pdns-recursor
 
 pdns_rec_powerdns_repo_master:
   apt_repo_origin: repo.powerdns.com
-  apt_repo: deb [arch=amd64] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-master main
+  apt_repo: deb [arch={{ "arm64" if ansible_architecture == "aarch64" else ansible_architecture }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-master main
   gpg_key: http://repo.powerdns.com/CBC8B383-pub.asc
   gpg_key_id: D47975F8DAE32700A563E64FFF389421CBC8B383
   yum_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-master
@@ -13,7 +13,7 @@ pdns_rec_powerdns_repo_master:
 
 pdns_rec_powerdns_repo_50:
   apt_repo_origin: repo.powerdns.com
-  apt_repo: deb [arch=amd64] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-50 main
+  apt_repo: deb [arch={{ "arm64" if ansible_architecture == "aarch64" else ansible_architecture }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-50 main
   gpg_key: http://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   yum_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-50
@@ -22,7 +22,7 @@ pdns_rec_powerdns_repo_50:
 
 pdns_rec_powerdns_repo_51:
   apt_repo_origin: repo.powerdns.com
-  apt_repo: deb [arch=amd64] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-51 main
+  apt_repo: deb [arch={{ "arm64" if ansible_architecture == "aarch64" else ansible_architecture }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-51 main
   gpg_key: http://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   yum_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-51
@@ -31,30 +31,23 @@ pdns_rec_powerdns_repo_51:
 
 pdns_rec_powerdns_repo_52:
   apt_repo_origin: repo.powerdns.com
-  apt_repo: deb [arch=amd64] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-52 main
+  apt_repo: deb [arch={{ "arm64" if ansible_architecture == "aarch64" else ansible_architecture }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-52 main
   gpg_key: http://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   yum_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-52
   yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-52/debug
   name: powerdns-rec-52
 
-default_pdns_rec_service_overrides: >-
-  {{  { 'User'  : pdns_rec_user
-      , 'Group' : pdns_rec_group
-      } if _pdns_rec_version is version('4.3', operator='ge')
-        else {}
-  }}
+default_pdns_rec_service_overrides:
+  Service:
+    User: "{{ pdns_rec_user }}"
+    Group: "{{ pdns_rec_group }}"
 
-# Default value intended to be used during check mode, when proper version
-# detection does not run.
-_pdns_rec_version: "{{ pdns_rec_package_version if pdns_rec_package_version != '' else 0 }}"
-
-pdns_rec_base_config:
+default_pdns_rec_config:
   recursor:
     config_dir: "{{ pdns_rec_config_dir }}"
-    setuid: "{{ pdns_rec_user }}"
     setgid: "{{ pdns_rec_group }}"
-    lua_config_file: "{{ pdns_rec_config_lua if pdns_rec_config_lua_file_content }}"
-    lua_dns_script: "{{ pdns_rec_config_dns_script if pdns_rec_config_dns_script_file_content }}"
-
-pdns_rec_template_config: "{{ pdns_rec_base_config | ansible.builtin.combine(pdns_rec_custom_config, recursive=true) }}"
+    setuid: "{{ pdns_rec_user }}"
+  incoming:
+    listen:
+      - 127.0.0.1
