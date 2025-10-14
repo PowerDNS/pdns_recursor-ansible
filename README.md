@@ -244,7 +244,7 @@ To test all the scenarios run
 
 To run a custom molecule command
 
-    $ tox -e ansible216 -- molecule test -s pdns-rec-52
+    $ tox -e ansible216 -- molecule test -s pdns-rec-52 --destroy=always
 
 ## License
 
