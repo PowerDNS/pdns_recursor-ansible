@@ -29,8 +29,8 @@ def test_pdns_repo(host):
 def test_pdns_version(host):
     cmd = host.run('/usr/sbin/pdns_recursor --version')
 
-    assert 'PowerDNS Recursor' in cmd.stderr
-    assert '5.0' in cmd.stderr
+    assert 'PowerDNS Recursor' in cmd.stderr or 'PowerDNS Recursor' in cmd.stdout
+    assert '5.3' in cmd.stderr or '5.3' in cmd.stdout
 
 
 def systemd_override(host):
