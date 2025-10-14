@@ -19,9 +19,9 @@ jobs:
       fail-fast: false
       matrix:
         ansible:
-          - "2.14"
           - "2.15"
           - "2.16"
+          - "2.17"
         scenario:
           - pdns-rec-53
           - pdns-rec-51
