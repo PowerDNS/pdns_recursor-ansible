@@ -27,7 +27,7 @@
 
 - name: Ensure that the PowerDNS Recursor configuration and additional directories exists
   vars:
-    _rec_dirs: "{{ [ pdns_rec_config_dir ] + pdns_rec_config_additional_dirs }}"
+    _rec_dirs: "{{ [pdns_rec_config_dir] + pdns_rec_config_additional_dirs }}"
   ansible.builtin.file:
     name: "{{ item.path | default(item) }}"
     state: directory

@@ -9,14 +9,6 @@ galaxy_info:
   license: MIT
   min_ansible_version: "2.12"
   platforms:
-    - name: AlmaLinux
-      versions:
-        - "8"
-        - "9"
-    - name: RockyLinux
-      versions:
-        - "8"
-        - "9"
     - name: EL
       versions:
         - "8"
@@ -35,3 +27,5 @@ galaxy_info:
     - pdns
     - powerdns
     - recursor
+
+dependencies: []
