@@ -9,7 +9,7 @@ An Ansible role created by the folks behind PowerDNS to setup the [PowerDNS Recu
 
 ## Requirements
 
-An Ansible 2.14 or higher installation. PowerDNS Recursor 5.1 or higher installation.
+An Ansible 2.15 or higher installation. PowerDNS Recursor 5.1 or higher installation.
 
 ## Dependencies
 
