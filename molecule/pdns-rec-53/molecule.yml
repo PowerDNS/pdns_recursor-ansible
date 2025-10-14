@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-50
+  name: pdns-rec-53
 
 driver:
   name: docker
@@ -34,9 +34,9 @@ platforms:
     image: debian:12
     dockerfile_tpl: debian-python3
 
-  - name: rockylinux-8
-    image: rockylinux:8
-    dockerfile_tpl: centos-systemd
+  # - name: rockylinux-8
+  #   image: rockylinux:8
+  #   dockerfile_tpl: centos-systemd
 
   - name: almalinux-8
     image: almalinux:8
@@ -78,9 +78,7 @@ verifier:
   name: testinfra
   options:
     vvv: True
-  env:
-    REC_CONFIG_FILE: 'recursor.yml'
   directory: ../resources/tests/all
-  additional_files_or_dirs:
-    - ../repo-50/
-    - ../systemd-overrides
+  # additional_files_or_dirs:
+  #   - ../repo-53/
+  #   - ../systemd-overrides

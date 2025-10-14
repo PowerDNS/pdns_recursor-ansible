@@ -22,19 +22,3 @@
     name: "{{ pdns_rec_debug_symbols_package_name }}{{ _pdns_rec_package_version | default('') }}"
     state: present
   when: pdns_rec_install_debug_symbols_package
-
-- name: Get version from binaries
-  block:
-    - name: Obtain pdns version string
-      ansible.builtin.shell: |
-        set -o pipefail
-        {{ pdns_rec_bin_name }} --version 2>&1 | awk '/PowerDNS Recursor / {print $6}'
-      args:
-        executable: /bin/bash
-      register: _pdns_rec_ver_output
-      changed_when: false
-
-    - name: Set pdns version
-      ansible.builtin.set_fact:
-        _pdns_rec_version: "{{ _pdns_rec_ver_output['stdout'] | regex_replace('-[.\\d\\w]+$', '') }}"
-      when: not ansible_check_mode

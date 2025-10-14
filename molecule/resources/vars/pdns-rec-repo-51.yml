@@ -1,10 +1,7 @@
 ---
 
 ##
-# PowerDNS Recursor 5.0.x Repository
+# PowerDNS Recursor 5.1.x Repository
 ##
 
 pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_51 }}"
-
-pdns_rec_service_overrides:
-  LimitCORE: infinity

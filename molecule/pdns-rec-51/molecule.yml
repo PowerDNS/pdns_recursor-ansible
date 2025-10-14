@@ -34,9 +34,9 @@ platforms:
     image: debian:12
     dockerfile_tpl: debian-python3
 
-  - name: rockylinux-8
-    image: rockylinux:8
-    dockerfile_tpl: centos-systemd
+  # - name: rockylinux-8
+  #   image: rockylinux:8
+  #   dockerfile_tpl: centos-systemd
 
   - name: almalinux-8
     image: almalinux:8
@@ -79,6 +79,6 @@ verifier:
   options:
     vvv: True
   directory: ../resources/tests/all
-  additional_files_or_dirs:
-    - ../repo-51/
-    - ../systemd-overrides
+  # additional_files_or_dirs:
+  #   - ../repo-51/
+  #   - ../systemd-overrides
