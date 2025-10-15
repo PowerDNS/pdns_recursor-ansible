@@ -19,35 +19,35 @@ platforms:
     dockerfile_tpl: centos-systemd
 
   - name: ubuntu-2204
-    image: ubuntu:22.04
+    image: mpaivabarbosa/molecule-systemd-ubuntu:22.04
     dockerfile_tpl: ubuntu-systemd
 
   - name: ubuntu-2404
-    image: ubuntu:24.04
+    image: mpaivabarbosa/molecule-systemd-ubuntu:24.04
     dockerfile_tpl: ubuntu-systemd
 
   - name: debian-11
-    image: debian:11
+    image: mpaivabarbosa/molecule-systemd-debian:11
     dockerfile_tpl: debian-python3
 
   - name: debian-12
-    image: debian:12
+    image: mpaivabarbosa/molecule-systemd-debian:12
     dockerfile_tpl: debian-python3
 
-  # - name: rockylinux-8
-  #   image: rockylinux:8
-  #   dockerfile_tpl: centos-systemd
+  - name: rockylinux-8
+    image: mpaivabarbosa/molecule-systemd-rockylinux:8
+    dockerfile_tpl: centos-systemd
 
   - name: almalinux-8
-    image: almalinux:8
+    image: mpaivabarbosa/molecule-systemd-almalinux:8
     dockerfile_tpl: centos-systemd
 
   - name: rockylinux-9
-    image: rockylinux:9.0
+    image: mpaivabarbosa/molecule-systemd-rockylinux:9
     dockerfile_tpl: centos-systemd
 
   - name: almalinux-9
-    image: almalinux:9
+    image: mpaivabarbosa/molecule-systemd-almalinux:9
     dockerfile_tpl: centos-systemd
 
 provisioner:
