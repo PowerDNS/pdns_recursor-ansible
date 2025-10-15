@@ -1,7 +1,6 @@
 ### Ansible ###
 *.retry
 .ansible_cache
-meta/.galaxy_install_info
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
