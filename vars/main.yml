@@ -2,52 +2,67 @@
 
 default_pdns_rec_package_name: pdns-recursor
 
+# Map Ansible architectures to Debian/Ubuntu APT arch names
+_pdns_rec_apt_arch_map:
+  aarch64: arm64
+  arm64: arm64
+  x86_64: amd64
+  amd64: amd64
+  i386: i386
+  i686: i386
+  ppc64le: ppc64el
+_pdns_rec_apt_arch: "{{ _pdns_rec_apt_arch_map.get(ansible_architecture, 'amd64') }}"
+
 pdns_rec_powerdns_repo_master:
   apt_repo_origin: repo.powerdns.com
-  apt_repo: deb [arch={{ "arm64" if ansible_architecture == "aarch64" else "amd64" }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-master main
+  apt_version: rec-master
+  apt_repo: deb [arch={{ _pdns_rec_apt_arch }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-master main
   gpg_key: http://repo.powerdns.com/CBC8B383-pub.asc
   gpg_key_id: D47975F8DAE32700A563E64FFF389421CBC8B383
-  yum_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-master
-  yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-master/debug
+  yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-master
+  yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-master/debug
   name: powerdns-rec-master
 
 pdns_rec_powerdns_repo_51:
   apt_repo_origin: repo.powerdns.com
-  apt_repo: deb [arch={{ "arm64" if ansible_architecture == "aarch64" else "amd64" }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-51 main
+  apt_version: rec-51
+  apt_repo: deb [arch={{ _pdns_rec_apt_arch }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-51 main
   gpg_key: http://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
-  yum_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-51
-  yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-51/debug
+  yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-51
+  yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-51/debug
   name: powerdns-rec-51
 
 pdns_rec_powerdns_repo_52:
   apt_repo_origin: repo.powerdns.com
-  apt_repo: deb [arch={{ "arm64" if ansible_architecture == "aarch64" else "amd64" }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-52 main
+  apt_version: rec-52
+  apt_repo: deb [arch={{ _pdns_rec_apt_arch }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-52 main
   gpg_key: http://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
-  yum_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-52
-  yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-52/debug
+  yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-52
+  yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-52/debug
   name: powerdns-rec-52
 
 pdns_rec_powerdns_repo_53:
   apt_repo_origin: repo.powerdns.com
-  apt_repo: deb [arch={{ "arm64" if ansible_architecture == "aarch64" else "amd64" }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-53 main
+  apt_version: rec-53
+  apt_repo: deb [arch={{ _pdns_rec_apt_arch }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-53 main
   gpg_key: http://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
-  yum_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-53
-  yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/centos/$basearch/$releasever/rec-53/debug
+  yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-53
+  yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-53/debug
   name: powerdns-rec-53
 
-default_pdns_rec_service_overrides:
-  Service:
-    User: "{{ pdns_rec_user }}"
-    Group: "{{ pdns_rec_group }}"
+default_pdns_rec_service_overrides: {}
+  # Service:
+  #   User: "{{ pdns_rec_user }}"
+  #   Group: "{{ pdns_rec_group }}"
 
 default_pdns_rec_config:
-  recursor:
-    config_dir: "{{ pdns_rec_config_dir }}"
-    setgid: "{{ pdns_rec_group }}"
-    setuid: "{{ pdns_rec_user }}"
+  recursor: {}
+    #config_dir: "{{ pdns_rec_config_dir }}"
+    # setgid: "{{ pdns_rec_group }}"
+    # setuid: "{{ pdns_rec_user }}"
   incoming:
     listen:
       - 127.0.0.1

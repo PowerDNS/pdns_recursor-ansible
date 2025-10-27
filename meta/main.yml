@@ -13,14 +13,16 @@ galaxy_info:
       versions:
         - "8"
         - "9"
+        - "10"
     - name: Debian
       versions:
         - bullseye
         - bookworm
+        - trixie
     - name: Ubuntu
       versions:
-        - noble
         - jammy
+        - noble
   galaxy_tags:
     - system
     - dns

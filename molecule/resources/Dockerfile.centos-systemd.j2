@@ -1,27 +1,45 @@
 # Molecule managed
-
 FROM {{ item.image }}
 
-ENV container docker
+ENV container=docker LANG=C.UTF-8
 
-# Configure systemd to run into the container (see https://hub.docker.com/_/centos/)
-RUN (cd /lib/systemd/system/sysinit.target.wants/ && for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
-rm -f /lib/systemd/system/multi-user.target.wants/*;\
-rm -f /etc/systemd/system/*.wants/*;\
-rm -f /lib/systemd/system/local-fs.target.wants/*; \
-rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
-rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
-rm -f /lib/systemd/system/basic.target.wants/*;\
-rm -f /lib/systemd/system/anaconda.target.wants/*;
+# Make systemd usable in containers (trim default wants, per upstream guidance)
+RUN set -euo pipefail; \
+    if [ -d /lib/systemd/system/sysinit.target.wants ]; then \
+      cd /lib/systemd/system/sysinit.target.wants; \
+      for i in *; do [ "$i" = systemd-tmpfiles-setup.service ] || rm -f "$i"; done; \
+    fi; \
+    rm -f /lib/systemd/system/multi-user.target.wants/* \
+          /etc/systemd/system/*.wants/* \
+          /lib/systemd/system/local-fs.target.wants/* \
+          /lib/systemd/system/sockets.target.wants/*udev* \
+          /lib/systemd/system/sockets.target.wants/*initctl* \
+          /lib/systemd/system/basic.target.wants/* \
+          /lib/systemd/system/anaconda.target.wants/* || true
 
-# Install sudo and disable requiretty
-RUN dnf -y install sudo || (dnf -y install epel-release && dnf -y install sudo)
-RUN /usr/bin/sed -i -e 's/^\(Defaults\s*requiretty\)/#--- \1/' /etc/sudoers
+# Install systemd + deps using the distro's python3 only (no python39)
+RUN set -euo pipefail; \
+    retry() { n=0; until "$@"; do n=$((n+1)); [ $n -ge 5 ] && exit 1; sleep $((n*5)); done; }; \
+    if command -v dnf >/dev/null 2>&1; then \
+      retry dnf -y --refresh makecache; \
+      retry dnf -y --setopt=install_weak_deps=False install \
+        systemd systemd-udev dbus sudo iproute iputils procps-ng \
+        python3 python3-libselinux python3-policycoreutils python3-pip bash; \
+      rm -Rf /usr/share/doc /usr/share/man || true; \
+      dnf -y clean all; \
+    elif command -v yum >/dev/null 2>&1; then \
+      retry yum -y makecache; \
+      retry yum -y install \
+        systemd dbus sudo iproute iputils procps-ng \
+        python3 python3-libselinux python3-policycoreutils python3-pip bash yum-plugin-ovl; \
+      sed -i 's/plugins=0/plugins=1/g' /etc/yum.conf || true; \
+      rm -Rf /usr/share/doc /usr/share/man || true; \
+      yum clean all; \
+    fi; \
+    sed -i -e 's/^\(Defaults\s*requiretty\)/# \1/' /etc/sudoers || true; \
+    (systemd-machine-id-setup || true); \
+    ln -sf /etc/machine-id /var/lib/dbus/machine-id || true
 
-VOLUME [ "/sys/fs/cgroup" ]
-
+STOPSIGNAL SIGRTMIN+3
+VOLUME [ "/sys/fs/cgroup", "/tmp", "/run" ]
 CMD ["/usr/sbin/init"]
-
-RUN if [ $(command -v dnf) ] && [ $(rpm -E %{rhel}) -eq 8 ] || [ $(rpm -E %{rhel}) -eq 9 ]; then dnf makecache && dnf --assumeyes install python3 python3-devel python*-dnf bash iproute && dnf clean all; \
-    elif [ $(command -v dnf) ]; then dnf makecache && dnf --assumeyes install python sudo python-devel python*-dnf bash iproute && dnf clean all; \
-    elif [ $(command -v yum) ]; then yum makecache fast && yum update -y && yum install -y python sudo yum-plugin-ovl net-tools bash && sed -i 's/plugins=0/plugins=1/g' /etc/yum.conf && yum clean all; fi
