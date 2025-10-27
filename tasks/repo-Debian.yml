@@ -5,8 +5,11 @@
       - gnupg
     state: present
 
-- block:
-
+- name: Manage PowerDNS Recursor APT Repository (single-line)
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_version is version('22.04', '<')
+  block:
   - name: Import the PowerDNS Recursor APT Repository key
     ansible.builtin.apt_key:
       url: "{{ pdns_rec_install_repo['gpg_key'] }}"
@@ -21,11 +24,7 @@
       state: present
     notify: update the apt cache
 
-  when:
-    - ansible_distribution == 'Ubuntu'
-    - ansible_distribution_version is version('22.04', '<')
-
-- name: Add the PowerDNS Recursor APT Repository (Deb822-style Format)
+- name: Add the PowerDNS Recursor APT Repository (Deb822-style)
   ansible.builtin.deb822_repository:
     name: "{{ pdns_rec_install_repo['name'] }}"
     types: deb
