@@ -61,12 +61,13 @@ The roles also supports custom repositories
   vars:
     pdns_rec_install_repo:
       name: "powerdns-rec"  # the name of the repository
+      apt_version: rec-master # deb822 suites parameter
       apt_repo_origin: "repo.example.com"   # used to pin the PowerDNS packages to the provided repository
       apt_repo: "deb http://repo.example.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}/pdns-recursor main"
       gpg_key: "http://repo.example.com/MYREPOGPGPUBKEY.asc" # repository public GPG key
       gpg_key_id: "MYREPOGPGPUBKEYID" # to avoid to reimport the key each time the role is executed
-      yum_repo_baseurl: "http://repo.example.com/centos/$basearch/$releasever/pdns-recursor"
-      yum_repo_debug_symbols_baseurl: "http://repo.example.com/centos/$basearch/$releasever/pdns-recursor/debug"
+      yum_repo_baseurl: "http://repo.example.com/el/$basearch/$releasever/pdns-recursor"
+      yum_repo_debug_symbols_baseurl: "http://repo.example.com/el/$basearch/$releasever/pdns-recursor/debug"
   roles:
   - { role: powerdns.pdns_recursor }
 ```
