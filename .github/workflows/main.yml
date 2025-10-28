@@ -19,13 +19,12 @@ jobs:
       fail-fast: false
       matrix:
         ansible:
-          - "2.14"
           - "2.15"
           - "2.16"
         scenario:
-          - pdns-rec-50
           - pdns-rec-51
           - pdns-rec-52
+          - pdns-rec-53
           - pdns-rec-master
     steps:
       - name: checkout
@@ -39,6 +38,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install tox tox-gh-actions
       - name: Run the tests
-        run: tox -- molecule test -s ${{ matrix.scenario }}
+        run: tox -- molecule test -s ${{ matrix.scenario }} --destroy=always
         env:
           ANSIBLE: ${{ matrix.ansible }}
