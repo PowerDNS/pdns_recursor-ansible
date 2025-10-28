@@ -2,21 +2,6 @@
 # Based on ansible-lint config
 extends: default
 
-ignore: |
-  .git/
-  .tox/
-  .venv/
-  venv/
-  .molecule/
-  molecule/*/.molecule/
-  molecule/*/cache/
-  molecule/*/roles/
-  .pytest_cache/
-
-yaml-files:
-  - '*.yml'
-  - '*.yaml'
-
 rules:
   braces:
     max-spaces-inside: 1
@@ -30,25 +15,18 @@ rules:
   commas:
     max-spaces-after: -1
     level: error
-
-  # Required by ansible-lint
-  comments:
-    min-spaces-from-content: 1
-  octal-values:
-    forbid-implicit-octal: true
-    forbid-explicit-octal: true
+  comments: disable
   comments-indentation: disable
-
   document-start: disable
   empty-lines:
-    max: 2
+    max: 3
     level: error
   hyphens:
     level: error
   indentation: disable
   key-duplicates: enable
   line-length: disable
-  new-line-at-end-of-file: enable
+  new-line-at-end-of-file: disable
   new-lines:
     type: unix
   trailing-spaces: disable

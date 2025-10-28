@@ -3,29 +3,10 @@ debian_os = ['debian', 'ubuntu']
 rhel_os = ['redhat', 'centos', 'ol', 'rocky', 'almalinux']
 
 
-def _deb_repo_path(host):
-    distro = (host.system_info.distribution or "").lower()
-    if distro == 'ubuntu':
-        rel = host.system_info.release or ""
-
-        def _parse(v):
-            try:
-                parts = v.split('.')
-                major = int(parts[0])
-                minor = int(parts[1]) if len(parts) > 1 else 0
-                return (major, minor)
-            except Exception:
-                return (0, 0)
-        if _parse(rel) < (22, 4):
-            return '/etc/apt/sources.list.d/powerdns-rec-master.list'
-    # Debian and Ubuntu >= 22.04 use deb822
-    return '/etc/apt/sources.list.d/powerdns-rec-master.sources'
-
-
 def test_repo_file(host):
     f = None
     if host.system_info.distribution.lower() in debian_os:
-        f = host.file(_deb_repo_path(host))
+        f = host.file('/etc/apt/sources.list.d/powerdns-rec-master.list')
     if host.system_info.distribution.lower() in rhel_os:
         f = host.file('/etc/yum.repos.d/powerdns-rec-master.repo')
 
@@ -37,7 +18,7 @@ def test_repo_file(host):
 def test_pdns_repo(host):
     f = None
     if host.system_info.distribution.lower() in debian_os:
-        f = host.file(_deb_repo_path(host))
+        f = host.file('/etc/apt/sources.list.d/powerdns-rec-master.list')
     if host.system_info.distribution.lower() in rhel_os:
         f = host.file('/etc/yum.repos.d/powerdns-rec-master.repo')
 

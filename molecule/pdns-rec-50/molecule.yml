@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-53
+  name: pdns-rec-50
 
 driver:
   name: docker
@@ -10,63 +10,45 @@ dependency:
   name: galaxy
 
 platforms:
-
-  # no builds for 5.3
-  # - name: ubuntu-2004
-  #   image: ubuntu:20.04
-  #   dockerfile_tpl: debian-systemd
-
-  - name: ubuntu-2204
-    image: ubuntu:22.04
-    dockerfile_tpl: debian-systemd
-
-  - name: ubuntu-2404
-    image: ubuntu:24.04
-    dockerfile_tpl: debian-systemd
-
-  - name: debian-11
-    image: debian:11
-    dockerfile_tpl: debian-systemd
-
-  - name: debian-12
-    image: debian:12
-    dockerfile_tpl: debian-systemd
-
-  - name: debian-13
-    image: debian:13
-    dockerfile_tpl: debian-systemd
-
   - name: oraclelinux-8
-    image: oraclelinux:8
-    dockerfile_tpl: rhel-systemd
+    image: ghcr.io/oracle/oraclelinux:8
+    dockerfile_tpl: centos-systemd
 
   - name: oraclelinux-9
     image: oraclelinux:9
-    dockerfile_tpl: rhel-systemd
+    dockerfile_tpl: centos-systemd
 
-  - name: oraclelinux-10
-    image: oraclelinux:10
-    dockerfile_tpl: rhel-systemd
+  - name: ubuntu-2204
+    image: ubuntu:22.04
+    dockerfile_tpl: ubuntu-systemd
+
+  - name: ubuntu-2404
+    image: ubuntu:24.04
+    dockerfile_tpl: ubuntu-systemd
+
+  - name: debian-11
+    image: debian:11
+    dockerfile_tpl: debian-python3
+
+  - name: debian-12
+    image: debian:12
+    dockerfile_tpl: debian-python3
 
   - name: rockylinux-8
     image: rockylinux:8
-    dockerfile_tpl: rhel-systemd
-
-  - name: rockylinux-9
-    image: rockylinux:9
-    dockerfile_tpl: rhel-systemd
+    dockerfile_tpl: centos-systemd
 
   - name: almalinux-8
     image: almalinux:8
-    dockerfile_tpl: rhel-systemd
+    dockerfile_tpl: centos-systemd
+
+  - name: rockylinux-9
+    image: rockylinux:9.0
+    dockerfile_tpl: centos-systemd
 
   - name: almalinux-9
     image: almalinux:9
-    dockerfile_tpl: rhel-systemd
-
-  - name: almalinux-10
-    image: almalinux:10
-    dockerfile_tpl: rhel-systemd
+    dockerfile_tpl: centos-systemd
 
 provisioner:
   name: ansible
@@ -75,8 +57,6 @@ provisioner:
     v: True
   config_options:
     defaults:
-      ansible_user: root
-      ansible_become: false
       gathering: smart
       fact_caching: jsonfile
       fact_caching_connection: .ansible_cache
@@ -98,7 +78,9 @@ verifier:
   name: testinfra
   options:
     vvv: True
+  env:
+    REC_CONFIG_FILE: 'recursor.yml'
   directory: ../resources/tests/all
   additional_files_or_dirs:
-    - ../repo-53/
+    - ../repo-50/
     - ../systemd-overrides

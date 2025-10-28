@@ -1,5 +1,4 @@
 ---
-
 - name: Include OS-specific variables
   ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
@@ -30,6 +29,5 @@
     name: "{{ pdns_rec_service_name }}"
     state: "{{ pdns_rec_service_state }}"
     enabled: "{{ pdns_rec_service_enabled }}"
-    masked: "{{ pdns_rec_service_masked }}"
   tags:
     - service

@@ -6,4 +6,3 @@ molecule-plugins[lint]==23.6.0
 molecule==24.9.0
 pytest-testinfra==10.1.1
 docker==7.1.0
-antsibull-changelog

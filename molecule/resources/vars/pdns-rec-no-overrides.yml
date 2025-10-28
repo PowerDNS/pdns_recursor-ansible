@@ -37,6 +37,8 @@ pdns_rec_config:
   forward-zones-recurse:
     - "quux.example=192.0.2.15"
 
+pdns_rec_service_overrides: {}
+
 pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/rpz.lua"
 pdns_rec_config_lua_file_content: |
   rpzMaster("127.0.0.2", "rpz.test", {refresh=30})
