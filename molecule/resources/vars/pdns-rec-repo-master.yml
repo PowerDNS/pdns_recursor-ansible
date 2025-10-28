@@ -5,7 +5,3 @@
 ##
 
 pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_master }}"
-
-pdns_rec_service_overrides:
-  LimitCORE: infinity
-  ExecStart: /usr/sbin/pdns_recursor --daemon=no --write-pid=no --disable-syslog --log-timestamp=no

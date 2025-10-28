@@ -1,7 +1,16 @@
-[Service]
-{% for k, v in pdns_rec_service_overrides.items() %}
+{% for key, value in _service_overrides.items() %}
+[{{ key }}]
+{% for k, v in value.items() %}
+{% if k.lower() == "environment" %}
+{% for env_key, env_value in v.items() %}
+{{ k }}={{ env_key }}={{ env_value | quote }}
+{% endfor %}
+{% else %}
 {% if k == 'ExecStart' %}ExecStart=
 {% elif k == 'ExecStartPre' %}ExecStartPre=
 {% endif %}
 {{ k }}={{ v }}
+{% endif %}
+{% endfor %}
+
 {% endfor %}

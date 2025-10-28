@@ -1,0 +1,7 @@
+Types: deb
+Enabled: yes
+URIs: {{ pdns_rec_install_repo['apt_repo'] }}
+Suites: {{ pdns_rec_install_repo['apt_repo_suite'] }}
+Components: {{ pdns_recursor_apt_repo_deb_component }}
+Architectures: {{ pdns_recursor_apt_repo_arch }}
+Signed-By: {{ default_pdns_rec_apt_repo_gpg_key }}
