@@ -229,24 +229,37 @@ Forward queries for corp.example.net to a nameserver on localhost and queries fo
     - { role: powerdns.pdns_recursor }
 ```
 
-## Changelog
+## Release notes
 
-A detailed changelog of all the changes applied to the role is available [here](./CHANGELOG.md).
+See the [CHANGELOG.md](https://github.com/PowerDNS/pdns_recursor-ansible/blob/master/CHANGELOG.md).
+
+## Contributing
+
+- Every pull request must include a [changelog fragment](https://docs.ansible.com/ansible/devel/community/collection_development_process.html#creating-a-changelog-fragment).
+- Include a link to the pull request in the fragment.
+- If the PR addresses an issue, also include a link to that issue.
+- Ensure the changelog entry starts with a lowercase letter (after the dash) and ends with a period.
 
 ## Testing
 
 Tests are performed by [Molecule](http://molecule.readthedocs.org/en/latest/).
 
+    ```bash
     $ pip install tox
+    ```
 
 To test all the scenarios run
 
+    ```bash
     $ tox
+    ```
 
 To run a custom molecule command
 
+    ```bash
     $ tox -e ansible216 -- molecule test -s pdns-rec-53
+    ```
 
 ## License
 
-MIT
+See [LICENSE](https://github.com/PowerDNS/pdns_recursor-ansible/blob/master/LICENSE).
