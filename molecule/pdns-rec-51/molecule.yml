@@ -10,6 +10,7 @@ dependency:
   name: galaxy
 
 platforms:
+
   - name: ubuntu-2004
     image: ubuntu:20.04
     dockerfile_tpl: debian-systemd
@@ -32,27 +33,27 @@ platforms:
 
   - name: oraclelinux-8
     image: oraclelinux:8
-    dockerfile_tpl: centos-systemd
+    dockerfile_tpl: rhel-systemd
 
   - name: oraclelinux-9
     image: oraclelinux:9
-    dockerfile_tpl: centos-systemd
+    dockerfile_tpl: rhel-systemd
 
   - name: rockylinux-8
     image: rockylinux:8
-    dockerfile_tpl: centos-systemd
+    dockerfile_tpl: rhel-systemd
 
   - name: rockylinux-9
     image: rockylinux:9
-    dockerfile_tpl: centos-systemd
+    dockerfile_tpl: rhel-systemd
 
   - name: almalinux-8
     image: almalinux:8
-    dockerfile_tpl: centos-systemd
+    dockerfile_tpl: rhel-systemd
 
   - name: almalinux-9
     image: almalinux:9
-    dockerfile_tpl: centos-systemd
+    dockerfile_tpl: rhel-systemd
 
 provisioner:
   name: ansible

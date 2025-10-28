@@ -9,7 +9,7 @@ An Ansible role created by the folks behind PowerDNS to setup the [PowerDNS Recu
 
 ## Requirements
 
-An Ansible 2.15 or higher installation. PowerDNS Recursor 5.1 or higher installation.
+An Ansible 2.15 or higher installation.
 
 ## Dependencies
 
@@ -245,7 +245,7 @@ To test all the scenarios run
 
 To run a custom molecule command
 
-    $ tox -e ansible216 -- molecule test -s pdns-rec-52 --destroy=always
+    $ tox -e ansible216 -- molecule test -s pdns-rec-53
 
 ## License
 
