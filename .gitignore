@@ -1,7 +1,6 @@
 ### Ansible ###
 *.retry
 .ansible_cache
-.ansible
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -16,4 +15,3 @@ __pycache__/
 .molecule
 .vagrant
 venv/
-pytestdebug.log

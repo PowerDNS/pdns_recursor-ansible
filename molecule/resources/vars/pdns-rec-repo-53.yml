@@ -1,7 +1,0 @@
----
-
-##
-# PowerDNS Recursor 5.3.x Repository
-##
-
-pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_53 }}"

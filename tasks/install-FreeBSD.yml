@@ -1,0 +1,5 @@
+---
+- name: Install the PowerDNS Recursor
+  community.general.packaging.os.pkgng:
+    name: "{{ pdns_rec_package_name }}"
+    state: present

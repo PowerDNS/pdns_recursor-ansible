@@ -17,16 +17,3 @@
           ansible.builtin.service:
             name: rsyslog
             state: started
-
-    - name: Install dnspython on Debian/Ubuntu
-      ansible.builtin.apt:
-        name: python3-dnspython
-        state: present
-        update_cache: true
-      when: ansible_os_family == 'Debian'
-
-    - name: Install dnspython on RHEL/Alma/Rocky/OL
-      ansible.builtin.dnf:
-        name: python3-dns
-        state: present
-      when: ansible_os_family == 'RedHat'

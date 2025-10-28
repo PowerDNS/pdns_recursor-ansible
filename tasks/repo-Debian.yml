@@ -1,43 +1,27 @@
 ---
 - name: Install gnupg
   ansible.builtin.package:
-    name:
-      - gnupg
+    name: gnupg
     state: present
 
-- name: Manage PowerDNS Recursor APT Repository (single-line)
-  when:
-    - ansible_distribution == 'Ubuntu'
-    - ansible_distribution_version is version('22.04', '<')
-  block:
-  - name: Import the PowerDNS Recursor APT Repository key
-    ansible.builtin.apt_key:
-      url: "{{ pdns_rec_install_repo['gpg_key'] }}"
-      id: "{{ pdns_rec_install_repo['gpg_key_id'] | default('') }}"
-      state: present
-    notify: update the apt cache
+- name: Import the PowerDNS Recursor APT Repository key
+  ansible.builtin.apt_key:
+    url: "{{ pdns_rec_install_repo['gpg_key'] }}"
+    id: "{{ pdns_rec_install_repo['gpg_key_id'] | default('') }}"
+    state: present
+  register: _pdns_rec_apt_key
 
-  - name: Add the PowerDNS Recursor APT Repository
-    ansible.builtin.apt_repository:
-      filename: "{{ pdns_rec_install_repo['name'] }}"
-      repo: "{{ pdns_rec_install_repo['apt_repo'] }}"
-      state: present
-    notify: update the apt cache
+- name: Add the PowerDNS Recursor APT Repository
+  ansible.builtin.apt_repository:
+    filename: "{{ pdns_rec_install_repo['name'] }}"
+    repo: "{{ pdns_rec_install_repo['apt_repo'] }}"
+    state: present
+  register: _pdns_rec_apt_repo
 
-- name: Add the PowerDNS Recursor APT Repository (Deb822-style)
-  ansible.builtin.deb822_repository:
-    name: "{{ pdns_rec_install_repo['name'] }}"
-    types: deb
-    uris: "https://{{ pdns_rec_install_repo['apt_repo_origin'] }}/{{ ansible_distribution | lower }}/"
-    suites: "{{ ansible_distribution_release | lower }}-{{ pdns_rec_install_repo['apt_version'] }}"
-    components: main
-    architectures: "{{ _pdns_rec_apt_arch }}"
-    signed_by: "{{ pdns_rec_install_repo['gpg_key'] }}"
-  notify: update the apt cache
-  when: not (
-          ansible_distribution == 'Ubuntu' and
-          ansible_distribution_version is version('22.04', '<')
-        )
+- name: Update the APT cache
+  ansible.builtin.apt:
+    update_cache: true
+  when: _pdns_rec_apt_key.changed or _pdns_rec_apt_repo.changed
 
 - name: Pin the PowerDNS Recursor APT Repository
   ansible.builtin.template:
@@ -46,6 +30,3 @@
     owner: root
     group: root
     mode: "0644"
-
-- name: Flush handlers
-  ansible.builtin.meta: flush_handlers
