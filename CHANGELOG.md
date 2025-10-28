@@ -16,17 +16,16 @@ IMPROVEMENTS:
 - Small file permission fix ([\#174](https://github.com/PowerDNS/pdns_recursor-ansible/pull/174))
 - Change default configuration format to YAML (instead of e.g. old format) ([\#195](https://github.com/PowerDNS/pdns_recursor-ansible/pull/195))
 - CI tests: upgraded version of molecule and ansible-core packages ([\#202](https://github.com/PowerDNS/pdns_recursor-ansible/pull/202))
-- Test configuration before restarting ([\#215](https://github.com/PowerDNS/pdns_recursor-ansible/pull/215))
-- Update Molecule & CI: scenario rec-52, switch tests to YAML, update CI to ansible-core compatible, use HTTP for gpg_key to support Python 3.12 / Ansible 2.14 ([\#219](https://github.com/PowerDNS/pdns_recursor-ansible/pull/219))
 - Clean up linting and CI issues in scenario rec-52 ([\#210](https://github.com/PowerDNS/pdns_recursor-ansible/pull/210))
 - Improve CI pipeline for end-to-end sanity checks and more reliable builds ([\#211](https://github.com/PowerDNS/pdns_recursor-ansible/pull/211))
-
+- Test configuration before restarting ([\#215](https://github.com/PowerDNS/pdns_recursor-ansible/pull/215))
+- Update Molecule & CI: scenario rec-52, switch tests to YAML, update CI to ansible-core compatible, use HTTP for gpg_key to support Python 3.12 / Ansible 2.14 ([\#219](https://github.com/PowerDNS/pdns_recursor-ansible/pull/219))
 
 FIXED:
 - GH Actions: fix issues with CI ([\#190](https://github.com/PowerDNS/pdns_recursor-ansible/pull/190))
-- Fix regex to extract version of pdns_recursor (previous logic incorrectly captured “BV” etc) ([\#222](https://github.com/PowerDNS/pdns_recursor-ansible/pull/222))
-- Fix Ansible version-comparison logic: avoid comparing to integer 0 (use string) to support newer versions correctly ([\#221](https://github.com/PowerDNS/pdns_recursor-ansible/pull/221))
 - Fix pipeline stability after removing EOL platforms from test matrix ([\#191](https://github.com/PowerDNS/pdns_recursor-ansible/pull/191))
+- Fix Ansible version-comparison logic: avoid comparing to integer 0 (use string) to support newer versions correctly ([\#221](https://github.com/PowerDNS/pdns_recursor-ansible/pull/221))
+- Fix regex to extract version of pdns_recursor (previous logic incorrectly captured “BV” etc) ([\#222](https://github.com/PowerDNS/pdns_recursor-ansible/pull/222))
 
 REMOVED / DEPRECATED: 
 - Remove support for RHEL 7 and Debian 10 from the CI/test matrix (they have reached EOL) ([\#191](https://github.com/PowerDNS/pdns_recursor-ansible/pull/191))
