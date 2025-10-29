@@ -1,3 +1,41 @@
+## v1.8.0 (2025-10-29)
+
+NEW FEATURES:
+- Add support for Ubuntu 24.04 in CI / Molecule tests ([\#176](https://github.com/PowerDNS/pdns_recursor-ansible/pull/176))
+- Add Recursor 5.1 ([\#186](https://github.com/PowerDNS/pdns_recursor-ansible/pull/186))
+- Add “archlinux” variable file for an Arch scenario ([\#196](https://github.com/PowerDNS/pdns_recursor-ansible/pull/196))
+- Implement yaml config ([\#197](https://github.com/PowerDNS/pdns_recursor-ansible/pull/197))
+- Add rec-52 ([\#200](https://github.com/PowerDNS/pdns_recursor-ansible/pull/200)
+- Add role-specific tags to enable selective execution of tasks in large playbooks ([\#216](https://github.com/PowerDNS/pdns_recursor-ansible/pull/216))
+- Add pre-flight checks (configuration validation before service restart) to avoid boot-loops ([\#214](https://github.com/PowerDNS/pdns_recursor-ansible/pull/214))
+- Use YAML default config ([\#217](https://github.com/PowerDNS/pdns_recursor-ansible/pull/217))
+
+IMPROVEMENTS:
+- Bump docker from 6.1.3 to 7.0.0 ([\#170](https://github.com/PowerDNS/pdns_recursor-ansible/pull/170))
+- Bump yamllint from 1.32.0 to 1.35.1 ([\#171](https://github.com/PowerDNS/pdns_recursor-ansible/pull/171))
+- Small file permission fix ([\#174](https://github.com/PowerDNS/pdns_recursor-ansible/pull/174))
+- Change default configuration format to YAML (instead of e.g. old format) ([\#195](https://github.com/PowerDNS/pdns_recursor-ansible/pull/195))
+- CI tests: upgraded version of molecule and ansible-core packages ([\#202](https://github.com/PowerDNS/pdns_recursor-ansible/pull/202))
+- Clean up linting and CI issues in scenario rec-52 ([\#210](https://github.com/PowerDNS/pdns_recursor-ansible/pull/210))
+- Improve CI pipeline for end-to-end sanity checks and more reliable builds ([\#211](https://github.com/PowerDNS/pdns_recursor-ansible/pull/211))
+- Test configuration before restarting ([\#215](https://github.com/PowerDNS/pdns_recursor-ansible/pull/215))
+- Update Molecule & CI: scenario rec-52, switch tests to YAML, update CI to ansible-core compatible, use HTTP for gpg_key to support Python 3.12 / Ansible 2.14 ([\#219](https://github.com/PowerDNS/pdns_recursor-ansible/pull/219))
+
+FIXED:
+- GH Actions: fix issues with CI ([\#190](https://github.com/PowerDNS/pdns_recursor-ansible/pull/190))
+- Fix pipeline stability after removing EOL platforms from test matrix ([\#191](https://github.com/PowerDNS/pdns_recursor-ansible/pull/191))
+- Fix Ansible version-comparison logic: avoid comparing to integer 0 (use string) to support newer versions correctly ([\#221](https://github.com/PowerDNS/pdns_recursor-ansible/pull/221))
+- Fix regex to extract version of pdns_recursor (previous logic incorrectly captured “BV” etc) ([\#222](https://github.com/PowerDNS/pdns_recursor-ansible/pull/222))
+
+REMOVED / DEPRECATED: 
+- Remove support for RHEL 7 and Debian 10 from the CI/test matrix (they have reached EOL) ([\#191](https://github.com/PowerDNS/pdns_recursor-ansible/pull/191))
+- Remove pdns-recursor 4.8.x and 4.9.x from testing scenarios (EOL) ([\#219](https://github.com/PowerDNS/pdns_recursor-ansible/pull/219))
+- Remove Ubuntu 20.04 from the CI/test matrix (EOL) ([\#219](https://github.com/PowerDNS/pdns_recursor-ansible/pull/219))
+- repo-Debian: remove installing apt-transport-https ([\#220](https://github.com/PowerDNS/pdns_recursor-ansible/pull/220))
+
+REVERTED:
+- Revert PR “Recursor 2.0” (#225) — the large feature bump (support for 5.1/5.2/5.3, deb822 repos, min Ansible 2.15, handlers) was merged but immediately reverted; none of its changes are included in v1.8.0. ([\#225](https://github.com/PowerDNS/pdns_recursor-ansible/pull/225))
+
 ## v1.7.1 (2024-04-04)
 
 NEW FEATURES:
