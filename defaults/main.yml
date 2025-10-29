@@ -108,3 +108,6 @@ pdns_rec_config: {}
 
 # Dict with overrides for the service (systemd only)
 pdns_rec_service_overrides: {}
+  # Service:
+  #   User: "{{ pdns_rec_user }}"
+  #   Group: "{{ pdns_rec_group }}"

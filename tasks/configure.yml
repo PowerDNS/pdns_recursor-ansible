@@ -1,5 +1,11 @@
 ---
 
+- name: Render configuration and settings
+  set_fact:
+    _pdns_rec_config: "{{ default_pdns_rec_config | ansible.builtin.combine(pdns_rec_config, recursive=true) }}"
+    _service_overrides: "{{ default_pdns_rec_service_overrides | ansible.builtin.combine(pdns_rec_service_overrides, recursive=true) }}"
+    _rec_dirs: "{{ [pdns_rec_config_dir] + pdns_rec_config_additional_dirs }}"
+
 - name: Configure systemd
   when: ansible_service_mgr == "systemd"
   block:
@@ -12,8 +18,6 @@
         mode: "0750"
 
     - name: Override the PowerDNS Recursor unit (systemd)
-      vars:
-        _service_overrides: "{{ default_pdns_rec_service_overrides | ansible.builtin.combine(pdns_rec_service_overrides, recursive=true) }}"
       ansible.builtin.template:
         src: override-service.systemd.conf.j2
         dest: /etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf
@@ -26,8 +30,6 @@
         - restart pdns-recursor
 
 - name: Ensure that the PowerDNS Recursor configuration and additional directories exists
-  vars:
-    _rec_dirs: "{{ [pdns_rec_config_dir] + pdns_rec_config_additional_dirs }}"
   ansible.builtin.file:
     name: "{{ item.path | default(item) }}"
     state: directory
@@ -50,9 +52,6 @@
   notify: restart pdns-recursor
 
 - name: Generate the PowerDNS Recursor configuration
-  vars:
-    _pdns_rec_config: "{{ default_pdns_rec_config | ansible.builtin.combine(pdns_rec_config, recursive=true) }}"
-    _cfg_name: "{{ ('@' in pdns_rec_service_name) | ternary((pdns_rec_service_name.split('@') | last), '') }}"
   ansible.builtin.template:
     src: recursor.conf.j2
     dest: "{{ pdns_rec_config_dir }}/{{ pdns_rec_config_file }}"
@@ -64,9 +63,9 @@
 - name: Validate PowerDNS Recursor configuration
   when: not ansible_check_mode
   become: true
-  become_user: "{{ default_pdns_rec_user }}"
+  become_user: "{{ pdns_rec_file_owner }}"
   vars:
     _cfg_name: "{{ ('@' in pdns_rec_service_name) | ternary((pdns_rec_service_name.split('@') | last), '') }}"
   ansible.builtin.command:
-    cmd: "/usr/sbin/pdns_recursor --config=check{{ (_cfg_name | length > 0) | ternary(' --config-name=' ~ _cfg_name, '') }}"
+    cmd: "/usr/sbin/pdns_recursor --config=check{{ (_cfg_name | length > 0) | ansible.builtin.ternary(' --config-name=' ~ _cfg_name, '') }}"
   changed_when: false

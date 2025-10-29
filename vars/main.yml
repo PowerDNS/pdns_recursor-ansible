@@ -54,15 +54,8 @@ pdns_rec_powerdns_repo_53:
   name: powerdns-rec-53
 
 default_pdns_rec_service_overrides: {}
-  # Service:
-  #   User: "{{ pdns_rec_user }}"
-  #   Group: "{{ pdns_rec_group }}"
 
 default_pdns_rec_config:
-  recursor: {}
-  # config_dir: "{{ pdns_rec_config_dir }}"
-  #   setgid: "{{ pdns_rec_group }}"
-  #   setuid: "{{ pdns_rec_user }}"
   incoming:
     listen:
       - 127.0.0.1
