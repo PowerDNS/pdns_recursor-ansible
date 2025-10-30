@@ -1,17 +1,22 @@
 ---
 major_changes:
-- Improved yaml configuration for Recursor.
-- Migrate role to use handlers to restart process and services in case of changes.
-- Minimal supported ansible version is 2.15.
-- Added tests for Debian Trixie, Enterprise Linux 10.
-- Added support for Recursor 5.1.x, 5.2.x and 5.3.x versions.
-- Fixed configuration on yaml format in molecule tests.
-- Use of deb822-style format for debian compatible platforms, requires at least ansible 2.15. Inspired by @l00d3r in https://github.com/PowerDNS/pdns_recursor-ansible/pull/213 and @lpmhouben in https://github.com/PowerDNS/pdns_recursor-ansible/pull/218.
+  - Improved YAML-based configuration for the Recursor.
+  - Migrated the role to use handlers to restart processes and services on changes.
+  - Added tests for Debian Trixie and Enterprise Linux 10.
+  - Added support for Recursor 5.1.x, 5.2.x, and 5.3.x.
+  - Updated Molecule test configuration files to YAML.
+  - Switched Debian-based platforms to deb822-style APT repositories (requires Ansible >= 2.15). Inspired by @l00d3r in https://github.com/PowerDNS/pdns_recursor-ansible/pull/213 and @lpmhouben in https://github.com/PowerDNS/pdns_recursor-ansible/pull/218.
+  - Added support for the arm64 architecture when installing the Recursor via the role.
+
 minor_changes:
-- Add capability to mask process. Usefull when multiinstances of the Recursor is used.
+  - Added the ability to mask the service. Useful for multi-instance Recursor deployments.
+
 breaking_changes:
-- Variable `pdns_rec_service_overrides` allows override any section in service unit definition.
+  - Minimum supported Ansible version is 2.15.
+  - The variable pdns_rec_service_overrides now allows overriding any section in the service unit definition.
+
 removed_features:
-- Variables `pdns_rec_custom_config`, `pdns_rec_config_from_files`, `pdns_rec_config_from_files_dir_mode` removed.
+  - Removed variables pdns_rec_custom_config, pdns_rec_config_from_files, and pdns_rec_config_from_files_dir_mode.
+
 bugfixes:
-- Fixed molecule dns resolution test, dnspython library not was installed in the hosts.
+  - Fixed Molecule DNS resolution tests by ensuring the dnspython library is installed on hosts.

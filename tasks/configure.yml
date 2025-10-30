@@ -1,7 +1,7 @@
 ---
 
 - name: Render configuration and settings
-  set_fact:
+  ansible.builtin.set_fact:
     _pdns_rec_config: "{{ default_pdns_rec_config | ansible.builtin.combine(pdns_rec_config, recursive=true) }}"
     _service_overrides: "{{ default_pdns_rec_service_overrides | ansible.builtin.combine(pdns_rec_service_overrides, recursive=true) }}"
     _rec_dirs: "{{ [pdns_rec_config_dir] + pdns_rec_config_additional_dirs }}"

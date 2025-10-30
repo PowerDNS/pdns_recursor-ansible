@@ -75,8 +75,6 @@ provisioner:
     v: True
   config_options:
     defaults:
-      ansible_user: root
-      ansible_become: false
       gathering: smart
       fact_caching: jsonfile
       fact_caching_connection: .ansible_cache
