@@ -17,9 +17,9 @@ def _deb_repo_path(host):
             except Exception:
                 return (0, 0)
         if _parse(rel) < (22, 4):
-            return '/etc/apt/sources.list.d/powerdns-rec-master.list'
+            return '/etc/apt/sources.list.d/powerdns-rec-53.list'
     # Debian and Ubuntu >= 22.04 use deb822
-    return '/etc/apt/sources.list.d/powerdns-rec-master.sources'
+    return '/etc/apt/sources.list.d/powerdns-rec-53.sources'
 
 
 def test_repo_file(host):
@@ -27,7 +27,7 @@ def test_repo_file(host):
     if host.system_info.distribution.lower() in debian_os:
         f = host.file(_deb_repo_path(host))
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-master.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-rec-53.repo')
 
     assert f.exists
     assert f.user == 'root'
@@ -39,14 +39,22 @@ def test_pdns_repo(host):
     if host.system_info.distribution.lower() in debian_os:
         f = host.file(_deb_repo_path(host))
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-master.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-rec-53.repo')
 
     assert f.exists
-    assert f.contains('rec-master')
+    assert f.contains('rec-53')
 
 
 def test_pdns_version(host):
     cmd = host.run('/usr/sbin/pdns_recursor --version')
 
     assert 'PowerDNS Recursor' in cmd.stderr or 'PowerDNS Recursor' in cmd.stdout
-    assert 'master' in cmd.stderr or 'master' in cmd.stdout
+    assert '5.3' in cmd.stderr or '5.3' in cmd.stdout
+
+
+def systemd_override(host):
+    fname = '/etc/systemd/system/pdns-recursor.service.d/override.conf'
+    f = host.file(fname)
+
+    assert not f.contains('User=')
+    assert not f.contains('Group=')

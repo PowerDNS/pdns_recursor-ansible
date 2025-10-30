@@ -1,9 +1,9 @@
 ---
 
-- name: PDNS Recursor 5.0
+- name: PDNS Recursor 5.3
   hosts: all
   vars_files:
     - ../resources/vars/pdns-rec-common.yml
-    - ../resources/vars/pdns-rec-repo-50.yml
+    - ../resources/vars/pdns-rec-repo-53.yml
   roles:
     - { role: powerdns.pdns_recursor }

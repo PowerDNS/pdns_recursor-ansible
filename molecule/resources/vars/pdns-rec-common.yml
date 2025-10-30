@@ -5,38 +5,49 @@
 ##
 
 pdns_rec_config:
+  recursor:
+    include_dir: "{{ pdns_rec_config_dir }}/recursor.d"
+    threads: 2
+    max_mthreads: 1024
+    extended_resolution_errors: true
+    forward_zones:
+      - zone: example-forward.com
+        forwarders:
+          - 127.0.0.1:5301
+    rpzs:
+      - name: /var/lib/pdns-recursor/rpz/test2.rpz
+      - name: test.rpz
+        addresses: ["127.0.0.2"]
 
-  # Listen Address
-  local-address: "127.0.0.1"
-  local-port: "53"
+  incoming:
+    reuseport: true
+    allow_from: [ 127.0.0.0/8 ]
 
-  # Embedded webserver
-  webserver: yes
-  webserver-address: "0.0.0.0"
-  webserver-port: "8001"
-  api-key: "powerdns"
+  webservice:
+    address: 127.0.0.1
+    port: 8001
+    api_key: powerdns
+    api_dir: "/var/lib/pdns-recursor/api"
 
-  # Let the kernel do the distribution of queries
-  pdns-distributes-queries: "no"
-  reuseport: "yes"
+pdns_rec_config_additional_dirs:
+  - path: "{{ pdns_rec_config.webservice.api_dir }}"
+    mode: '0775'
+  - "{{ pdns_rec_config.recursor.include_dir }}"
+  - "/var/lib/pdns-recursor/rpz"
 
-  # We need more mthreads to handle huge traffic load
-  threads: 5
-  max-mthreads: 8192
+pdns_rec_config_additional_files:
+  - dest: "/var/lib/pdns-recursor/rpz/test2.rpz"
+    content: |
+      test2.rpz.               60   IN SOA    ns.test2.rpz. hostmaster.test2.rpz. 1 10800 60 3600 3600
+      test-rpz.com.test2.rpz.  60   IN A  127.0.0.2
 
-  # This tests that we expand lists to comma-separated configuration items
-  allow-from:
-    - 127.0.0.0/24
-    - 127.0.1.0/24
-    - '2001:DB8:10::/64'
-
-  forward-zones:
-    - "foo.example=192.0.2.1;192.0.2.2"
-    - "bar.example=192.0.2.224:5300"
-
-  forward-zones-recurse:
-    - "quux.example=192.0.2.15"
-
-pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/rpz.lua"
-pdns_rec_config_lua_file_content: |
-  rpzMaster("127.0.0.2", "rpz.test", {refresh=30})
+# Override service
+pdns_rec_service_overrides:
+  Unit:
+    Description: PowerDNS Recursor (modified)
+  Service:
+    LimitCORE: infinity
+    ExecStart: /usr/sbin/pdns_recursor --daemon=no --write-pid=no --disable-syslog --log-timestamp=no
+    Environment:
+      TEST_VAR1: TEST_VALUE1
+      TEST_VAR2: TEST_VALUE2

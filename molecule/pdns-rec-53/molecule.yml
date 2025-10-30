@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-50
+  name: pdns-rec-53
 
 driver:
   name: docker
@@ -10,45 +10,63 @@ dependency:
   name: galaxy
 
 platforms:
-  - name: oraclelinux-8
-    image: ghcr.io/oracle/oraclelinux:8
-    dockerfile_tpl: centos-systemd
 
-  - name: oraclelinux-9
-    image: oraclelinux:9
-    dockerfile_tpl: centos-systemd
+  # no builds for 5.3
+  # - name: ubuntu-2004
+  #   image: ubuntu:20.04
+  #   dockerfile_tpl: debian-systemd
 
   - name: ubuntu-2204
     image: ubuntu:22.04
-    dockerfile_tpl: ubuntu-systemd
+    dockerfile_tpl: debian-systemd
 
   - name: ubuntu-2404
     image: ubuntu:24.04
-    dockerfile_tpl: ubuntu-systemd
+    dockerfile_tpl: debian-systemd
 
   - name: debian-11
     image: debian:11
-    dockerfile_tpl: debian-python3
+    dockerfile_tpl: debian-systemd
 
   - name: debian-12
     image: debian:12
-    dockerfile_tpl: debian-python3
+    dockerfile_tpl: debian-systemd
+
+  - name: debian-13
+    image: debian:13
+    dockerfile_tpl: debian-systemd
+
+  - name: oraclelinux-8
+    image: oraclelinux:8
+    dockerfile_tpl: rhel-systemd
+
+  - name: oraclelinux-9
+    image: oraclelinux:9
+    dockerfile_tpl: rhel-systemd
+
+  - name: oraclelinux-10
+    image: oraclelinux:10
+    dockerfile_tpl: rhel-systemd
 
   - name: rockylinux-8
     image: rockylinux:8
-    dockerfile_tpl: centos-systemd
+    dockerfile_tpl: rhel-systemd
+
+  - name: rockylinux-9
+    image: rockylinux:9
+    dockerfile_tpl: rhel-systemd
 
   - name: almalinux-8
     image: almalinux:8
-    dockerfile_tpl: centos-systemd
-
-  - name: rockylinux-9
-    image: rockylinux:9.0
-    dockerfile_tpl: centos-systemd
+    dockerfile_tpl: rhel-systemd
 
   - name: almalinux-9
     image: almalinux:9
-    dockerfile_tpl: centos-systemd
+    dockerfile_tpl: rhel-systemd
+
+  - name: almalinux-10
+    image: almalinux:10
+    dockerfile_tpl: rhel-systemd
 
 provisioner:
   name: ansible
@@ -78,9 +96,7 @@ verifier:
   name: testinfra
   options:
     vvv: True
-  env:
-    REC_CONFIG_FILE: 'recursor.yml'
   directory: ../resources/tests/all
   additional_files_or_dirs:
-    - ../repo-50/
+    - ../repo-53/
     - ../systemd-overrides

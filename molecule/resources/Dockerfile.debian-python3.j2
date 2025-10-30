@@ -7,7 +7,7 @@ RUN if [ ! -e /sbin/init ]; then ln -s /lib/systemd/systemd /sbin/init ; fi
 
 ENV container docker
 
-# Don't start the optional systemd services. 
+# Don't start the optional systemd services.
 RUN find /etc/systemd/system \
          /lib/systemd/system \
          -path '*.wants/*' \
