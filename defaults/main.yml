@@ -86,7 +86,6 @@ pdns_rec_config_additional_files: []
 # Example config from:
 # https://doc.powerdns.com/recursor/yamlsettings.html#yaml-settings-file
 pdns_rec_config: {}
-# pdns_rec_config:
 #   dnssec:
 #     log_bogus: true
 #   incoming:
