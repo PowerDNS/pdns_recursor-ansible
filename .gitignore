@@ -16,4 +16,6 @@ __pycache__/
 .molecule
 .vagrant
 venv/
-pytestdebug.log
+
+# Log files
+*.log
