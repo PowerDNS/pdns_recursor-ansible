@@ -236,9 +236,12 @@ See the [CHANGELOG.md](https://github.com/PowerDNS/pdns_recursor-ansible/blob/ma
 ## Contributing
 
 - Every pull request must include a [changelog fragment](https://docs.ansible.com/ansible/devel/community/collection_development_process.html#creating-a-changelog-fragment).
-- Include a link to the pull request in the fragment.
-- If the PR addresses an issue, also include a link to that issue.
-- Ensure the changelog entry starts with a lowercase letter (after the dash) and ends with a period.
+- Each changelog entry must include a link to the pull request.
+- If the pull request addresses an issue, also include a link to the related issue.
+- Ensure each changelog entry starts with a lowercase letter (immediately after the dash) and ends with a period.
+- Copy [`fragment-example.yaml`](changelogs/fragment-example.yaml) into [`changelogs/fragments`](changelogs/fragments) and name it `num-pr-title.yaml`, where:
+  - `num` is the pull request number
+  - `pr-title` is the pull request title (use a short, filesystem-friendly version)
 
 ## Testing
 
