@@ -1,0 +1,19 @@
+---
+doc_changes:
+- describe the documentation changes ... (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+major_changes:
+- describe the major changes ... (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+minor_changes:
+- describe the minor changes ... (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+breaking_changes:
+- describe if any ... (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+deprecated_features:
+- what was deprecated ... (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+removed_features:
+- what was removed from the collection ... (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+bugfixes:
+- describe what was fixed ... (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+security_fixes:
+- describe if any ... (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+known_issues:
+- describe if any ... (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).

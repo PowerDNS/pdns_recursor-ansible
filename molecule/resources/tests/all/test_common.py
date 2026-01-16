@@ -53,60 +53,97 @@ def test_service(host):
     s = host.ansible('service', 'name=pdns-recursor state=started enabled=yes')
     assert s["changed"] is False
 
-
 def test_config(host, AnsibleVars):
     with host.sudo():
         rec_config_file = os.getenv('REC_CONFIG_FILE', 'recursor.conf')
-        fc = fr = None
+        fc = None
         if host.system_info.distribution.lower() in debian_os:
             fc = host.file(f'/etc/powerdns/{ rec_config_file }')
-            fr = host.file('/etc/powerdns/rpz.lua')
         if host.system_info.distribution.lower() in rhel_os:
             fc = host.file(f'/etc/pdns-recursor/{ rec_config_file }')
-            fr = host.file('/etc/pdns-recursor/rpz.lua')
 
         assert fc.exists
         assert fc.user == 'root'
         assert fc.group == AnsibleVars['default_pdns_rec_group']
         assert fc.mode == 0o640
-        assert fc.contains('lua_config_file: ' + fr.path)
-
-        assert fr.exists
-        assert fr.user == 'root'
-        assert fr.group == AnsibleVars['default_pdns_rec_group']
-        assert fr.mode == 0o640
 
 def test_dns_resolution(host):
     import socket
     import subprocess
 
-    # testing URL - example.com :)
-    test_url = "example.com"
-
     with host.sudo():
         cmd = host.run("""python3 -c "
+import sys
 import socket
-import dns.resolver
+try:
+    import dns.resolver
+except ImportError:
+    print('dnspython not installed', file=sys.stderr)
+    sys.exit(1)
+
+def _resolve(resolver, name, rtype):
+    try:
+        return resolver.resolve(name, rtype)  # dnspython >=2
+    except AttributeError:
+        return resolver.query(name, rtype)    # dnspython 1.x
 
 resolver = dns.resolver.Resolver()
 resolver.nameservers = ['127.0.0.1']
 
 # Test IPv4
 try:
-    answers_a = resolver.resolve('example.com', 'A')
+    answers_a = _resolve(resolver, 'example.com', 'A')
     if len(answers_a) > 0:
         print(f'A record: {answers_a[0].address}')
 except Exception as e:
     print(f'Error querying IPv4 record: {e}')
-    exit(1)
+    sys.exit(1)
 
 # Test IPv6
 try:
-    answers_aaaa = resolver.resolve('example.com', 'AAAA')
+    answers_aaaa = _resolve(resolver, 'example.com', 'AAAA')
     if len(answers_aaaa) > 0:
         print(f'AAAA record: {answers_aaaa[0].address}')
-    else:
+except Exception as e:
     print(f'Error querying IPv6 record: {e}')
-    exit (1)
-""")
+    sys.exit(1)
+" """)
+        assert cmd.rc == 0, f"DNS resolution script failed rc={cmd.rc}\nstdout:\n{cmd.stdout}\nstderr:\n{cmd.stderr}"
 
+def test_dns_resolution_rpz(host):
+    import socket
+    import subprocess
+
+    with host.sudo():
+        cmd = host.run("""python3 -c "
+import sys
+import socket
+try:
+    import dns.resolver
+except ImportError:
+    print('dnspython not installed', file=sys.stderr)
+    sys.exit(1)
+
+def _resolve(resolver, name, rtype):
+    try:
+        return resolver.resolve(name, rtype)  # dnspython >=2
+    except AttributeError:
+        return resolver.query(name, rtype)    # dnspython 1.x
+
+resolver = dns.resolver.Resolver()
+resolver.nameservers = ['127.0.0.1']
+
+# Test test-rpz.com expects 127.0.0.2
+try:
+    answers_test2 = _resolve(resolver, 'test-rpz.com', 'A')
+    addrs = [r.address for r in answers_test2]
+    if '127.0.0.2' not in addrs:
+        print(f'Unexpected A record(s) for test-rpz.com: {addrs}')
+        sys.exit(1)
+    else:
+        print('test-rpz.com A record OK')
+except Exception as e:
+    print(f'Error querying test-rpz.com A record: {e}')
+    sys.exit(1)
+" """)
+        assert cmd.rc == 0, f"RPZ script failed rc={cmd.rc}\nstdout:\n{cmd.stdout}\nstderr:\n{cmd.stderr}"

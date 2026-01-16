@@ -15,12 +15,12 @@ pdns_rec_install_epel: true
 #    - { role: PowerDNS.pdns_recursor,
 #        pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_master }}"
 #
-# To install the PowerDNS Recursor package from the '40' branch of
+# To install the PowerDNS Recursor package from the '52' branch of
 # the PowerDNS official repository use the following playbook
 # - hosts: all
 #   roles:
 #    - { role: PowerDNS.pdns_recursor,
-#        pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_40 }}"
+#        pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_52 }}"
 #
 # To install the PowerDNS Recursor package from a custom repository
 # override the `pdns_rec_install_repo` default value in your playbook.
@@ -67,7 +67,8 @@ pdns_rec_bin_name: pdns_recursor
 
 # State of the PowerDNS Recursor service
 pdns_rec_service_state: started
-pdns_rec_service_enabled: "yes"
+pdns_rec_service_enabled: true
+pdns_rec_service_masked: false
 
 # When True, disable the automated restart of the PowerDNS Recursor service
 pdns_rec_disable_handlers: false
@@ -75,40 +76,37 @@ pdns_rec_disable_handlers: false
 # Configuration directory and files
 pdns_rec_config_dir: "{{ default_pdns_rec_config_dir }}"
 pdns_rec_config_file: recursor.conf
-pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
-pdns_rec_config_lua_file_content: ""
-pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
-pdns_rec_config_dns_script_file_content: ""
 
-# Mode for directories from include-dir
-pdns_rec_config_include_dir_mode: "0750"
+# Additional directories for configuration or supplementary files
+pdns_rec_config_additional_dirs: []
 
-# Directories and files required by recursor configuration
-pdns_rec_config_from_files_dir_mode: "0750"
-pdns_rec_config_from_files: []
-# map containing all configuration options execpt
-#   config-dir, setuid, setguid, lua_config_file, lua_dns_script
+# Additional configuration or supplementary files
+pdns_rec_config_additional_files: []
+
 # Example config from:
 # https://doc.powerdns.com/recursor/yamlsettings.html#yaml-settings-file
-pdns_rec_custom_config:
-#  dnssec:
-#    log_bogus: true
-#  incoming:
-#    listen:
-#      - 0.0.0.0:5301
-#      - '[::]:5301'
-#  recursor:
-#    extended_resolution_errors: true
-#    forward_zones:
-#      - zone: example.com
-#        forwarders:
-#          - 127.0.0.1:5301
-#  outgoing:
-#    source_address:
-#      - 0.0.0.0
-#      - '::'
-#  logging:
-#    loglevel: 6
+pdns_rec_config: {}
+#   dnssec:
+#     log_bogus: true
+#   incoming:
+#     listen:
+#       - 0.0.0.0:5301
+#       - '[::]:5301'
+#   recursor:
+#     extended_resolution_errors: true
+#     forward_zones:
+#       - zone: example.com
+#         forwarders:
+#           - 127.0.0.1:5301
+#   outgoing:
+#     source_address:
+#       - 0.0.0.0
+#       - '::'
+#   logging:
+#     loglevel: 6
 
 # Dict with overrides for the service (systemd only)
-pdns_rec_service_overrides: "{{ default_pdns_rec_service_overrides }}"
+pdns_rec_service_overrides: {}
+  # Service:
+  #   User: "{{ pdns_rec_user }}"
+  #   Group: "{{ pdns_rec_group }}"

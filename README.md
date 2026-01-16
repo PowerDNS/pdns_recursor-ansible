@@ -9,7 +9,7 @@ An Ansible role created by the folks behind PowerDNS to setup the [PowerDNS Recu
 
 ## Requirements
 
-An Ansible 2.12 or higher installation.
+An Ansible 2.15 or higher installation.
 
 ## Dependencies
 
@@ -27,28 +27,28 @@ By default, the PowerDNS Recursor is installed from the software repositories co
 
 ```yaml
 # Install the PowerDNS Recursor from the 'master' official repository
-- hosts: pdns-recursors
+- hosts: pdns_recursors
   roles:
-  - { role: PowerDNS.pdns_recursor,
+  - { role: powerdns.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_master }}" }
 
-# Install the PowerDNS Recursor from the '5.0.x' official repository
-- hosts: pdns-recursors
-  roles:
-  - { role: PowerDNS.pdns_recursor,
-      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_50 }}" }
-
 # Install the PowerDNS Recursor from the '5.1.x' official repository
-- hosts: pdns-recursors
+- hosts: pdns_recursors
   roles:
-  - { role: PowerDNS.pdns_recursor,
+  - { role: powerdns.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_51 }}" }
 
 # Install the PowerDNS Recursor from the '5.2.x' official repository
-- hosts: pdns-recursors
+- hosts: pdns_recursors
   roles:
-  - { role: PowerDNS.pdns_recursor,
+  - { role: powerdns.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_52 }}" }
+
+# Install the PowerDNS Recursor from the '5.3.x' official repository
+- hosts: pdns_recursors
+  roles:
+  - { role: powerdns.pdns_recursor,
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_53 }}" }
 ```
 
 The examples above, show how to install the PowerDNS Recursor from the official PowerDNS repositories
@@ -61,14 +61,15 @@ The roles also supports custom repositories
   vars:
     pdns_rec_install_repo:
       name: "powerdns-rec"  # the name of the repository
+      apt_version: rec-master # deb822 suites parameter
       apt_repo_origin: "repo.example.com"   # used to pin the PowerDNS packages to the provided repository
       apt_repo: "deb http://repo.example.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}/pdns-recursor main"
       gpg_key: "http://repo.example.com/MYREPOGPGPUBKEY.asc" # repository public GPG key
       gpg_key_id: "MYREPOGPGPUBKEYID" # to avoid to reimport the key each time the role is executed
-      yum_repo_baseurl: "http://repo.example.com/centos/$basearch/$releasever/pdns-recursor"
-      yum_repo_debug_symbols_baseurl: "http://repo.example.com/centos/$basearch/$releasever/pdns-recursor/debug"
+      yum_repo_baseurl: "http://repo.example.com/el/$basearch/$releasever/pdns-recursor"
+      yum_repo_debug_symbols_baseurl: "http://repo.example.com/el/$basearch/$releasever/pdns-recursor/debug"
   roles:
-  - { role: PowerDNS.pdns_recursor }
+  - { role: powerdns.pdns_recursor }
 ```
 
 It is also possible to install the PowerDNS Recursor from custom repositories as demonstrated in the example above.
@@ -129,7 +130,8 @@ The name of the PowerDNS Recursor service.
 
 ```yaml
 pdns_rec_service_state: "started"
-pdns_rec_service_enabled: "yes"
+pdns_rec_service_enabled: true
+pdns_rec_service_masked: false
 ```
 
 Allow to specify the desired state of the PowerDNS Recursor service.
@@ -149,134 +151,118 @@ pdns_rec_config_file: "recursor.conf"
 The PowerDNS Recursor configuration files and directories, where `default_pdns_rec_config_dir` is `/etc/powerdns` on Debian and `/etc/pdns-recursor` on RedHat.
 
 ```yaml
-pdns_rec_custom_config: { }
+pdns_rec_config: {}
 ```
 
-Dictionary containing in YAML format the custom configuration of PowerDNS Recursor.
-**NOTE**: You should not set the `config-dir`, `lua_config_file`,`lua_dns_script`, `set-uid` and `set-gid` because are set by other role variables (respectively `pdns_rec_config_dir`, `pdns_rec_user`, `pdns_rec_group`).
+Dictionary containing in YAML format configuration of PowerDNS Recursor. See https://docs.powerdns.com/recursor/yamlsettings.html.
 
 ```yaml
-pdns_res_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
-pdns_rec_config_lua_file_content: ""
+pdns_rec_config_additional_dirs: []
+# pdns_rec_config_additional_dirs:
+#   - path: "{{ pdns_rec_config.webservice.api_dir }}"
+#     mode: '0775'
+#   - "{{ pdns_rec_config.recursor.include_dir }}"
+#   - "/var/lib/pdns-recursor/rpz"
 ```
 
-If `pdns_rec_config_lua_file_content` is not `""`, this will dump
-the content of this variable to the `pdns_res_config_lua` file and
-define accordingly the `lua-config-file` setting in the `recursor.conf` configuration file.
+Additional directories for configuration or supplementary files.
 
 ```yaml
-pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
-pdns_rec_config_dns_script_file_content: ""
+pdns_rec_config_additional_files: []
+# pdns_rec_config_additional_files:
+#   - dest: "/var/lib/pdns-recursor/rpz/test.rpz"
+#     content: |
+#       test.rpz.               60   IN SOA    ns.test.rpz. hostmaster.test.rpz. 1 10800 60 3600 3600
+#       test-rpz.com.test.rpz.  60   IN A  127.0.0.2
 ```
 
-If `pdns_rec_config_dns_script_file_content` is not `""`, this will dump
-the content of this variable to the `pdns_rec_config_dns_script` file and
-define accordingly the `lua-dns-script` setting in the `recursor.conf` configuration file.
-
-```yaml
-pdns_rec_service_overrides:
-  User: "{{ pdns_rec_user }}"
-  Group: "{{ pdns_rec_group }}"
-```
-
-Dict with overrides for the service (systemd only).
-This can be used to change any systemd settings in the `[Service]` category
-
-```yaml
-pdns_rec_config_from_files_dir_mode: 0750
-pdns_rec_config_from_files: []
-#pdns_rec_config_from_files:
-#  - dest: "/var/lib/pdns-recursor/from-files/forward-zones.txt"
-#    src: "files/forward-zones/forward.txt"
-```
-
-List of files to copy to the PowerDNS Recursor instance, could be used for the `*-from-file` settings in the `recursor.conf` configuration file.
-The variable `pdns_rec_config_from_files_dir_mode` allows to change the ownership mode of files, if required.
-
-```yaml
-pdns_rec_config_include_dir_mode: 0750
-```
-
-The `pdns_rec_config_include_dir_mode` will change the mode of directories form `include-dir` settings, in case one of them required some writing permissions.
+Additional configuration or supplementary files for PowerDNS Recursor, e.g RPZ files.
 
 ## Example Playbooks
 
 Bind to `203.0.113.53` on port `5300` and allow only traffic from the `198.51.100.0/24` subnet:
 
 ```yaml
-- hosts: pdns-recursors
+- hosts: pdns_recursors
   vars:
     pdns_rec_config:
-      allow-from: "198.51.100.0/24"
-      local-address: "203.0.113.53:5300"
+      incoming:
+        listen:
+          - 203.0.113.53:5300
+        allow_from: [ 198.51.100.0/24 ]
   roles:
-    - { role: PowerDNS.pdns_recursor }
+    - { role: powerdns.pdns_recursor }
 ```
 
 Allow traffic from multiple networks and set some custom ulimits overriding the default systemd service:
 
 ```yaml
-- hosts: pdns-recursors
+- hosts: pdns_recursors
   vars:
     pdns_rec_config:
-      allow-from:
-        - "198.51.100.0/24"
-        - "203.0.113.53/24"
-      local-address: "203.0.113.53:5300"
+      incoming:
+        listen:
+          - 203.0.113.53:5300
+        allow_from: [ 198.51.100.0/24, 198.51.100.0/24 ]
     pdns_rec_service_overrides:
       LimitNOFILE: 10000
   roles:
-    - { role: PowerDNS.pdns_recursor }
+    - { role: powerdns.pdns_recursor }
 ```
-
-Allow traffic from multiple networks and set some custom ulimits overriding the default systemd service,
-but keeping in the default overrides from this role. This is recommended when using PowerDNS 4.3 and up.
-
-```yaml
-- hosts: pdns-recursors
-  vars:
-    pdns_rec_config:
-      allow-from:
-        - "198.51.100.0/24"
-        - "203.0.113.53/24"
-      local-address: "203.0.113.53:5300"
-    pdns_rec_service_overrides: '{{ default_pdns_rec_service_overrides | combine({"LimitNOFILE": 10000})'
-  roles:
-    - { role: PowerDNS.pdns_recursor }
-```
-
 
 Forward queries for corp.example.net to a nameserver on localhost and queries for foo.example to other nameservers:
 
 ```yaml
-- hosts: pdns-recursors
+- hosts: pdns_recursors
   vars:
     pdns_rec_config:
-      forward-zones:
-        - "corp.example.net=127.0.0.1:5300"
-        - "foo.example=192.0.2.3;2001:db8::2:3"
+      recursor:
+        forward_zones:
+          - zone: corp.example.net
+            forwarders:
+              - 127.0.0.1:5300
+          - zone: foo.example
+            forwarders:
+              - "192.0.2.3"
+              - "[2001:db8::2:3]"
   roles:
-    - { role: PowerDNS.pdns_recursor }
+    - { role: powerdns.pdns_recursor }
 ```
 
-## Changelog
+## Release notes
 
-A detailed changelog of all the changes applied to the role is available [here](./CHANGELOG.md).
+See the [CHANGELOG.md](https://github.com/PowerDNS/pdns_recursor-ansible/blob/master/CHANGELOG.md).
+
+## Contributing
+
+- Every pull request must include a [changelog fragment](https://docs.ansible.com/ansible/devel/community/collection_development_process.html#creating-a-changelog-fragment).
+- Each changelog entry must include a link to the pull request.
+- If the pull request addresses an issue, also include a link to the related issue.
+- Ensure each changelog entry starts with a lowercase letter (immediately after the dash) and ends with a period.
+- Copy [`fragment-example.yaml`](changelogs/fragment-example.yaml) into [`changelogs/fragments`](changelogs/fragments) and name it `num-pr-title.yaml`, where:
+  - `num` is the pull request number
+  - `pr-title` is the pull request title (use a short, filesystem-friendly version)
 
 ## Testing
 
 Tests are performed by [Molecule](http://molecule.readthedocs.org/en/latest/).
 
+    ```bash
     $ pip install tox
+    ```
 
 To test all the scenarios run
 
+    ```bash
     $ tox
+    ```
 
 To run a custom molecule command
 
-    $ tox -e ansible216 -- molecule test -s pdns-rec-52
+    ```bash
+    $ tox -e ansible216 -- molecule test -s pdns-rec-53
+    ```
 
 ## License
 
-MIT
+See [LICENSE](https://github.com/PowerDNS/pdns_recursor-ansible/blob/master/LICENSE).
