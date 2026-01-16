@@ -247,21 +247,21 @@ See the [CHANGELOG.md](https://github.com/PowerDNS/pdns_recursor-ansible/blob/ma
 
 Tests are performed by [Molecule](http://molecule.readthedocs.org/en/latest/).
 
-    ```bash
-    $ pip install tox
-    ```
+```bash
+$ pip install tox
+```
 
 To test all the scenarios run
 
-    ```bash
-    $ tox
-    ```
+```bash
+$ tox
+```
 
 To run a custom molecule command
 
-    ```bash
-    $ tox -e ansible216 -- molecule test -s pdns-rec-53
-    ```
+```bash
+$ tox -e ansible216 -- molecule test -s pdns-rec-53
+```
 
 ## License
 
