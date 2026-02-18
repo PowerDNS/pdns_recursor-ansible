@@ -22,8 +22,8 @@
 {%-   if val is string and val is not mapping -%}
 {#-     Coerce to a real str so that AnsibleVaultEncryptedUnicode values
         (from inline !vault tags) are decrypted before any filter touches them.
-        For plain strings this is a harmless no-op. -#}
-{%-     set val = val | string -%}
+        For plain strings this is a harmless no-op. Also trim whitespace/newlines. -#}
+{%-     set val = (val | string | trim) -%}
 {%-   endif -%}
 {%-   if val is mapping -%}
 {%-     set ns = namespace(items=[]) -%}
