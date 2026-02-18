@@ -79,8 +79,9 @@ def test_config_vaulted_api_key(host):
             fc = host.file(f'/etc/pdns-recursor/{ rec_config_file }')
 
         assert fc.exists
-        # The vaulted value must be decrypted to the plaintext "powerdns"
-        assert fc.contains('api_key: powerdns'), \
+        # The vaulted value must be decrypted to the plaintext "powerdns".
+        # to_nice_yaml may quote the value, so match with or without quotes.
+        assert fc.contains('api_key:.*powerdns'), \
             "Vaulted api_key was not decrypted properly in the rendered config"
         # Ensure no vault marker leaked into the config file
         assert not fc.contains('ANSIBLE_VAULT'), \
