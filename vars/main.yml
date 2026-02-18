@@ -16,7 +16,6 @@ _pdns_rec_apt_arch: "{{ _pdns_rec_apt_arch_map.get(ansible_architecture | lower,
 pdns_rec_powerdns_repo_master:
   apt_repo_origin: repo.powerdns.com
   apt_version: rec-master
-  apt_repo: deb [arch={{ _pdns_rec_apt_arch }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-master main
   gpg_key: http://repo.powerdns.com/CBC8B383-pub.asc
   gpg_key_id: D47975F8DAE32700A563E64FFF389421CBC8B383
   yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-master
@@ -26,7 +25,6 @@ pdns_rec_powerdns_repo_master:
 pdns_rec_powerdns_repo_51:
   apt_repo_origin: repo.powerdns.com
   apt_version: rec-51
-  apt_repo: deb [arch={{ _pdns_rec_apt_arch }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-51 main
   gpg_key: http://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-51
@@ -36,7 +34,6 @@ pdns_rec_powerdns_repo_51:
 pdns_rec_powerdns_repo_52:
   apt_repo_origin: repo.powerdns.com
   apt_version: rec-52
-  apt_repo: deb [arch={{ _pdns_rec_apt_arch }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-52 main
   gpg_key: http://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-52
@@ -46,7 +43,6 @@ pdns_rec_powerdns_repo_52:
 pdns_rec_powerdns_repo_53:
   apt_repo_origin: repo.powerdns.com
   apt_version: rec-53
-  apt_repo: deb [arch={{ _pdns_rec_apt_arch }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-53 main
   gpg_key: http://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-53
@@ -56,7 +52,6 @@ pdns_rec_powerdns_repo_53:
 pdns_rec_powerdns_repo_54:
   apt_repo_origin: repo.powerdns.com
   apt_version: rec-54
-  apt_repo: deb [arch={{ _pdns_rec_apt_arch }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-54 main
   gpg_key: http://repo.powerdns.com/FD380FBB-pub.asc
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-54
