@@ -13,6 +13,7 @@ breaking_changes:
 - Ubuntu 20.04 has been removed from molecule test scenarios.
 bugfixes:
 - fix typo in debug symbols package variable name ``default_pdns_recorsor_debug_symbols_package_name`` to ``default_pdns_rec_debug_symbols_package_name`` in Archlinux, Debian, and Other vars files.
+- fix ``recursor.conf.j2`` template to coerce ``AnsibleVaultEncryptedUnicode`` values to plain strings before type-normalisation, allowing ``!vault`` encrypted values to be used directly inside configuration dicts.
 doc_changes:
 - update README with PowerDNS Recursor 5.4.x repository installation example.
 - document ``pdns_rec_package_state``, ``pdns_rec_bin_name``, and ``pdns_rec_service_overrides`` variables in the README.

@@ -10,6 +10,7 @@
     - stringified floats     ("1.5"     → 1.5)
     - stringified booleans   ("true"    → true,  "yes" → true, …)
     - stringified lists      ("['a']"   → a real YAML/JSON list)
+    - vault-encrypted values (AnsibleVaultEncryptedUnicode → decrypted str)
   Native types and nested structures are preserved as-is.
 
   The macro output is parsed back via from_json so that to_nice_yaml
@@ -18,6 +19,12 @@
 
 {#- Emit a JSON representation of `val` with stringified types fixed. -#}
 {%- macro normalize_value(val) -%}
+{%-   if val is string and val is not mapping -%}
+{#-     Coerce to a real str so that AnsibleVaultEncryptedUnicode values
+        (from inline !vault tags) are decrypted before any filter touches them.
+        For plain strings this is a harmless no-op. -#}
+{%-     set val = val | string -%}
+{%-   endif -%}
 {%-   if val is mapping -%}
 {%-     set ns = namespace(items=[]) -%}
 {%-     for k, v in val.items() -%}
