@@ -67,6 +67,25 @@ def test_config(host, AnsibleVars):
         assert fc.group == AnsibleVars['default_pdns_rec_group']
         assert fc.mode == 0o640
 
+
+def test_config_vaulted_api_key(host):
+    """Verify that the vaulted api_key is decrypted and written as plaintext in the config."""
+    with host.sudo():
+        rec_config_file = os.getenv('REC_CONFIG_FILE', 'recursor.conf')
+        fc = None
+        if host.system_info.distribution.lower() in debian_os:
+            fc = host.file(f'/etc/powerdns/{ rec_config_file }')
+        if host.system_info.distribution.lower() in rhel_os:
+            fc = host.file(f'/etc/pdns-recursor/{ rec_config_file }')
+
+        assert fc.exists
+        # The vaulted value must be decrypted to the plaintext "powerdns"
+        assert fc.contains('api_key: powerdns'), \
+            "Vaulted api_key was not decrypted properly in the rendered config"
+        # Ensure no vault marker leaked into the config file
+        assert not fc.contains('ANSIBLE_VAULT'), \
+            "Vault-encrypted blob found in rendered config — decryption failed"
+
 def test_dns_resolution(host):
     import socket
     import subprocess

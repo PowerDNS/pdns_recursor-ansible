@@ -74,6 +74,7 @@ provisioner:
       fact_caching: jsonfile
       fact_caching_connection: .ansible_cache
       fact_caching_timeout: 7200
+      vault_password_file: ${MOLECULE_SCENARIO_DIRECTORY}/../resources/.vault-password
     ssh_connection:
       pipelining: true
   inventory:
