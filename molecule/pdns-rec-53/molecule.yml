@@ -11,11 +11,6 @@ dependency:
 
 platforms:
 
-  # no builds for 5.3
-  # - name: ubuntu-2004
-  #   image: ubuntu:20.04
-  #   dockerfile_tpl: debian-systemd
-
   - name: ubuntu-2204
     image: ubuntu:22.04
     dockerfile_tpl: debian-systemd

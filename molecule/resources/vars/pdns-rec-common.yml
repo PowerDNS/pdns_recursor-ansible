@@ -7,9 +7,9 @@
 pdns_rec_config:
   recursor:
     include_dir: "{{ pdns_rec_config_dir }}/recursor.d"
-    threads: 2
+    threads: "2"
     max_mthreads: 1024
-    extended_resolution_errors: true
+    extended_resolution_errors: "true"
     forward_zones:
       - zone: example-forward.com
         forwarders:
@@ -17,16 +17,16 @@ pdns_rec_config:
     rpzs:
       - name: /var/lib/pdns-recursor/rpz/test2.rpz
       - name: test.rpz
-        addresses: ["127.0.0.2"]
+        addresses: "['127.0.0.2']"
 
   incoming:
-    reuseport: true
+    reuseport: yes
     allow_from: [ 127.0.0.0/8 ]
 
   webservice:
-    address: 127.0.0.1
-    port: 8001
-    api_key: powerdns
+    address: "127.0.0.1"
+    port: "8001"
+    api_key: "powerdns"
     api_dir: "/var/lib/pdns-recursor/api"
 
 pdns_rec_config_additional_dirs:

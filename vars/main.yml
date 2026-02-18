@@ -11,7 +11,7 @@ _pdns_rec_apt_arch_map:
   i386: i386
   i686: i386
   ppc64le: ppc64el
-_pdns_rec_apt_arch: "{{ _pdns_rec_apt_arch_map.get(ansible_architecture, 'amd64') }}"
+_pdns_rec_apt_arch: "{{ _pdns_rec_apt_arch_map.get(ansible_architecture | lower, 'amd64') }}"
 
 pdns_rec_powerdns_repo_master:
   apt_repo_origin: repo.powerdns.com
@@ -52,6 +52,16 @@ pdns_rec_powerdns_repo_53:
   yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-53
   yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-53/debug
   name: powerdns-rec-53
+
+pdns_rec_powerdns_repo_54:
+  apt_repo_origin: repo.powerdns.com
+  apt_version: rec-54
+  apt_repo: deb [arch={{ _pdns_rec_apt_arch }}] https://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-rec-54 main
+  gpg_key: http://repo.powerdns.com/FD380FBB-pub.asc
+  gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
+  yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-54
+  yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-54/debug
+  name: powerdns-rec-54
 
 default_pdns_rec_service_overrides: {}
 

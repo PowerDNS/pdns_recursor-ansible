@@ -15,10 +15,10 @@
 - name: Install the PowerDNS Recursor
   ansible.builtin.package:
     name: "{{ pdns_rec_package_name }}{{ _pdns_rec_package_version | default('') }}"
-    state: present
+    state: "{{ pdns_rec_package_state }}"
 
 - name: Install PowerDNS Recursor debug symbols
   ansible.builtin.package:
     name: "{{ pdns_rec_debug_symbols_package_name }}{{ _pdns_rec_package_version | default('') }}"
-    state: present
+    state: "{{ pdns_rec_package_state }}"
   when: pdns_rec_install_debug_symbols_package

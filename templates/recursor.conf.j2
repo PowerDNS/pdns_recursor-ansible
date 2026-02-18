@@ -1,1 +1,60 @@
-{{ _pdns_rec_config | to_nice_yaml(width=80, indent=2) }}
+{#-
+  Jinja2 macro to normalize types in the merged recursor configuration.
+
+  When dicts are merged via ansible.builtin.combine, values supplied as
+  strings (e.g. from inventory, extra-vars, or host_vars) may remain
+  stringified even though the PowerDNS Recursor YAML config expects
+  native types.  The normalize_value macro emits valid JSON for any
+  value, converting along the way:
+    - stringified integers   ("8082"    → 8082)
+    - stringified floats     ("1.5"     → 1.5)
+    - stringified booleans   ("true"    → true,  "yes" → true, …)
+    - stringified lists      ("['a']"   → a real YAML/JSON list)
+  Native types and nested structures are preserved as-is.
+
+  The macro output is parsed back via from_json so that to_nice_yaml
+  handles all indentation and quoting.
+-#}
+
+{#- Emit a JSON representation of `val` with stringified types fixed. -#}
+{%- macro normalize_value(val) -%}
+{%-   if val is mapping -%}
+{%-     set ns = namespace(items=[]) -%}
+{%-     for k, v in val.items() -%}
+{%-       set ns.items = ns.items + [k | to_json ~ ": " ~ normalize_value(v)] -%}
+{%-     endfor -%}
+{{ "{" }}{{ ns.items | join(", ") }}{{ "}" }}
+{%-   elif val is iterable and val is not string and val is not mapping -%}
+{%-     set ns = namespace(items=[]) -%}
+{%-     for item in val -%}
+{%-       set ns.items = ns.items + [normalize_value(item)] -%}
+{%-     endfor -%}
+[{{ ns.items | join(", ") }}]
+{%-   elif val is string -%}
+{%-     if val | lower in ("true", "yes") -%}
+true
+{%-     elif val | lower in ("false", "no") -%}
+false
+{%-     elif val | regex_search("^-?\\d+$") -%}
+{{ val | int }}
+{%-     elif val | regex_search("^-?\\d+\\.\\d+$") -%}
+{{ val | float }}
+{%-     elif val | regex_search("^\\[.*\\]$") -%}
+{{ normalize_value(val | from_yaml) }}
+{%-     else -%}
+{{ val | to_json }}
+{%-     endif -%}
+{%-   elif val is sameas true -%}
+true
+{%-   elif val is sameas false -%}
+false
+{%-   elif val is none -%}
+null
+{%-   elif val is number -%}
+{{ val }}
+{%-   else -%}
+{{ val | to_json }}
+{%-   endif -%}
+{%- endmacro -%}
+
+{{ normalize_value(_pdns_rec_config) | from_json | to_nice_yaml(indent=2, width=80) | trim }}

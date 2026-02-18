@@ -49,6 +49,12 @@ By default, the PowerDNS Recursor is installed from the software repositories co
   roles:
   - { role: powerdns.pdns_recursor,
       pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_53 }}" }
+
+# Install the PowerDNS Recursor from the '5.4.x' official repository
+- hosts: pdns_recursors
+  roles:
+  - { role: powerdns.pdns_recursor,
+      pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_54 }}" }
 ```
 
 The examples above, show how to install the PowerDNS Recursor from the official PowerDNS repositories
@@ -61,11 +67,9 @@ The roles also supports custom repositories
   vars:
     pdns_rec_install_repo:
       name: "powerdns-rec"  # the name of the repository
-      apt_version: rec-master # deb822 suites parameter
+      apt_version: rec-master # deb822 suites suffix (appended to release codename)
       apt_repo_origin: "repo.example.com"   # used to pin the PowerDNS packages to the provided repository
-      apt_repo: "deb http://repo.example.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}/pdns-recursor main"
       gpg_key: "http://repo.example.com/MYREPOGPGPUBKEY.asc" # repository public GPG key
-      gpg_key_id: "MYREPOGPGPUBKEYID" # to avoid to reimport the key each time the role is executed
       yum_repo_baseurl: "http://repo.example.com/el/$basearch/$releasever/pdns-recursor"
       yum_repo_debug_symbols_baseurl: "http://repo.example.com/el/$basearch/$releasever/pdns-recursor/debug"
   roles:
@@ -75,7 +79,7 @@ The roles also supports custom repositories
 It is also possible to install the PowerDNS Recursor from custom repositories as demonstrated in the example above.
 
 ```yaml
-pdns_rec_install_epel: True
+pdns_rec_install_epel: true
 ```
 
 By default, install EPEL to satisfy some PowerDNS Recursor dependencies like `protobuf`.
@@ -94,7 +98,13 @@ pdns_rec_package_version: ""
 Optionally, allow to set a specific version of the PowerDNS Recursor package to be installed.
 
 ```yaml
-pdns_rec_install_debug_symbols_package: False
+pdns_rec_package_state: "present"
+```
+
+The desired state of the PowerDNS Recursor packages. Use `"present"` (default) to install, `"latest"` to upgrade, or `"absent"` to uninstall.
+
+```yaml
+pdns_rec_install_debug_symbols_package: false
 ```
 
 Install the PowerDNS Recursor debug symbols.
@@ -129,6 +139,12 @@ pdns_rec_service_name: "pdns-recursor"
 The name of the PowerDNS Recursor service.
 
 ```yaml
+pdns_rec_bin_name: "pdns_recursor"
+```
+
+The name of the PowerDNS Recursor binary.
+
+```yaml
 pdns_rec_service_state: "started"
 pdns_rec_service_enabled: true
 pdns_rec_service_masked: false
@@ -138,7 +154,7 @@ Allow to specify the desired state of the PowerDNS Recursor service.
 E.g. This allows to install and configure the PowerDNS Recursor without automatically starting the service.
 
 ```yaml
-pdns_rec_disable_handlers: False
+pdns_rec_disable_handlers: false
 ```
 
 Disable automated service restart on configuration changes.
@@ -177,6 +193,13 @@ pdns_rec_config_additional_files: []
 ```
 
 Additional configuration or supplementary files for PowerDNS Recursor, e.g RPZ files.
+
+```yaml
+pdns_rec_service_overrides: {}
+```
+
+Dict with overrides for the service (systemd only).
+This can be used to change any systemd settings in the `[Service]` category.
 
 ## Example Playbooks
 
@@ -260,7 +283,7 @@ $ tox
 To run a custom molecule command
 
 ```bash
-$ tox -e ansible216 -- molecule test -s pdns-rec-53
+$ tox -e ansible216 -- molecule test -s pdns-rec-54
 ```
 
 ## License
