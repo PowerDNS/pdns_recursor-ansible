@@ -113,7 +113,7 @@ Install the PowerDNS Recursor debug symbols.
 pdns_rec_debug_symbols_package_name: "{{ default_pdns_rec_debug_symbols_package_name }}"
 ```
 
-The name of the PowerDNS Recursor debug package to be installed when `pdns_install_debug_symbols_package` is `True`,
+The name of the PowerDNS Recursor debug package to be installed when `pdns_install_debug_symbols_package` is `true`,
 `pdns-recursor-debuginfo` on RedHat-like systems and `pdns-recursor-dbg` on Debian-like systems.
 
 ```yaml

@@ -66,8 +66,8 @@ platforms:
 provisioner:
   name: ansible
   options:
-    diff: True
-    v: True
+    diff: true
+    v: true
   config_options:
     defaults:
       gathering: smart
@@ -91,7 +91,7 @@ lint: yamllint vars tasks defaults meta
 verifier:
   name: testinfra
   options:
-    vvv: True
+    vvv: true
   directory: ../resources/tests/all
   additional_files_or_dirs:
     - ../repo-54/

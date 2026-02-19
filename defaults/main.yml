@@ -73,7 +73,7 @@ pdns_rec_service_state: started
 pdns_rec_service_enabled: true
 pdns_rec_service_masked: false
 
-# When True, disable the automated restart of the PowerDNS Recursor service
+# When true, disable the automated restart of the PowerDNS Recursor service
 pdns_rec_disable_handlers: false
 
 # Configuration directory and files
