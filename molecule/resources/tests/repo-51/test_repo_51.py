@@ -52,7 +52,7 @@ def test_pdns_version(host):
     assert '5.1' in cmd.stderr
 
 
-def systemd_override(host):
+def test_systemd_override(host):
     fname = '/etc/systemd/system/pdns-recursor.service.d/override.conf'
     f = host.file(fname)
 

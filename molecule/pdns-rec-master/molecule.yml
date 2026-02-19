@@ -31,35 +31,35 @@ platforms:
 
   # - name: oraclelinux-8
   #   image: oraclelinux:8
-  #   dockerfile_tpl: rhel-systemd
+  #   dockerfile_tpl: el-systemd
 
   # - name: oraclelinux-9
   #   image: oraclelinux:9
-  #   dockerfile_tpl: rhel-systemd
+  #   dockerfile_tpl: el-systemd
 
   # - name: oraclelinux-10
   #   image: oraclelinux:10
-  #   dockerfile_tpl: rhel-systemd
+  #   dockerfile_tpl: el-systemd
 
   # - name: rockylinux-8
   #   image: rockylinux:8
-  #   dockerfile_tpl: rhel-systemd
+  #   dockerfile_tpl: el-systemd
 
   # - name: rockylinux-9
   #   image: rockylinux:9
-  #   dockerfile_tpl: rhel-systemd
+  #   dockerfile_tpl: el-systemd
 
   # - name: almalinux-8
   #   image: almalinux:8
-  #   dockerfile_tpl: rhel-systemd
+  #   dockerfile_tpl: el-systemd
 
   # - name: almalinux-9
   #   image: almalinux:9
-  #   dockerfile_tpl: rhel-systemd
+  #   dockerfile_tpl: el-systemd
 
   # - name: almalinux-10
   #   image: almalinux:10
-  #   dockerfile_tpl: rhel-systemd
+  #   dockerfile_tpl: el-systemd
 
 provisioner:
   name: ansible
@@ -82,6 +82,7 @@ provisioner:
     create: ../resources/create.yml
     destroy: ../resources/destroy.yml
     prepare: ../resources/prepare.yml
+  lint: ansible-lint -x ANSIBLE0006 ANSIBLE0016
 
 lint: yamllint vars tasks defaults meta
 
@@ -93,4 +94,4 @@ verifier:
   additional_files_or_dirs:
     # path relative to '../resources/tests/all'
     - ../repo-master/
-    - ../systemd-overrides
+    - ../no-systemd-overrides

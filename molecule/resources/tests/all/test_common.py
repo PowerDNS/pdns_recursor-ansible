@@ -38,9 +38,9 @@ def test_repo_pinning_file(host):
         assert f.exists
         assert f.user == 'root'
         assert f.group == 'root'
-        f.contains('Package: pdns-recursor')
-        f.contains('Pin: origin repo.powerdns.com')
-        f.contains('Pin-Priority: 600')
+        assert f.contains('Package: pdns-recursor')
+        assert f.contains('Pin: origin repo.powerdns.com')
+        assert f.contains('Pin-Priority: 600')
 
 
 def test_package(host):
