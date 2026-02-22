@@ -123,9 +123,10 @@ User and group owning the configuration files and directories.
 
 ```yaml
 pdns_rec_service_name: "pdns-recursor"
+pdns_rec_bin_name: "pdns_recursor"
 ```
 
-The name of the PowerDNS Recursor service.
+The name of the PowerDNS Recursor service and binary used for checks.
 
 ```yaml
 pdns_rec_service_state: "started"
@@ -156,12 +157,12 @@ Dictionary containing in YAML format the custom configuration of PowerDNS Recurs
 **NOTE**: You should not set the `config-dir`, `lua_config_file`,`lua_dns_script`, `set-uid` and `set-gid` because are set by other role variables (respectively `pdns_rec_config_dir`, `pdns_rec_user`, `pdns_rec_group`).
 
 ```yaml
-pdns_res_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
+pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
 pdns_rec_config_lua_file_content: ""
 ```
 
 If `pdns_rec_config_lua_file_content` is not `""`, this will dump
-the content of this variable to the `pdns_res_config_lua` file and
+the content of this variable to the `pdns_rec_config_lua` file and
 define accordingly the `lua-config-file` setting in the `recursor.conf` configuration file.
 
 ```yaml

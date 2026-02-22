@@ -70,6 +70,7 @@ provisioner:
     create: ../resources/create.yml
     destroy: ../resources/destroy.yml
     prepare: ../resources/prepare.yml
+  lint: ansible-lint -x ANSIBLE0006 ANSIBLE0016
 
 lint: yamllint vars tasks defaults meta
 
