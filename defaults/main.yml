@@ -76,9 +76,9 @@ pdns_rec_disable_handlers: false
 pdns_rec_config_dir: "{{ default_pdns_rec_config_dir }}"
 pdns_rec_config_file: recursor.conf
 pdns_rec_config_lua: "{{ pdns_rec_config_dir }}/config.lua"
-pdns_rec_config_lua_file_content: "--empty"
+pdns_rec_config_lua_file_content: ""
 pdns_rec_config_dns_script: "{{ pdns_rec_config_dir }}/dns-script.lua"
-pdns_rec_config_dns_script_file_content: "--empty"
+pdns_rec_config_dns_script_file_content: ""
 
 # Mode for directories from include-dir
 pdns_rec_config_include_dir_mode: "0750"

@@ -50,11 +50,23 @@ default_pdns_rec_service_overrides: >-
 _pdns_rec_version: "{{ pdns_rec_package_version if pdns_rec_package_version != '' else '0' }}"
 
 pdns_rec_base_config:
-  recursor:
-    config_dir: "{{ pdns_rec_config_dir }}"
-    setuid: "{{ pdns_rec_user }}"
-    setgid: "{{ pdns_rec_group }}"
-    lua_config_file: "{{ pdns_rec_config_lua if pdns_rec_config_lua_file_content }}"
-    lua_dns_script: "{{ pdns_rec_config_dns_script if pdns_rec_config_dns_script_file_content }}"
+  recursor: >-
+    {{
+      {
+        'config_dir': pdns_rec_config_dir,
+        'setuid': pdns_rec_user,
+        'setgid': pdns_rec_group
+      }
+      | ansible.builtin.combine(
+          ({'lua_config_file': pdns_rec_config_lua}
+           if (pdns_rec_config_lua_file_content | default('') | length > 0)
+           else {})
+        )
+      | ansible.builtin.combine(
+          ({'lua_dns_script': pdns_rec_config_dns_script}
+           if (pdns_rec_config_dns_script_file_content | default('') | length > 0)
+           else {})
+        )
+    }}
 
 pdns_rec_template_config: "{{ pdns_rec_base_config | ansible.builtin.combine(pdns_rec_custom_config, recursive=true) }}"

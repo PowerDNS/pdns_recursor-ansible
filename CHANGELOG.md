@@ -1,9 +1,23 @@
+## v1.8.1 (2026-02-22)
+
+IMPROVEMENTS:
+- Ignore `meta/.galaxy_install_info` in `.gitignore`.
+- Update README variable docs: add `pdns_rec_bin_name` and fix `pdns_rec_config_lua` naming.
+- Enable `ansible-lint` in the `pdns-rec-master` Molecule scenario.
+- Fix the `pdns-rec-repo-51` comment to correctly reference `5.1.x`.
+
+FIXED:
+- Avoid `Undefined` YAML rendering failures by omitting `lua_*` config keys when related content variables are empty.
+- Run config validation as `pdns_rec_user` and use `pdns_rec_bin_name` for binary path resolution.
+- Fix debug symbols variable name typo in Debian/Other/Archlinux vars (`default_pdns_rec_debug_symbols_package_name`).
+- Fix Molecule Docker image naming consistency and correct the image rebuild condition.
+
 ## v1.8.0 (2025-10-29)
 
 NEW FEATURES:
 - Add support for Ubuntu 24.04 in CI / Molecule tests ([\#176](https://github.com/PowerDNS/pdns_recursor-ansible/pull/176))
 - Add Recursor 5.1 ([\#186](https://github.com/PowerDNS/pdns_recursor-ansible/pull/186))
-- Add “archlinux” variable file for an Arch scenario ([\#196](https://github.com/PowerDNS/pdns_recursor-ansible/pull/196))
+- Add "archlinux" variable file for an Arch scenario ([\#196](https://github.com/PowerDNS/pdns_recursor-ansible/pull/196))
 - Implement yaml config ([\#197](https://github.com/PowerDNS/pdns_recursor-ansible/pull/197))
 - Add rec-52 ([\#200](https://github.com/PowerDNS/pdns_recursor-ansible/pull/200)
 - Add role-specific tags to enable selective execution of tasks in large playbooks ([\#216](https://github.com/PowerDNS/pdns_recursor-ansible/pull/216))
@@ -27,7 +41,7 @@ FIXED:
 - Fix Ansible version-comparison logic: avoid comparing to integer 0 (use string) to support newer versions correctly ([\#221](https://github.com/PowerDNS/pdns_recursor-ansible/pull/221))
 - Fix regex to extract version of pdns_recursor (previous logic incorrectly captured “BV” etc) ([\#222](https://github.com/PowerDNS/pdns_recursor-ansible/pull/222))
 
-REMOVED / DEPRECATED: 
+REMOVED / DEPRECATED:
 - Remove support for RHEL 7 and Debian 10 from the CI/test matrix (they have reached EOL) ([\#191](https://github.com/PowerDNS/pdns_recursor-ansible/pull/191))
 - Remove pdns-recursor 4.8.x and 4.9.x from testing scenarios (EOL) ([\#219](https://github.com/PowerDNS/pdns_recursor-ansible/pull/219))
 - Remove Ubuntu 20.04 from the CI/test matrix (EOL) ([\#219](https://github.com/PowerDNS/pdns_recursor-ansible/pull/219))
