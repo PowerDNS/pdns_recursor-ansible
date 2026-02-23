@@ -19,6 +19,8 @@ prelude_section_name: release_summary
 prelude_section_title: Release Summary
 sanitize_changelog: true
 sections:
+- - doc_changes
+  - Documentation Changes
 - - major_changes
   - Major Changes
 - - minor_changes
