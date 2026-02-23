@@ -1,0 +1,7 @@
+---
+
+##
+# Disable systemd override rendering for no-overrides scenario tests.
+##
+
+pdns_rec_service_overrides: {}

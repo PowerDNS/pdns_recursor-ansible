@@ -7,9 +7,9 @@
 pdns_rec_config:
   recursor:
     include_dir: "{{ pdns_rec_config_dir }}/recursor.d"
-    threads: 2
+    threads: "2"
     max_mthreads: 1024
-    extended_resolution_errors: true
+    extended_resolution_errors: "true"
     forward_zones:
       - zone: example-forward.com
         forwarders:
@@ -17,16 +17,24 @@ pdns_rec_config:
     rpzs:
       - name: /var/lib/pdns-recursor/rpz/test2.rpz
       - name: test.rpz
-        addresses: ["127.0.0.2"]
+        addresses: "['127.0.0.2']"
 
   incoming:
-    reuseport: true
+    reuseport: yes
     allow_from: [ 127.0.0.0/8 ]
 
   webservice:
-    address: 127.0.0.1
-    port: 8001
-    api_key: powerdns
+    address: "127.0.0.1"
+    port: "8001"
+    # Vaulted value for the webservice API key (plaintext: "powerdns")
+    # Encrypted with molecule/resources/.vault-password
+    api_key: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      65663362656264366134623962616532323836663730613832393935396238643630313861326131
+      3830613533646239623036616137303832663930356436340a643964383261343630373235613665
+      64303534316563626534386164613062393436363863396264333134366339303434306134663764
+      6665303539623030360a333133373365636532643435653130356233616136353430643165356332
+      3265
     api_dir: "/var/lib/pdns-recursor/api"
 
 pdns_rec_config_additional_dirs:

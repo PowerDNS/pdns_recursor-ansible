@@ -1,0 +1,21 @@
+---
+major_changes:
+- add type-normalizing Jinja2 macro to ``recursor.conf.j2`` that automatically converts stringified integers, floats, booleans, and lists to their native YAML types when rendering the configuration.
+minor_changes:
+- add support for PowerDNS Recursor 5.4.x repository including repo definition, molecule test scenario, and CI integration.
+- add ``pdns_rec_package_state`` variable to allow controlling the desired state of the PowerDNS Recursor packages (present, latest, or absent).
+- normalize ``ansible_architecture`` to lowercase when mapping to APT architecture names to handle inconsistent facts.
+- use Ansible Vault for the webservice ``api_key`` in molecule test variables to verify that vaulted values are correctly decrypted and rendered into the configuration file.
+breaking_changes:
+- the Debian repository setup now exclusively uses ``ansible.builtin.deb822_repository`` — the legacy ``apt_key``/``apt_repository`` fallback for Ubuntu < 22.04 has been removed. This requires ``python3-debian`` on target hosts and Ansible >= 2.15.
+- the ``apt_repo`` and ``gpg_key_id`` keys are no longer used in custom repository definitions; use ``apt_version`` and ``gpg_key`` instead.
+- the ``powerdns-recursor.sources.j2`` template has been removed.
+- Ubuntu 20.04 has been removed from molecule test scenarios.
+bugfixes:
+- fix typo in debug symbols package variable name ``default_pdns_recorsor_debug_symbols_package_name`` to ``default_pdns_rec_debug_symbols_package_name`` in Archlinux, Debian, and Other vars files.
+- fix ``recursor.conf.j2`` template to coerce ``AnsibleVaultEncryptedUnicode`` values to plain strings before type-normalisation, allowing ``!vault`` encrypted values to be used directly inside configuration dicts.
+doc_changes:
+- update README with PowerDNS Recursor 5.4.x repository installation example.
+- document ``pdns_rec_package_state``, ``pdns_rec_bin_name``, and ``pdns_rec_service_overrides`` variables in the README.
+- update custom repository example to reflect deb822 migration (removed ``apt_repo`` and ``gpg_key_id``, added ``apt_version``).
+- fix YAML boolean conventions in README examples (``True``/``False`` → ``true``/``false``).

@@ -15,12 +15,12 @@ pdns_rec_install_epel: true
 #    - { role: PowerDNS.pdns_recursor,
 #        pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_master }}"
 #
-# To install the PowerDNS Recursor package from the '52' branch of
+# To install the PowerDNS Recursor package from the '54' branch of
 # the PowerDNS official repository use the following playbook
 # - hosts: all
 #   roles:
 #    - { role: PowerDNS.pdns_recursor,
-#        pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_52 }}"
+#        pdns_rec_install_repo: "{{ pdns_rec_powerdns_repo_54 }}"
 #
 # To install the PowerDNS Recursor package from a custom repository
 # override the `pdns_rec_install_repo` default value in your playbook.
@@ -29,9 +29,8 @@ pdns_rec_install_epel: true
 #   vars:
 #     pdns_rec_install_repo:
 #       apt_repo_origin: "repo.example.com"  # used to pin the pdns-recursor to the provided repository
-#       apt_repo: "deb http://repo.example.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}/pdns-recursor main"
+#       apt_version: "rec-53"                # deb822 suites suffix (appended to release codename)
 #       gpg_key: "http://repo.example.com/MYREPOGPGPUBKEY.asc" # repository public GPG key
-#       gpg_key_id: "MYREPOGPGPUBKEYID" # to avoid to reimport the key each time the role is executed
 #       yum_repo_baseurl: "http://repo.example.com/centos/$basearch/$releasever/pdns-recursor"
 #       yum_debug_symbols_repo_baseurl: "http://repo.example.com/centos/$basearch/$releasever/pdns-recursor/debug"
 #       yum_repo_name: "powerdns-rec"   # used to select only the pdns-recursor packages coming from this repo
@@ -41,6 +40,10 @@ pdns_rec_install_epel: true
 # The name of the PowerDNS package
 pdns_rec_package_name: "{{ default_pdns_rec_package_name }}"
 pdns_rec_package_version: ""
+
+# The desired state of the PowerDNS Recursor packages.
+# Use "present" (default) to install, "latest" to upgrade, or "absent" to uninstall.
+pdns_rec_package_state: "present"
 
 # Install PowerDNS Recursor debug symbols package
 pdns_rec_install_debug_symbols_package: false
@@ -70,7 +73,7 @@ pdns_rec_service_state: started
 pdns_rec_service_enabled: true
 pdns_rec_service_masked: false
 
-# When True, disable the automated restart of the PowerDNS Recursor service
+# When true, disable the automated restart of the PowerDNS Recursor service
 pdns_rec_disable_handlers: false
 
 # Configuration directory and files
@@ -107,6 +110,6 @@ pdns_rec_config: {}
 
 # Dict with overrides for the service (systemd only)
 pdns_rec_service_overrides: {}
-  # Service:
-  #   User: "{{ pdns_rec_user }}"
-  #   Group: "{{ pdns_rec_group }}"
+#   Service:
+#     User: "{{ pdns_rec_user }}"
+#     Group: "{{ pdns_rec_group }}"

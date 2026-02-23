@@ -17,9 +17,9 @@ def _deb_repo_path(host):
             except Exception:
                 return (0, 0)
         if _parse(rel) < (22, 4):
-            return '/etc/apt/sources.list.d/powerdns-rec-51.list'
+            return '/etc/apt/sources.list.d/powerdns-rec-54.list'
     # Debian and Ubuntu >= 22.04 use deb822
-    return '/etc/apt/sources.list.d/powerdns-rec-51.sources'
+    return '/etc/apt/sources.list.d/powerdns-rec-54.sources'
 
 
 def test_repo_file(host):
@@ -27,7 +27,7 @@ def test_repo_file(host):
     if host.system_info.distribution.lower() in debian_os:
         f = host.file(_deb_repo_path(host))
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-51.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-rec-54.repo')
 
     assert f.exists
     assert f.user == 'root'
@@ -39,17 +39,17 @@ def test_pdns_repo(host):
     if host.system_info.distribution.lower() in debian_os:
         f = host.file(_deb_repo_path(host))
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-51.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-rec-54.repo')
 
     assert f.exists
-    assert f.contains('rec-51')
+    assert f.contains('rec-54')
 
 
 def test_pdns_version(host):
     cmd = host.run('/usr/sbin/pdns_recursor --version')
 
-    assert 'PowerDNS Recursor' in cmd.stderr
-    assert '5.1' in cmd.stderr
+    assert 'PowerDNS Recursor' in cmd.stderr or 'PowerDNS Recursor' in cmd.stdout
+    assert '5.4' in cmd.stderr or '5.4' in cmd.stdout
 
 
 def test_systemd_override(host):

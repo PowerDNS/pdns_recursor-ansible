@@ -1,7 +1,7 @@
 ---
 
 scenario:
-  name: pdns-rec-51
+  name: pdns-rec-54
 
 driver:
   name: docker
@@ -27,12 +27,20 @@ platforms:
     image: debian:12
     dockerfile_tpl: debian-systemd
 
+  - name: debian-13
+    image: debian:13
+    dockerfile_tpl: debian-systemd
+
   - name: oraclelinux-8
     image: oraclelinux:8
     dockerfile_tpl: el-systemd
 
   - name: oraclelinux-9
     image: oraclelinux:9
+    dockerfile_tpl: el-systemd
+
+  - name: oraclelinux-10
+    image: oraclelinux:10
     dockerfile_tpl: el-systemd
 
   - name: rockylinux-8
@@ -49,6 +57,10 @@ platforms:
 
   - name: almalinux-9
     image: almalinux:9
+    dockerfile_tpl: el-systemd
+
+  - name: almalinux-10
+    image: almalinux:10
     dockerfile_tpl: el-systemd
 
 provisioner:
@@ -82,5 +94,5 @@ verifier:
     vvv: true
   directory: ../resources/tests/all
   additional_files_or_dirs:
-    - ../repo-51/
+    - ../repo-54/
     - ../systemd-overrides
