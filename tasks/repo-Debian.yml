@@ -1,8 +1,11 @@
 ---
 - name: Find repo files using version suffixed sources and list files
   ansible.builtin.find:
-    paths: /etc/apt/sources.list.d/
-    patterns: "{{ _pdns_rec_remove_repo_regex }}"
+    paths:
+      - /etc/apt/sources.list.d/
+      - /etc/apt/trusted.gpg.d/
+      - /etc/apt/keyrings/
+    patterns: "{{ pdns_rec_repo_regex }}"
     use_regex: yes
   register: _pdns_rec_version_suffixed_repo_files
 
@@ -19,7 +22,7 @@
 
 - name: Add the PowerDNS Recursor APT Repository (Deb822-style)
   ansible.builtin.deb822_repository:
-    name: "{{ _pdns_rec_install_repo_name }}"
+    name: "{{ pdns_rec_repo_name }}"
     types: deb
     uris: "https://{{ pdns_rec_install_repo['apt_repo_origin'] }}/{{ ansible_distribution | lower }}/"
     suites: "{{ ansible_distribution_release | lower }}-{{ pdns_rec_install_repo['apt_version'] }}"

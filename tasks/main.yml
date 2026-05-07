@@ -8,6 +8,12 @@
   tags:
     - always
 
+- name: Set fact for repo name
+  when: pdns_rec_install_repo | length > 0
+  ansible.builtin.set_fact:
+    pdns_rec_repo_name: "{{ pdns_rec_remove_versioned_repo_files | ternary(pdns_rec_install_repo_name, pdns_rec_install_repo['name']) }}"
+    pdns_rec_repo_regex: "{{ pdns_rec_remove_versioned_repo_files | ternary(pdns_rec_remove_versioned_repo_regex, pdns_rec_install_repo_regex) }}"
+
 - name: Include OS specific repo tasks
   ansible.builtin.include_tasks: repo-{{ ansible_os_family }}.yml
   when: pdns_rec_install_repo | length > 0

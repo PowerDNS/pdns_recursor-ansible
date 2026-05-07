@@ -2,7 +2,7 @@
 - name: Find repo files using version suffixed sources and list files
   ansible.builtin.find:
     paths: /etc/yum.repos.d/
-    patterns: "{{ _pdns_rec_remove_repo_regex }}"
+    patterns: "{{ pdns_rec_repo_regex }}"
     use_regex: yes
   register: _pdns_rec_version_suffixed_repo_files
 
@@ -45,8 +45,8 @@
 
 - name: Add the PowerDNS Recursor YUM Repository
   ansible.builtin.yum_repository:
-    name: "{{ _pdns_rec_install_repo_name }}"
-    file: "{{ _pdns_rec_install_repo_name }}"
+    name: "{{ pdns_rec_repo_name }}"
+    file: "{{ pdns_rec_repo_name }}"
     description: PowerDNS Recursor
     baseurl: "{{ pdns_rec_install_repo['yum_repo_baseurl'] }}"
     gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"
@@ -56,8 +56,8 @@
 
 - name: Add the PowerDNS Recursor debug symbols YUM Repository
   ansible.builtin.yum_repository:
-    name: "{{ _pdns_rec_install_repo_name }}-debuginfo"
-    file: "{{ _pdns_rec_install_repo_name }}"
+    name: "{{ pdns_rec_repo_name }}-debuginfo"
+    file: "{{ pdns_rec_repo_name }}"
     description: PowerDNS Recursor - debug symbols
     baseurl: "{{ pdns_rec_install_repo['yum_debug_symbols_repo_baseurl'] }}"
     gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"

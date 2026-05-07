@@ -1,8 +1,6 @@
 ---
 
 default_pdns_rec_package_name: pdns-recursor
-_pdns_rec_install_repo_name: powerdns-recursor
-_pdns_rec_remove_repo_regex: '^powerdns-rec-(master|54|53|52|51|50|49|48|47|46|45|44|43|42|41|40)\.(list|sources|repo)$'
 
 # Map Ansible architectures to Debian/Ubuntu APT arch names
 _pdns_rec_apt_arch_map:
@@ -22,6 +20,7 @@ pdns_rec_powerdns_repo_master:
   gpg_key_id: D47975F8DAE32700A563E64FFF389421CBC8B383
   yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-master
   yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-master/debug
+  name: powerdns-rec-master
 
 pdns_rec_powerdns_repo_51:
   apt_repo_origin: repo.powerdns.com
@@ -30,6 +29,7 @@ pdns_rec_powerdns_repo_51:
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-51
   yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-51/debug
+  name: powerdns-rec-51
 
 pdns_rec_powerdns_repo_52:
   apt_repo_origin: repo.powerdns.com
@@ -38,6 +38,7 @@ pdns_rec_powerdns_repo_52:
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-52
   yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-52/debug
+  name: powerdns-rec-52
 
 pdns_rec_powerdns_repo_53:
   apt_repo_origin: repo.powerdns.com
@@ -46,6 +47,7 @@ pdns_rec_powerdns_repo_53:
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-53
   yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-53/debug
+  name: powerdns-rec-53
 
 pdns_rec_powerdns_repo_54:
   apt_repo_origin: repo.powerdns.com
@@ -54,6 +56,7 @@ pdns_rec_powerdns_repo_54:
   gpg_key_id: 9FAAA5577E8FCF62093D036C1B0C6205FD380FBB
   yum_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-54
   yum_debug_symbols_repo_baseurl: https://repo.powerdns.com/el/$basearch/$releasever/rec-54/debug
+  name: powerdns-rec-54
 
 default_pdns_rec_service_overrides: {}
 
