@@ -2,6 +2,7 @@
 
 default_pdns_rec_package_name: pdns-recursor
 _pdns_rec_install_repo_name: powerdns-recursor
+_pdns_rec_remove_repo_regex: '^powerdns-rec-(master|54|53|52|51|50|49|48|47|46|45|44|43|42|41|40)\.(list|sources|repo)$'
 
 # Map Ansible architectures to Debian/Ubuntu APT arch names
 _pdns_rec_apt_arch_map:
