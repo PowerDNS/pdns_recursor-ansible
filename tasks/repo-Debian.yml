@@ -6,7 +6,7 @@
       - /etc/apt/trusted.gpg.d/
       - /etc/apt/keyrings/
     patterns: "{{ pdns_rec_repo_regex }}"
-    use_regex: yes
+    use_regex: true
   register: _pdns_rec_version_suffixed_repo_files
 
 - name: Remove version suffixed repo files
