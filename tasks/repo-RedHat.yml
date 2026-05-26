@@ -1,4 +1,17 @@
 ---
+- name: Find repo files using version suffixed sources and list files
+  ansible.builtin.find:
+    paths: /etc/yum.repos.d/
+    patterns: "{{ pdns_rec_repo_regex }}"
+    use_regex: true
+  register: _pdns_rec_version_suffixed_repo_files
+
+- name: Remove version suffixed repo files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ _pdns_rec_version_suffixed_repo_files.files | map(attribute='path') | list }}"
+
 - name: Install epel-release package depending on OS
   when: pdns_rec_install_epel
   block:
@@ -32,8 +45,8 @@
 
 - name: Add the PowerDNS Recursor YUM Repository
   ansible.builtin.yum_repository:
-    name: "{{ pdns_rec_install_repo['name'] }}"
-    file: "{{ pdns_rec_install_repo['name'] }}"
+    name: "{{ pdns_rec_repo_name }}"
+    file: "{{ pdns_rec_repo_name }}"
     description: PowerDNS Recursor
     baseurl: "{{ pdns_rec_install_repo['yum_repo_baseurl'] }}"
     gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"
@@ -43,8 +56,8 @@
 
 - name: Add the PowerDNS Recursor debug symbols YUM Repository
   ansible.builtin.yum_repository:
-    name: "{{ pdns_rec_install_repo['name'] }}-debuginfo"
-    file: "{{ pdns_rec_install_repo['name'] }}"
+    name: "{{ pdns_rec_repo_name }}-debuginfo"
+    file: "{{ pdns_rec_repo_name }}"
     description: PowerDNS Recursor - debug symbols
     baseurl: "{{ pdns_rec_install_repo['yum_debug_symbols_repo_baseurl'] }}"
     gpgkey: "{{ pdns_rec_install_repo['gpg_key'] }}"

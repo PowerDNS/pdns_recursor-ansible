@@ -17,9 +17,9 @@ def _deb_repo_path(host):
             except Exception:
                 return (0, 0)
         if _parse(rel) < (22, 4):
-            return '/etc/apt/sources.list.d/powerdns-rec-52.list'
+            return '/etc/apt/sources.list.d/powerdns-recursor.list'
     # Debian and Ubuntu >= 22.04 use deb822
-    return '/etc/apt/sources.list.d/powerdns-rec-52.sources'
+    return '/etc/apt/sources.list.d/powerdns-recursor.sources'
 
 
 def test_repo_file(host):
@@ -27,7 +27,7 @@ def test_repo_file(host):
     if host.system_info.distribution.lower() in debian_os:
         f = host.file(_deb_repo_path(host))
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-52.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-recursor.repo')
 
     assert f.exists
     assert f.user == 'root'
@@ -39,7 +39,7 @@ def test_pdns_repo(host):
     if host.system_info.distribution.lower() in debian_os:
         f = host.file(_deb_repo_path(host))
     if host.system_info.distribution.lower() in rhel_os:
-        f = host.file('/etc/yum.repos.d/powerdns-rec-52.repo')
+        f = host.file('/etc/yum.repos.d/powerdns-recursor.repo')
 
     assert f.exists
     assert f.contains('rec-52')

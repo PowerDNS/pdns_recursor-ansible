@@ -15,7 +15,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Run ansible-lint
-        uses: ansible/ansible-lint@main
+        uses: ansible/ansible-lint@v25.2.0
         with:
           setup_python: "false"
   Tests:

@@ -113,3 +113,8 @@ pdns_rec_service_overrides: {}
 #   Service:
 #     User: "{{ pdns_rec_user }}"
 #     Group: "{{ pdns_rec_group }}"
+
+pdns_rec_install_repo_name: powerdns-recursor
+pdns_rec_install_repo_regex: "{{ '^' + pdns_rec_install_repo_name + '\\.(list|sources|repo|asc)$' }}"
+pdns_rec_remove_versioned_repo_regex: '^powerdns-rec-(master|\d+)\.(list|sources|repo|asc)$'
+pdns_rec_remove_versioned_repo_files: true
