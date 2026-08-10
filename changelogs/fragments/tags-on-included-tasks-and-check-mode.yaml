@@ -1,5 +1,5 @@
 bugfixes:
-- tag the tasks inside ``configure.yml``, ``install-*.yml`` and ``repo-*.yml`` so that ``--tags config``, ``--tags install`` and ``--tags repository`` no longer run the include and skip its body. A dynamic ``include_tasks`` does not pass its tags to the tasks it includes, so filtered runs silently did nothing and still exited 0 (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
-- tag the ``Set fact for repo name`` task with ``install`` and ``repository`` so that ``pdns_rec_repo_name`` and ``pdns_rec_repo_regex`` are defined in filtered runs (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+- tag the tasks inside ``configure.yml``, ``install-*.yml`` and ``repo-*.yml`` so that ``--tags config``, ``--tags install`` and ``--tags repository`` no longer run the include and skip its body. A dynamic ``include_tasks`` does not pass its tags to the tasks it includes, so filtered runs silently did nothing and still exited 0 (https://github.com/PowerDNS/pdns_recursor-ansible/pull/263).
+- tag the ``Set fact for repo name`` task with ``install`` and ``repository`` so that ``pdns_rec_repo_name`` and ``pdns_rec_repo_regex`` are defined in filtered runs (https://github.com/PowerDNS/pdns_recursor-ansible/pull/263).
 doc_changes:
-- document the role tags, the check mode support (converged hosts only) and the package/service state variables in the README (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+- document the role tags, the check mode support (converged hosts only) and the package/service state variables in the README (https://github.com/PowerDNS/pdns_recursor-ansible/pull/263).
