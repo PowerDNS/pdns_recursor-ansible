@@ -201,6 +201,48 @@ pdns_rec_service_overrides: {}
 Dict with overrides for the service (systemd only).
 This can be used to change any systemd settings in the `[Service]` category.
 
+## Role Tags
+
+Tags for `--tags` / `--skip-tags`:
+
+- `repository`: repo and GPG key setup, APT pinning, removal of stale versioned repo files.
+- `install`: package installation and removal.
+- `config`: config file and directories, additional files, systemd overrides, validation.
+- `service`: service state.
+- `always`: OS variable import.
+
+The repository tasks and the fact deriving the repository name are tagged both `install` and
+`repository`, so `--tags install` also sets up the repository it needs.
+
+Contributors: tags belong on the tasks inside `install-{{ ansible_system }}.yml`, `configure.yml`
+and `repo-*.yml`, not only on the `include_tasks` in `tasks/main.yml`. A dynamic `include_tasks`
+does not pass its tags to included tasks, so a narrow `--tags` run would execute the include and
+skip its body, silently, with `rc=0`.
+
+## Check Mode
+
+Supported only on a host where this role already ran successfully.
+
+Converged host: `--check` reports real drift only. Config validation is skipped
+(`when: not ansible_check_mode`) since it needs the rendered file on disk.
+
+Fresh host: `--check` is expected to fail. It installs neither the repository, `python3-debian`
+nor the `pdns-recursor` package, so later tasks have nothing to inspect.
+
+## Package and Service State
+
+- `pdns_rec_package_state`: `present`, `latest`, `absent`, ...
+- `pdns_rec_service_state` (`started`, `stopped`, `restarted`, `reloaded`),
+  `pdns_rec_service_enabled`, `pdns_rec_service_masked`.
+
+`pdns_rec_package_state: absent` removes the packages, but the config and service tasks still run,
+so a full run fails validating the config because `/usr/sbin/pdns_recursor` is gone. Remove via
+the install path only:
+
+```bash
+ansible-playbook site.yml -e pdns_rec_package_state=absent --tags install
+```
+
 ## Example Playbooks
 
 Bind to `203.0.113.53` on port `5300` and allow only traffic from the `198.51.100.0/24` subnet:
