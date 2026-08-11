@@ -1,7 +1,7 @@
 minor_changes:
-- add ``pdns_rec_flush_handlers`` to run the notified handlers at the end of the role instead of at the end of the play, which is required when the role runs more than once in a play (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
-- add the ``multi-instance`` Molecule scenario, which configures two instances in a single play (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+- add ``pdns_rec_flush_handlers`` to run the notified handlers at the end of the role instead of at the end of the play, which is required when the role runs more than once in a play (https://github.com/PowerDNS/pdns_recursor-ansible/pull/264).
+- add the ``multi-instance`` Molecule scenario, which configures two instances in a single play (https://github.com/PowerDNS/pdns_recursor-ansible/pull/264).
 bugfixes:
-- read the service name and state from facts published per role invocation in the restart handlers. Ansible shares handlers between invocations of the same role and resolves role parameters to the last invocation, so a play with more than one instance restarted the wrong service. Correct restarts also need ``pdns_rec_flush_handlers`` set to ``true`` (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+- read the service name and state from facts published per role invocation in the restart handlers. Ansible shares handlers between invocations of the same role and resolves role parameters to the last invocation, so a play with more than one instance restarted the wrong service. Correct restarts also need ``pdns_rec_flush_handlers`` set to ``true`` (https://github.com/PowerDNS/pdns_recursor-ansible/pull/264).
 doc_changes:
-- document the handler behaviour and the multi-instance usage in the README (https://github.com/PowerDNS/pdns_recursor-ansible/pull/XXX).
+- document the handler behaviour and the multi-instance usage in the README (https://github.com/PowerDNS/pdns_recursor-ansible/pull/264).
