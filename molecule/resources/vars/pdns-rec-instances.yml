@@ -1,0 +1,14 @@
+---
+
+##
+# Instances of the templated pdns-recursor@.service unit used by the
+# multi-instance scenario. The first entry is the one the side effect
+# reconfigures.
+##
+
+pdns_rec_multi_instances:
+  - name: a
+    port: "5301"
+
+  - name: b
+    port: "5302"

@@ -33,6 +33,7 @@ jobs:
           - pdns-rec-53
           - pdns-rec-54
           - pdns-rec-master
+          - multi-instance
     steps:
       - name: checkout
         uses: actions/checkout@v4

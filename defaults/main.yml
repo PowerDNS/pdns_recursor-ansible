@@ -76,6 +76,10 @@ pdns_rec_service_masked: false
 # When true, disable the automated restart of the PowerDNS Recursor service
 pdns_rec_disable_handlers: false
 
+# When true, run the notified handlers at the end of the role instead of at the
+# end of the play. Set this when the role runs more than once in a play.
+pdns_rec_flush_handlers: false
+
 # Configuration directory and files
 pdns_rec_config_dir: "{{ default_pdns_rec_config_dir }}"
 pdns_rec_config_file: recursor.conf
