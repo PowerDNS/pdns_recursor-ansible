@@ -8,6 +8,16 @@
   tags:
     - always
 
+# Handlers cannot read role parameters reliably when the role runs more than
+# once in a play; they resolve to the last invocation. Publish them as facts.
+- name: Publish the handler context of this role invocation
+  ansible.builtin.set_fact:
+    _pdns_rec_disable_handlers: "{{ pdns_rec_disable_handlers }}"
+    _pdns_rec_service_name: "{{ pdns_rec_service_name }}"
+    _pdns_rec_service_state: "{{ pdns_rec_service_state }}"
+  tags:
+    - always
+
 - name: Set fact for repo name
   when: pdns_rec_install_repo | length > 0
   ansible.builtin.set_fact:
@@ -42,3 +52,9 @@
     masked: "{{ pdns_rec_service_masked }}"
   tags:
     - service
+
+- name: Flush the handlers
+  ansible.builtin.meta: flush_handlers
+  when: pdns_rec_flush_handlers | bool
+  tags:
+    - always

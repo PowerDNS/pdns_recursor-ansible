@@ -160,6 +160,13 @@ pdns_rec_disable_handlers: false
 Disable automated service restart on configuration changes.
 
 ```yaml
+pdns_rec_flush_handlers: false
+```
+
+Run the notified handlers at the end of the role instead of at the end of the play. See
+[Handlers](#handlers).
+
+```yaml
 pdns_rec_config_dir: "{{ default_pdns_rec_config_dir }}"
 pdns_rec_config_file: "recursor.conf"
 ```
@@ -242,6 +249,48 @@ the install path only:
 ```bash
 ansible-playbook site.yml -e pdns_rec_package_state=absent --tags install
 ```
+
+## Handlers
+
+Handlers run at the end of the play, and Ansible shares them between invocations of the same role.
+A role parameter read inside a handler resolves to the value of the *last* invocation, so with more
+than one invocation in a play the restart targets the wrong service or is collapsed into a single
+run. Set `pdns_rec_flush_handlers: true` to run `meta: flush_handlers` as the last task of the role,
+which restarts `pdns_rec_service_name` of that invocation:
+
+Every instance needs its own service name and configuration file; `pdns-recursor@<instance>` runs
+`pdns_recursor --config-name=<instance>`, which reads `<config dir>/recursor-<instance>.conf`:
+
+```yaml
+- hosts: recursors
+  tasks:
+    - name: Instance a, port 5301
+      ansible.builtin.include_role:
+        name: PowerDNS.pdns_recursor
+      vars:
+        pdns_rec_service_name: pdns-recursor@a
+        pdns_rec_config_file: recursor-a.conf
+        pdns_rec_flush_handlers: true
+        pdns_rec_config:
+          incoming:
+            listen: [127.0.0.1]
+            port: "5301"
+
+    - name: Instance b, port 5302
+      ansible.builtin.include_role:
+        name: PowerDNS.pdns_recursor
+      vars:
+        pdns_rec_service_name: pdns-recursor@b
+        pdns_rec_config_file: recursor-b.conf
+        pdns_rec_flush_handlers: true
+        pdns_rec_config:
+          incoming:
+            listen: [127.0.0.1]
+            port: "5302"
+```
+
+`meta: flush_handlers` is play-wide: it also runs handlers that earlier roles in the same play
+notified. `pdns_rec_disable_handlers: true` skips the restart handlers entirely.
 
 ## Example Playbooks
 
