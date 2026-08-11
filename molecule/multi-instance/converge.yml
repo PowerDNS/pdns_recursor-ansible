@@ -1,0 +1,17 @@
+---
+
+# Every instance is configured in the same play. Handlers are shared between
+# role invocations, so every invocation flushes its own handlers.
+- name: PowerDNS Recursor multiple instances in a single play
+  hosts: all
+  vars_files:
+    - ../resources/vars/pdns-rec-repo-54.yml
+    - ../resources/vars/pdns-rec-instances.yml
+  tasks:
+
+    - name: Configure the recursor instances
+      ansible.builtin.include_tasks: ../resources/tasks/pdns-rec-instance.yml
+      loop: "{{ pdns_rec_multi_instances }}"
+      loop_control:
+        loop_var: instance
+        label: "{{ instance.name }}"

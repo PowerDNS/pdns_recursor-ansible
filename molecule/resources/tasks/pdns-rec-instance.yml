@@ -1,0 +1,21 @@
+---
+
+# Configure one recursor instance. `instance` is an entry of
+# `pdns_rec_multi_instances`; `instance_threads` changes the generated
+# configuration so the restart handler is notified.
+# noqa: the pdns_rec_ variable prefix predates the pdns_recursor role name, so
+# ansible-lint's var-naming[no-role-prefix] fires on the instance vars.
+- name: Configure the recursor instance {{ instance.name }}  # noqa var-naming[no-role-prefix]
+  ansible.builtin.include_role:
+    name: powerdns.pdns_recursor
+  vars:
+    pdns_rec_service_name: "pdns-recursor@{{ instance.name }}"
+    pdns_rec_config_file: "recursor-{{ instance.name }}.conf"
+    pdns_rec_flush_handlers: true
+    pdns_rec_config:
+      incoming:
+        listen: [127.0.0.1]
+        port: "{{ instance.port }}"
+        allow_from: [127.0.0.0/8]
+      recursor:
+        threads: "{{ instance_threads | default(1) }}"
