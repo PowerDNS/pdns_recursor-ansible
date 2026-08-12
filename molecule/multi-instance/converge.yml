@@ -4,7 +4,6 @@
 # role invocations, so every invocation flushes its own handlers.
 - name: PowerDNS Recursor multiple instances in a single play
   hosts: all
-  become: true
   vars_files:
     - ../resources/vars/pdns-rec-version.yml
     - ../resources/vars/pdns-rec-instances.yml
