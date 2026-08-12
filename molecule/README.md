@@ -60,7 +60,11 @@ has 3.6 and Ubuntu 20.04 has 3.8. Those platforms are **never** run with
 
 Availability is sparse, which is exactly why the sets are per release. Upstream
 publishes Enterprise Linux 10 and Debian 13 only from the second-newest release
-onwards, Ubuntu 26.04 only for the newest (and not for the recursor at all), and focal only for `pdns-rec-52`.
+onwards, and focal only for `pdns-rec-52`. Ubuntu 26.04 is declared supported in
+`meta/main.yml` but is not in any set yet, because upstream publishes no
+`resolute-rec-<NN>` suite: add it to the newest release's set as soon as that
+appears.
+
 AlmaLinux is not tested because it tracks Rocky; Oracle is kept because it
 diverges.
 

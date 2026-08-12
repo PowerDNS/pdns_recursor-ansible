@@ -3,3 +3,7 @@ collections:
   - name: community.docker
     version: ">=4.0.0,<5.0.0"
   - name: ansible.posix
+  # Provides the pacman module that ansible.builtin.package dispatches to on
+  # Arch Linux. Capped below 11.0.0, which requires ansible-core 2.18.
+  - name: community.general
+    version: "<11.0.0"
