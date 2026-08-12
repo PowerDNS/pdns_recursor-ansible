@@ -1,0 +1,48 @@
+---
+
+##
+# Platforms for PowerDNS Recursor 5.4, run with the ansible220 tox environment
+# (and the ansible218 one where the matrix says so).
+#
+# Only operating systems that upstream publishes pdns-rec-54 packages for are listed.
+# Enterprise Linux 8 and Ubuntu 20.04 live in pdns-rec-54-ansible216.yml instead,
+# because their Python needs ansible-core 2.16.
+##
+
+platforms:
+
+  - name: rockylinux-9
+    image: rockylinux:9
+    dockerfile_tpl: el-systemd
+
+  - name: oraclelinux-9
+    image: oraclelinux:9
+    dockerfile_tpl: el-systemd
+
+  - name: rockylinux-10
+    image: rockylinux/rockylinux:10
+    dockerfile_tpl: el-systemd
+
+  - name: oraclelinux-10
+    image: oraclelinux:10
+    dockerfile_tpl: el-systemd
+
+  - name: debian-11
+    image: debian:11
+    dockerfile_tpl: debian-systemd
+
+  - name: debian-12
+    image: debian:12
+    dockerfile_tpl: debian-systemd
+
+  - name: debian-13
+    image: debian:13
+    dockerfile_tpl: debian-systemd
+
+  - name: ubuntu-2204
+    image: ubuntu:22.04
+    dockerfile_tpl: debian-systemd
+
+  - name: ubuntu-2404
+    image: ubuntu:24.04
+    dockerfile_tpl: debian-systemd

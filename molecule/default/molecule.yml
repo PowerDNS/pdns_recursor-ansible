@@ -1,0 +1,29 @@
+---
+
+##
+# Install the PowerDNS Recursor from a PowerDNS repository and configure it.
+#
+# The release under test comes from the PDNS_REC_VERSION environment variable
+# and the platforms from the platform set given with --base-config, for example:
+#
+#   PDNS_REC_VERSION=54 molecule \
+#     -c molecule/config.yml \
+#     -c molecule/platforms/pdns-rec-54.yml \
+#     test -s default
+##
+
+scenario:
+  name: default
+
+provisioner:
+  playbooks:
+    # Also named here so a bare `molecule` invocation, which does not load
+    # molecule/config.yml, still reaches the platform guard in create.yml
+    # instead of skipping every action as a missing playbook.
+    create: ../resources/create.yml
+
+verifier:
+  directory: ../resources/tests/all
+  additional_files_or_dirs:
+    - ../repo/
+    - ../systemd-overrides/

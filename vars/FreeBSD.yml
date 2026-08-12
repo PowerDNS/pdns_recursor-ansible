@@ -1,7 +1,19 @@
 ---
 
+# Values follow the dns/powerdns-recursor port: USERS=pdns_recursor, GROUPS=pdns,
+# USE_RC_SUBR=pdns_recursor and --sysconfdir=${PREFIX}/etc/pdns.
 default_pdns_rec_user: pdns_recursor
 default_pdns_rec_group: pdns
 default_pdns_rec_file_group: wheel
-default_pdns_rec_config_dir: /usr/local/etc/pdns-recursor
+default_pdns_rec_config_dir: /usr/local/etc/pdns
 default_pdns_rec_package_name: powerdns-recursor
+
+# The rc script is named after the port, not after the systemd unit.
+default_pdns_rec_service_name: pdns_recursor
+
+# The daemon is installed under PREFIX.
+default_pdns_rec_bin_path: /usr/local/sbin/pdns_recursor
+
+# FreeBSD ships no debug symbols package. An empty name makes the role skip it
+# even when pdns_rec_install_debug_symbols_package is enabled.
+default_pdns_rec_debug_symbols_package_name: ""

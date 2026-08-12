@@ -1,0 +1,13 @@
+breaking_changes:
+- require ansible-core 2.16 or newer. Support for 2.15 is dropped, and Enterprise Linux 8 targets must be managed with 2.16 because their system Python is 3.6 (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+minor_changes:
+- manage the service with ``ansible.builtin.systemd_service`` on systemd hosts and with ``ansible.builtin.service`` on hosts without systemd, instead of mixing the two modules across the service task and the handlers (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+- declare the Arch Linux support the role already implements in the Galaxy metadata, and cover it with a Molecule scenario that installs the recursor from the packages of the distribution (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+- declare FreeBSD in the Galaxy metadata (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+removed_features:
+- stop testing the ``rec-master`` repository and the 5.1 series, and test the three most recent release series instead. The ``pdns_rec_powerdns_repo_master`` and ``pdns_rec_powerdns_repo_51`` presets are unchanged and still usable (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+bugfixes:
+- correct the FreeBSD service name, configuration directory and daemon path. The rc script is ``pdns_recursor``, the configuration lives in ``/usr/local/etc/pdns`` and the daemon is ``/usr/local/sbin/pdns_recursor``, following the ``dns/powerdns-recursor`` port. The configuration check no longer hardcodes ``/usr/sbin`` (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+- skip the debug symbols package when the platform ships none. Arch Linux has no ``pdns-recursor-dbg`` package, so enabling ``pdns_rec_install_debug_symbols_package`` there failed (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+- install the recursor on FreeBSD. ``tasks/main.yml`` includes ``install-{{ ansible_system }}.yml`` and only the Linux variant existed, so a FreeBSD run failed at the installation step. The new task installs through ``ansible.builtin.package`` and skips the debug symbols package, which FreeBSD does not ship (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+- restart the service on hosts without systemd. The restart handler and the ``daemon_reload`` handler used the systemd module unconditionally, so a FreeBSD run failed as soon as a configuration change notified them (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).

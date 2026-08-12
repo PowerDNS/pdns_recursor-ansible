@@ -1,4 +1,8 @@
 ---
+exclude_paths:
+  # Platform sets are Molecule base configs, not playbooks.
+  - molecule/platforms/
+
 skip_list:
   - '306'  # [306] Shells that use pipes should set the pipefail option
   - 'args' # [args] throws a warning on community.docker.docker_container for a correct attribute (cgroupns_mode)

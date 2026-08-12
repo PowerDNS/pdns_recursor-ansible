@@ -9,7 +9,9 @@ An Ansible role created by the folks behind PowerDNS to setup the [PowerDNS Recu
 
 ## Requirements
 
-An Ansible 2.15 or higher installation.
+An ansible-core 2.16 or newer installation. Enterprise Linux 8 targets must be
+managed with ansible-core 2.16: their system Python is 3.6, which the modules of
+ansible-core 2.20 cannot run.
 
 ## Dependencies
 
@@ -363,19 +365,12 @@ Tests are performed by [Molecule](http://molecule.readthedocs.org/en/latest/).
 
 ```bash
 $ pip install tox
-```
-
-To test all the scenarios run
-
-```bash
 $ tox
 ```
 
-To run a custom molecule command
-
-```bash
-$ tox -e ansible216 -- molecule test -s pdns-rec-54
-```
+See [molecule/README.md](./molecule/README.md) for the test layout, how to run a
+single leg, and what to change when a new release or operating system has to be
+covered.
 
 ## License
 

@@ -70,5 +70,5 @@
       vars:
         _cfg_name: "{{ ('@' in pdns_rec_service_name) | ternary((pdns_rec_service_name.split('@') | last), '') }}"
       ansible.builtin.command:
-        cmd: "/usr/sbin/pdns_recursor --config=check{{ (_cfg_name | length > 0) | ansible.builtin.ternary(' --config-name=' ~ _cfg_name, '') }}"
+        cmd: "{{ pdns_rec_bin_path }} --config=check{{ (_cfg_name | length > 0) | ansible.builtin.ternary(' --config-name=' ~ _cfg_name, '') }}"
       changed_when: false

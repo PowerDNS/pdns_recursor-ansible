@@ -1,0 +1,9 @@
+---
+
+- name: Install and configure the PowerDNS Recursor from the distribution packages
+  hosts: all
+  vars_files:
+    - ../resources/vars/pdns-rec-common.yml
+    - ../resources/vars/pdns-rec-os-repos.yml
+  roles:
+    - role: powerdns.pdns_recursor

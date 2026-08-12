@@ -5,7 +5,7 @@
 - name: PowerDNS Recursor multiple instances in a single play
   hosts: all
   vars_files:
-    - ../resources/vars/pdns-rec-repo-54.yml
+    - ../resources/vars/pdns-rec-version.yml
     - ../resources/vars/pdns-rec-instances.yml
   tasks:
 

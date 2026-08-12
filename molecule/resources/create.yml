@@ -8,6 +8,15 @@
     - vars/molecule.yml
   tasks:
 
+    - name: Fail when no platform was configured
+      ansible.builtin.assert:
+        that: molecule_yml.platforms | default([]) | length > 0
+        fail_msg: >-
+          No platform is configured. molecule/config.yml is not auto-discovered,
+          so pass it and a platform set:
+          molecule -c molecule/config.yml -c molecule/platforms/<set>.yml ...
+        quiet: true
+
     - name: Detect host architecture for Docker platform selection
       ansible.builtin.set_fact:
         _molecule_host_arch: "{{ lookup('pipe', 'uname -m') | trim | lower }}"

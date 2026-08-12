@@ -44,12 +44,24 @@
   tags:
     - config
 
+- name: Set the status of the PowerDNS Recursor service (systemd)
+  ansible.builtin.systemd_service:
+    name: "{{ pdns_rec_service_name }}"
+    state: "{{ pdns_rec_service_state }}"
+    enabled: "{{ pdns_rec_service_enabled }}"
+    masked: "{{ pdns_rec_service_masked }}"
+  when: ansible_service_mgr == 'systemd'
+  tags:
+    - service
+
+# FreeBSD has no systemd, so the generic module drives its rc.d scripts. Masking
+# has no equivalent there and is ignored.
 - name: Set the status of the PowerDNS Recursor service
   ansible.builtin.service:
     name: "{{ pdns_rec_service_name }}"
     state: "{{ pdns_rec_service_state }}"
     enabled: "{{ pdns_rec_service_enabled }}"
-    masked: "{{ pdns_rec_service_masked }}"
+  when: ansible_service_mgr != 'systemd'
   tags:
     - service
 

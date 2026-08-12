@@ -30,3 +30,10 @@
         name: python3-dns
         state: present
       when: ansible_os_family == 'RedHat'
+
+    # The image is older than the run, so the package database can still point at
+    # package versions the mirrors have already dropped.
+    - name: Refresh the pacman package database
+      ansible.builtin.command: pacman --sync --refresh --sysupgrade --noconfirm
+      when: ansible_pkg_mgr == 'pacman'
+      changed_when: false

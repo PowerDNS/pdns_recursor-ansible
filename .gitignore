@@ -19,3 +19,4 @@ venv/
 
 # Log files
 *.log
+.ansible/

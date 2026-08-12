@@ -1,0 +1,12 @@
+---
+
+##
+# Overlay on top of pdns-rec-common.yml for the distribution packages, so the
+# os-repos scenario is verified by the same tests as the default scenario.
+##
+
+# An empty repository skips the repository tasks entirely.
+pdns_rec_install_repo: ""
+
+# Arch Linux ships no debug symbols package.
+pdns_rec_install_debug_symbols_package: false

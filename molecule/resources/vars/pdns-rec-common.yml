@@ -55,7 +55,7 @@ pdns_rec_service_overrides:
     Description: PowerDNS Recursor (modified)
   Service:
     LimitCORE: infinity
-    ExecStart: /usr/sbin/pdns_recursor --daemon=no --write-pid=no --disable-syslog --log-timestamp=no
+    ExecStart: "{{ pdns_rec_bin_path }} --daemon=no --write-pid=no --disable-syslog --log-timestamp=no"
     Environment:
       TEST_VAR1: TEST_VALUE1
       TEST_VAR2: TEST_VALUE2
