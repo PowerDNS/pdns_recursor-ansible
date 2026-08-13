@@ -6,7 +6,7 @@
     # Install rsyslog to capture the PowerDNS Recursor log messages
     # when the service is not managed by systemd
     - name: Install rsyslog
-      when: ansible_service_mgr != 'systemd'
+      when: ansible_facts.service_mgr != 'systemd'
       block:
         - name: Install rsyslog
           ansible.builtin.package:
@@ -23,17 +23,17 @@
         name: python3-dnspython
         state: present
         update_cache: true
-      when: ansible_os_family == 'Debian'
+      when: ansible_facts.os_family == 'Debian'
 
     - name: Install dnspython on RHEL/Alma/Rocky/OL
       ansible.builtin.dnf:
         name: python3-dns
         state: present
-      when: ansible_os_family == 'RedHat'
+      when: ansible_facts.os_family == 'RedHat'
 
     # The image is older than the run, so the package database can still point at
     # package versions the mirrors have already dropped.
     - name: Refresh the pacman package database
       ansible.builtin.command: pacman --sync --refresh --sysupgrade --noconfirm
-      when: ansible_pkg_mgr == 'pacman'
+      when: ansible_facts.pkg_mgr == 'pacman'
       changed_when: false

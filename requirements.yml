@@ -1,8 +1,24 @@
 ---
+
+##
+# Every collection carries an upper bound on purpose.
+#
+# The role supports ansible-core 2.16, and a collection that raises its
+# requires_ansible in a new major would break the ansible216 leg on the day it is
+# published, without a commit here. A cap turns that into a deliberate bump
+# instead of a red pipeline on an untouched repository. Raise a cap only together
+# with the floor of the tox environments.
+##
+
 collections:
   - name: community.docker
     version: ">=4.0.0,<5.0.0"
+
+  # 2.2.2 requires ansible-core 2.16. The cap is precautionary: no 3.0.0 exists
+  # yet, and whenever it appears it must be checked against the 2.16 leg first.
   - name: ansible.posix
+    version: "<3.0.0"
+
   # Provides the pacman module that ansible.builtin.package dispatches to on
   # Arch Linux. Capped below 11.0.0, which requires ansible-core 2.18.
   - name: community.general

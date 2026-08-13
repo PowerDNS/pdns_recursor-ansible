@@ -29,8 +29,8 @@
       ansible.builtin.deb822_repository:
         name: "{{ pdns_rec_repo_name }}"
         types: deb
-        uris: "https://{{ pdns_rec_install_repo['apt_repo_origin'] }}/{{ ansible_distribution | lower }}/"
-        suites: "{{ ansible_distribution_release | lower }}-{{ pdns_rec_install_repo['apt_version'] }}"
+        uris: "https://{{ pdns_rec_install_repo['apt_repo_origin'] }}/{{ ansible_facts.distribution | lower }}/"
+        suites: "{{ ansible_facts.distribution_release | lower }}-{{ pdns_rec_install_repo['apt_version'] }}"
         components: main
         architectures: "{{ _pdns_rec_apt_arch }}"
         signed_by: "{{ pdns_rec_install_repo['gpg_key'] }}"

@@ -9,12 +9,12 @@
         - name: Prefix the version of the PowerDNS Recursor package with the correct separator on RedHat
           ansible.builtin.set_fact:
             _pdns_rec_package_version: -{{ pdns_rec_package_version }}
-          when: ansible_os_family == 'RedHat'
+          when: ansible_facts.os_family == 'RedHat'
 
         - name: Prefix the version of the PowerDNS Recursor package with the correct separator on Debian
           ansible.builtin.set_fact:
             _pdns_rec_package_version: ={{ pdns_rec_package_version }}
-          when: ansible_os_family == 'Debian'
+          when: ansible_facts.os_family == 'Debian'
 
     - name: Install the PowerDNS Recursor
       ansible.builtin.package:

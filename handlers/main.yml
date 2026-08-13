@@ -14,7 +14,7 @@
     daemon_reload: true
   listen: reload systemd
   when:
-    - ansible_service_mgr == 'systemd'
+    - ansible_facts.service_mgr == 'systemd'
     - not _pdns_rec_disable_handlers | default(pdns_rec_disable_handlers) | bool
 
 - name: Restart pdns-recursor
@@ -23,7 +23,7 @@
     state: restarted
   listen: restart pdns-recursor
   when:
-    - ansible_service_mgr == 'systemd'
+    - ansible_facts.service_mgr == 'systemd'
     - _pdns_rec_service_state | default(pdns_rec_service_state) != 'stopped'
     - not _pdns_rec_disable_handlers | default(pdns_rec_disable_handlers) | bool
 
@@ -33,7 +33,7 @@
     state: restarted
   listen: restart pdns-recursor
   when:
-    - ansible_service_mgr != 'systemd'
+    - ansible_facts.service_mgr != 'systemd'
     - _pdns_rec_service_state | default(pdns_rec_service_state) != 'stopped'
     - not _pdns_rec_disable_handlers | default(pdns_rec_disable_handlers) | bool
 

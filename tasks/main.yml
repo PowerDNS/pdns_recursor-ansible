@@ -3,7 +3,7 @@
 - name: Include OS-specific variables
   ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
-    - "{{ ansible_os_family }}.yml"
+    - "{{ ansible_facts.os_family }}.yml"
     - Other.yml
   tags:
     - always
@@ -28,14 +28,14 @@
     - repository
 
 - name: Include OS specific repo tasks
-  ansible.builtin.include_tasks: repo-{{ ansible_os_family }}.yml
+  ansible.builtin.include_tasks: repo-{{ ansible_facts.os_family }}.yml
   when: pdns_rec_install_repo | length > 0
   tags:
     - install
     - repository
 
 - name: Include OS specific installation tasks
-  ansible.builtin.include_tasks: install-{{ ansible_system }}.yml
+  ansible.builtin.include_tasks: install-{{ ansible_facts.system }}.yml
   tags:
     - install
 
@@ -50,7 +50,7 @@
     state: "{{ pdns_rec_service_state }}"
     enabled: "{{ pdns_rec_service_enabled }}"
     masked: "{{ pdns_rec_service_masked }}"
-  when: ansible_service_mgr == 'systemd'
+  when: ansible_facts.service_mgr == 'systemd'
   tags:
     - service
 
@@ -61,7 +61,7 @@
     name: "{{ pdns_rec_service_name }}"
     state: "{{ pdns_rec_service_state }}"
     enabled: "{{ pdns_rec_service_enabled }}"
-  when: ansible_service_mgr != 'systemd'
+  when: ansible_facts.service_mgr != 'systemd'
   tags:
     - service
 
