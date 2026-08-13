@@ -5,12 +5,12 @@
 - name: Restart only the reconfigured instance
   hosts: all
   vars_files:
-    - ../resources/vars/pdns-rec-repo-54.yml
+    - ../resources/vars/pdns-rec-version.yml
     - ../resources/vars/pdns-rec-instances.yml
   tasks:
 
     - name: Record the unit start timestamps before the change
-      ansible.builtin.systemd:
+      ansible.builtin.systemd_service:
         name: "pdns-recursor@{{ item }}"
       loop: "{{ pdns_rec_multi_instances | map(attribute='name') | list }}"
       register: _units_before
@@ -23,7 +23,7 @@
         instance_threads: 2
 
     - name: Record the unit start timestamps after the change
-      ansible.builtin.systemd:
+      ansible.builtin.systemd_service:
         name: "pdns-recursor@{{ item }}"
       loop: "{{ pdns_rec_multi_instances | map(attribute='name') | list }}"
       register: _units_after

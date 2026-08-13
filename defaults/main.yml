@@ -64,9 +64,12 @@ pdns_rec_file_owner: root
 pdns_rec_file_group: "{{ default_pdns_rec_file_group }}"
 
 # Name of the PowerDNS Service
-pdns_rec_service_name: pdns-recursor
+pdns_rec_service_name: "{{ default_pdns_rec_service_name | default('pdns-recursor') }}"
 # Name of the PowerDNS binary.
 pdns_rec_bin_name: pdns_recursor
+
+# Absolute path of the daemon, used for the configuration check.
+pdns_rec_bin_path: "{{ default_pdns_rec_bin_path | default('/usr/sbin/' ~ pdns_rec_bin_name) }}"
 
 # State of the PowerDNS Recursor service
 pdns_rec_service_state: started

@@ -1,0 +1,19 @@
+---
+- name: Install the PowerDNS Recursor packages
+  tags:
+    - install
+  block:
+    # pkg has no version pinning syntax comparable to apt and dnf, so
+    # pdns_rec_package_version is not honoured here.
+    - name: Install the PowerDNS Recursor
+      ansible.builtin.package:
+        name: "{{ pdns_rec_package_name }}"
+        state: "{{ pdns_rec_package_state }}"
+
+    - name: Install PowerDNS Recursor debug symbols
+      ansible.builtin.package:
+        name: "{{ pdns_rec_debug_symbols_package_name }}"
+        state: "{{ pdns_rec_package_state }}"
+      when:
+        - pdns_rec_install_debug_symbols_package | bool
+        - pdns_rec_debug_symbols_package_name | length > 0

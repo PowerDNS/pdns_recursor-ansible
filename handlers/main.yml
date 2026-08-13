@@ -1,25 +1,39 @@
 ---
-# the sleep in the restart pdns-recursor handler
-# is needed to make sure the service has been
-# correctly stopped before being started again during restarts
-
 # Handlers are shared between role invocations in the same play, and role
 # parameters resolve to the values of the *last* invocation. The _pdns_rec_*
 # facts below are published per invocation by tasks/main.yml; the role
 # parameters are the fallback for runs that skip tasks/main.yml.
+#
+# The restart is split in two: systemd hosts use ansible.builtin.systemd_service,
+# and hosts without systemd (FreeBSD) use the generic module for their rc.d
+# scripts. Both listen on the same topic, so the tasks notify
+# `restart pdns-recursor` without knowing which applies.
 
 - name: Reload systemd
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     daemon_reload: true
   listen: reload systemd
-  when: not _pdns_rec_disable_handlers | default(pdns_rec_disable_handlers) | bool
+  when:
+    - ansible_facts.service_mgr == 'systemd'
+    - not _pdns_rec_disable_handlers | default(pdns_rec_disable_handlers) | bool
 
 - name: Restart pdns-recursor
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: "{{ _pdns_rec_service_name | default(pdns_rec_service_name) }}"
     state: restarted
   listen: restart pdns-recursor
   when:
+    - ansible_facts.service_mgr == 'systemd'
+    - _pdns_rec_service_state | default(pdns_rec_service_state) != 'stopped'
+    - not _pdns_rec_disable_handlers | default(pdns_rec_disable_handlers) | bool
+
+- name: Restart pdns-recursor without systemd
+  ansible.builtin.service:
+    name: "{{ _pdns_rec_service_name | default(pdns_rec_service_name) }}"
+    state: restarted
+  listen: restart pdns-recursor
+  when:
+    - ansible_facts.service_mgr != 'systemd'
     - _pdns_rec_service_state | default(pdns_rec_service_state) != 'stopped'
     - not _pdns_rec_disable_handlers | default(pdns_rec_disable_handlers) | bool
 

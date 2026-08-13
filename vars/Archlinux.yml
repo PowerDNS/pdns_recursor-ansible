@@ -5,4 +5,9 @@ default_pdns_rec_user: "pdns-recursor"
 default_pdns_rec_group: "pdns-recursor"
 default_pdns_rec_file_group: "{{ default_pdns_rec_group }}"
 default_pdns_rec_config_dir: "/etc/powerdns"
-default_pdns_rec_debug_symbols_package_name: "pdns-recursor-dbg"
+# Arch Linux ships no debug symbols package. An empty name makes the role skip
+# it even when pdns_rec_install_debug_symbols_package is enabled.
+default_pdns_rec_debug_symbols_package_name: ""
+
+# Arch installs the daemon in /usr/bin; /usr/sbin is only a usr-merge symlink.
+default_pdns_rec_bin_path: /usr/bin/pdns_recursor

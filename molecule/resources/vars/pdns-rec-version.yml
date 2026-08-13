@@ -1,0 +1,13 @@
+---
+
+##
+# The PowerDNS Recursor release under test.
+#
+# The value is the release as named by the PowerDNS repositories (52, 53, 54)
+# and defaults to the newest tested release. The repository presets it resolves
+# to live in the role's vars/main.yml, so the second variable is only rendered
+# once the role runs.
+##
+
+pdns_rec_test_version: "{{ lookup('env', 'PDNS_REC_VERSION') | default('54', true) }}"
+pdns_rec_install_repo: "{{ lookup('vars', 'pdns_rec_powerdns_repo_' ~ pdns_rec_test_version) }}"

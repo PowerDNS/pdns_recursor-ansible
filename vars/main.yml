@@ -11,7 +11,7 @@ _pdns_rec_apt_arch_map:
   i386: i386
   i686: i386
   ppc64le: ppc64el
-_pdns_rec_apt_arch: "{{ _pdns_rec_apt_arch_map.get(ansible_architecture | lower, 'amd64') }}"
+_pdns_rec_apt_arch: "{{ _pdns_rec_apt_arch_map.get(ansible_facts.architecture | lower, 'amd64') }}"
 
 pdns_rec_powerdns_repo_master:
   apt_repo_origin: repo.powerdns.com

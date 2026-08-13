@@ -3,6 +3,9 @@
 # Configure one recursor instance. `instance` is an entry of
 # `pdns_rec_multi_instances`; `instance_threads` changes the generated
 # configuration so the restart handler is notified.
+#
+# The configuration file name is resolved against the configuration directory of
+# the distribution, so this works on every platform set of this scenario.
 # noqa: the pdns_rec_ variable prefix predates the pdns_recursor role name, so
 # ansible-lint's var-naming[no-role-prefix] fires on the instance vars.
 - name: Configure the recursor instance {{ instance.name }}  # noqa var-naming[no-role-prefix]

@@ -1,0 +1,32 @@
+---
+
+##
+# Install the PowerDNS Recursor from the packages of the distribution instead of
+# a PowerDNS repository. Arch Linux is rolling, so it always carries a single
+# current release and cannot be pinned to a tested one: this scenario declares
+# its own platform and ignores any platform set passed with --base-config.
+#
+# The configuration is the one of the default scenario, so the same tests apply;
+# only the repository tests are left out, because there is no repository.
+##
+
+scenario:
+  name: os-repos
+
+platforms:
+
+  - name: archlinux
+    image: archlinux:base
+    dockerfile_tpl: archlinux-systemd
+
+provisioner:
+  playbooks:
+    # Also named here so a bare `molecule` invocation, which does not load
+    # molecule/config.yml, still reaches the platform guard in create.yml
+    # instead of skipping every action as a missing playbook.
+    create: ../resources/create.yml
+
+verifier:
+  directory: ../resources/tests/all
+  additional_files_or_dirs:
+    - ../systemd-overrides/
