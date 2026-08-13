@@ -8,9 +8,15 @@ FROM {{ archlinux_base_image }}
 # only warned about, so this stays compatible with older pacman.
 RUN sed -i '/^\[options\]/a DisableSandbox' /etc/pacman.conf
 
+# The base image already carries bash, awk, grep, ps and systemd, and nothing
+# here calls netstat, ps or pip, so only what is genuinely missing is installed.
+# python-dnspython stays: the tests resolve names against the recursor with it.
+# acl is needed for the unprivileged to unprivileged escalation of a task with
+# become_user: Ansible hands the temporary files over with setfacl.
+# `-Syu` rather than `-Sy`: Arch is rolling and a partial upgrade breaks it.
 RUN pacman -Syu --noconfirm && \
-    pacman -S --noconfirm systemd awk bash ca-certificates grep inetutils \
-        iproute2 net-tools procps-ng python python-dnspython python-pip sudo vim && \
+    pacman -S --noconfirm systemd ca-certificates acl iproute2 python \
+        python-dnspython sudo && \
     rm -rf /usr/share/doc/* && \
     rm -rf /usr/share/man/* && \
     pacman -Scc --noconfirm

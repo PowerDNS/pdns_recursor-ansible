@@ -4,9 +4,44 @@ FROM {{ item.image }}
 
 ENV container docker
 
-RUN dnf makecache && \
-    dnf update -y && \
-    dnf install -y systemd python3 python3-pip sudo bash iproute procps-ng && \
+# The `retries` option of dnf covers the download of a package, not the refresh
+# of the repository metadata, and these images set `skip_if_unavailable=False`,
+# so a mirrorlist that momentarily answers without any URL fails the whole build
+# with "Cannot prepare internal mirrorlist". Retry the refresh and the
+# installation together, and still fail once the attempts are exhausted.
+#
+# One step is deliberately gone from the chain below:
+#
+#     dnf update -y && \
+#
+# Every CI job builds every image of its platform set from scratch, because the
+# runners start with an empty image store, so this upgrade was the largest
+# download of every build and one more occasion for a mirror to drop the
+# connection. The base image tags are already patched by their vendors, and the
+# role under test installs the packages it needs itself.
+#
+# The package list is the minimum these images lack. `bash`, `awk` and `grep`
+# come with every base image; `ps` is only absent on Rocky, and nothing here
+# uses it, since the tests query services and sockets rather than processes.
+# `iproute` stays because `ss` is what the socket assertions of testinfra call,
+# and `python3` and `sudo` because Oracle Linux 8 ships neither. Nothing runs
+# `pip` inside a container, so `python3-pip` is gone as well.
+#
+# `acl` is not optional here: Molecule connects as the unprivileged `ansible`
+# account, so a task with `become_user` performs an unprivileged to unprivileged
+# escalation, and Ansible needs setfacl to hand the temporary files to the target
+# account. Only Oracle Linux 8 ships it in the base image; without it the task
+# fails with "Failed to set permissions on the temporary files Ansible needs to
+# create when becoming an unprivileged user".
+RUN ok=0; \
+    for i in 1 2 3; do \
+        dnf makecache && \
+        dnf install -y systemd python3 sudo iproute acl && \
+        { ok=1; break; }; \
+        echo "dnf attempt ${i} failed, retrying in 15 seconds"; \
+        sleep 15; \
+    done; \
+    [ "${ok}" -eq 1 ] || exit 1; \
     rm -Rf /usr/share/doc && \
     rm -Rf /usr/share/man && \
     dnf clean all
