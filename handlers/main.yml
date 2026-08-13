@@ -6,8 +6,20 @@
 #
 # The restart is split in two: systemd hosts use ansible.builtin.systemd_service,
 # and hosts without systemd (FreeBSD) use the generic module for their rc.d
-# scripts. Both listen on the same topic, so the tasks notify
+# scripts. Both listen on the same topics, so the tasks notify
 # `restart pdns-recursor` without knowing which applies.
+#
+# The systemd restart reloads the units in the same task, so a restart can never
+# run against a unit systemd has not reloaded, and a host left with a unit file
+# systemd never read is repaired by the next change. The desired state guard
+# lives in the value of `state`, not in `when`: a `when` guard would skip the
+# daemon reload as well, and a drop-in changed while the service is deliberately
+# stopped would never reach systemd. A daemon reload alone never reports
+# `changed`, so a reload handler cannot notify the restart itself.
+#
+# `reload systemd` stays a separate handler for the callers that have nothing to
+# restart. Handlers run in the order they are defined here, not in the order a
+# task lists them in `notify:`.
 
 - name: Reload systemd
   ansible.builtin.systemd_service:
@@ -20,13 +32,20 @@
 - name: Restart pdns-recursor
   ansible.builtin.systemd_service:
     name: "{{ _pdns_rec_service_name | default(pdns_rec_service_name) }}"
-    state: restarted
-  listen: restart pdns-recursor
+    daemon_reload: true
+    state: >-
+      {{ 'restarted'
+         if (_pdns_rec_service_state | default(pdns_rec_service_state)) != 'stopped'
+         else omit }}
+  listen:
+    - restart pdns-recursor
+    - reload systemd and restart pdns-recursor
   when:
     - ansible_facts.service_mgr == 'systemd'
-    - _pdns_rec_service_state | default(pdns_rec_service_state) != 'stopped'
     - not _pdns_rec_disable_handlers | default(pdns_rec_disable_handlers) | bool
 
+# Only the plain restart topic: `reload systemd and restart pdns-recursor` is
+# notified from the systemd drop-in tasks, which never run here.
 - name: Restart pdns-recursor without systemd
   ansible.builtin.service:
     name: "{{ _pdns_rec_service_name | default(pdns_rec_service_name) }}"

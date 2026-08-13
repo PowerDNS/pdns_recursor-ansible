@@ -44,12 +44,19 @@
   tags:
     - config
 
+# The handlers flush at the end of the play, so systemd still holds the unit it
+# loaded before this run when this task starts a service that is not running
+# yet: reload first when this run changed the drop-in. An already running
+# service is untouched by the reload, which is what the restart handler is for.
 - name: Set the status of the PowerDNS Recursor service (systemd)
   ansible.builtin.systemd_service:
     name: "{{ pdns_rec_service_name }}"
     state: "{{ pdns_rec_service_state }}"
     enabled: "{{ pdns_rec_service_enabled }}"
     masked: "{{ pdns_rec_service_masked }}"
+    daemon_reload: >-
+      {{ (_pdns_rec_service_override is defined and _pdns_rec_service_override.changed)
+         or (_pdns_rec_service_override_removed is defined and _pdns_rec_service_override_removed.changed) }}
   when: ansible_facts.service_mgr == 'systemd'
   tags:
     - service

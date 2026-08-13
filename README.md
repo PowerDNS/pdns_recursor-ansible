@@ -209,6 +209,10 @@ pdns_rec_service_overrides: {}
 
 Dict with overrides for the service (systemd only).
 This can be used to change any systemd settings in the `[Service]` category.
+The role merges it with the platform defaults and writes the result to
+`/etc/systemd/system/<service name>.service.d/override.conf`. When the merged result is empty that
+file is removed again and the service restarts on the packaged unit; other drop-ins in the same
+directory are left alone.
 
 ## Role Tags
 
@@ -293,6 +297,19 @@ Every instance needs its own service name and configuration file; `pdns-recursor
 
 `meta: flush_handlers` is play-wide: it also runs handlers that earlier roles in the same play
 notified. `pdns_rec_disable_handlers: true` skips the restart handlers entirely.
+
+`pdns_rec_flush_handlers` defaults to `false`, which is correct for a single invocation and wrong
+for more than one: without it the pending restarts of every instance run once, at the end of the
+play, against the service name of the last invocation.
+
+On systemd hosts the restart handler reloads the units in the same task, so a restart never runs
+against a unit systemd has not read. The reload happens even when `pdns_rec_service_state: stopped`
+keeps the service down, so the next manual start uses the drop-in this run wrote.
+
+Tag selection filters tasks, not handlers: under `--skip-tags service` the service task is skipped,
+but a configuration change still notifies the restart handler, and restarting an inactive unit
+starts it. Use `pdns_rec_disable_handlers: true` to apply configuration without touching the
+running service.
 
 ## Example Playbooks
 

@@ -19,6 +19,7 @@
             owner: root
             group: root
             mode: "0750"
+          when: _service_overrides | length > 0
 
         - name: Override the PowerDNS Recursor unit (systemd)
           ansible.builtin.template:
@@ -27,10 +28,19 @@
             owner: root
             group: root
             mode: "0644"
-          when: pdns_rec_service_overrides | length > 0
-          notify:
-            - reload systemd
-            - restart pdns-recursor
+          when: _service_overrides | length > 0
+          notify: reload systemd and restart pdns-recursor
+          register: _pdns_rec_service_override
+
+        # Only the file this role writes is removed, never the drop-in
+        # directory: an operator can keep drop-ins of their own next to it.
+        - name: Remove the PowerDNS Recursor unit override (systemd)
+          ansible.builtin.file:
+            path: /etc/systemd/system/{{ pdns_rec_service_name }}.service.d/override.conf
+            state: absent
+          when: _service_overrides | length == 0
+          notify: reload systemd and restart pdns-recursor
+          register: _pdns_rec_service_override_removed
 
     - name: Ensure that the PowerDNS Recursor configuration and additional directories exists
       ansible.builtin.file:
