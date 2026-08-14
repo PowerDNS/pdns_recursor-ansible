@@ -63,7 +63,8 @@
           {{ [{'path': _api_dir_path, 'owner': pdns_rec_user,
                'group': pdns_rec_group, 'recurse': false}]
              if (_api_dir_path | length > 0
-                 and _api_dir_path not in (_base_paths + [_include_dir_path]))
+                 and _api_dir_path not in _base_paths
+                 and _api_dir_path != _include_dir_path)
              else [] }}
 
     - name: Configure systemd
