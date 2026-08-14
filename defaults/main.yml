@@ -93,6 +93,39 @@ pdns_rec_config_additional_dirs: []
 # Additional configuration or supplementary files
 pdns_rec_config_additional_files: []
 
+# Whether the owner, group and mode of the additional directories are applied to
+# their whole tree. The recursor reads the files that end up in them - RPZ zones,
+# an include_dir fragment, the API state - so they have to be readable by the
+# account the daemon runs as, whatever created them.
+#
+# This covers pdns_rec_config_additional_dirs and the directory named by
+# webservice.api_dir. The configuration directory itself is never walked: it
+# belongs to the package, which ships a recursor.yml-dist in it, and to the
+# operator, whose drop-ins live in recursor.d.
+pdns_rec_config_dirs_recurse: true
+
+# Mode of the additional directories, applied to the whole tree when
+# pdns_rec_config_dirs_recurse is enabled.
+#
+# It is deliberately symbolic rather than numeric: the capital `X` in `u=rwX`
+# grants the execute bit on directories, and on files that already carry one,
+# but never adds it to a file that does not. So the directories stay traversable
+# while an RPZ zone or an include fragment is left non-executable, which is all
+# the recursor needs - it reads those files and never runs them. A numeric mode
+# cannot draw that line, since `0750` applied to a tree marks every file
+# executable as well, so an override should be symbolic too.
+#
+# The default is the equivalent of 0750 on directories and 0640 on files, which
+# is what pdns_rec_config_file_mode sets on a file of its own.
+pdns_rec_config_dir_mode: "u=rwX,g=rX,o="
+
+# Mode of the additional configuration or supplementary files.
+#
+# Keep this in step with the file half of pdns_rec_config_dir_mode. When the two
+# disagree and a file lives inside one of the directories above, each converge
+# ends up rewriting the mode twice and never reports an unchanged run.
+pdns_rec_config_file_mode: "0640"
+
 # Example config from:
 # https://doc.powerdns.com/recursor/yamlsettings.html#yaml-settings-file
 pdns_rec_config: {}

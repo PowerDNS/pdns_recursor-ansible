@@ -1,3 +1,6 @@
+import re
+
+
 def test_distribution(distro_family):
     assert distro_family in ('debian', 'rhel', 'arch')
 
@@ -139,3 +142,73 @@ except Exception as e:
     sys.exit(1)
 " """)
         assert cmd.rc == 0, f"RPZ script failed rc={cmd.rc}\nstdout:\n{cmd.stdout}\nstderr:\n{cmd.stderr}"
+
+
+def test_daemon_runs_as_the_service_account(host, ansible_vars):
+    """The daemon must not be running as root.
+
+    What this guards is the outcome, not one mechanism. Two things enforce it and
+    either is enough: the packaged unit's User=/Group=, and `recursor.setuid` /
+    `recursor.setgid` in the configuration the role writes. So on a systemd host
+    this does not prove the settings took effect - it proves that between them
+    nothing left the daemon privileged, which is what an operator cares about, and
+    it catches an override or a unit change that hands it back to root.
+
+    Asserted on the running process because a configuration file carrying the
+    settings says nothing about whether they applied. The uid comes from the
+    ownership of /proc/<pid> rather than from ps: these images do not all ship
+    procps.
+    """
+    if not host.exists('systemctl'):
+        return
+
+    state = host.run('systemctl is-active pdns-recursor')
+    assert state.stdout.strip() == 'active', \
+        'the recursor is {}, so there is no process to check'.format(state.stdout.strip())
+
+    pid = host.run('systemctl show pdns-recursor -p MainPID --value').stdout.strip()
+    assert pid.isdigit() and pid != '0', 'no MainPID for a unit reported active'
+
+    proc = host.file('/proc/{}'.format(pid))
+    assert proc.exists, 'the process exited between reading its pid and its owner'
+    assert proc.user == ansible_vars['default_pdns_rec_user']
+    assert proc.user != 'root'
+
+
+def test_webservice_api_dir(host, config_file, ansible_vars):
+    """The directory named by webservice.api_dir has to exist and be writable.
+
+    The recursor reads api_dir whether or not the webserver is enabled and refuses
+    to start when it names a directory that is not there, so the role creates it -
+    owned by the account the daemon runs as, because the REST API writes into it.
+    The scenario deliberately does not list it in pdns_rec_config_additional_dirs,
+    so what is checked here is the role creating it on its own.
+    """
+    match = re.search(r'^\s+api_dir:\s*(\S+)\s*$', config_file.content_string,
+                      re.MULTILINE)
+    if not match:
+        return
+
+    api_dir = host.file(match.group(1).strip('"\''))
+    assert api_dir.exists, '{} was not created'.format(match.group(1))
+    assert api_dir.is_directory
+    assert api_dir.user == ansible_vars['default_pdns_rec_user']
+
+
+def test_webservice_api_dir_contents_are_left_to_the_daemon(host, config_file):
+    """Whatever the recursor writes into api_dir keeps the mode it chose.
+
+    The role does not walk api_dir: the daemon writes `apizones` as 0644, so
+    applying the recursive directory mode to it would reset it, notify a restart,
+    and the restart would write it back - a change on every converge, for ever.
+    """
+    match = re.search(r'^\s+api_dir:\s*(\S+)\s*$', config_file.content_string,
+                      re.MULTILINE)
+    if not match:
+        return
+
+    apizones = host.file('{}/apizones'.format(match.group(1).strip('"\'')))
+    if not apizones.exists:
+        return
+
+    assert apizones.mode == 0o644

@@ -37,9 +37,14 @@ pdns_rec_config:
       3265
     api_dir: "/var/lib/pdns-recursor/api"
 
+# webservice.api_dir is deliberately absent: the role creates the directory a
+# configured api_dir names, owned by the account the daemon runs as, so leaving it
+# out here is what exercises that.
+#
+# The modes are symbolic because the role applies them to the whole tree: the
+# capital X keeps the directories traversable without marking the RPZ zones and
+# include fragments inside them executable.
 pdns_rec_config_additional_dirs:
-  - path: "{{ pdns_rec_config.webservice.api_dir }}"
-    mode: '0775'
   - "{{ pdns_rec_config.recursor.include_dir }}"
   - "/var/lib/pdns-recursor/rpz"
 
