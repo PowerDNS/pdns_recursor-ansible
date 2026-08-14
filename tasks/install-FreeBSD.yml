@@ -1,6 +1,10 @@
 ---
-# The dns/powerdns-recursor port is installed through pkg, which takes the
-# version as a `-<version>` suffix, the same separator the RedHat family uses.
+# The dns/powerdns-recursor port is installed through pkg, which selects a
+# version as a `-<version>` suffix on the package name. The version has to be one
+# the configured pkg repository carries: the FreeBSD release repositories keep a
+# single version per package, so a pin is only useful against a repository that
+# serves several, for instance a poudriere built one.
+#
 # FreeBSD ships no debug symbols package, and vars/FreeBSD.yml sets
 # default_pdns_rec_debug_symbols_package_name to an empty string for it, which
 # skips that install.

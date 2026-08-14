@@ -256,6 +256,9 @@ the install path only:
 ansible-playbook site.yml -e pdns_rec_package_state=absent --tags install
 ```
 
+That run also removes `/etc/systemd/system/<service name>.service.d/` and reloads systemd,
+so a later reinstall does not inherit the drop-in of the previous installation.
+
 ## Handlers
 
 Handlers run at the end of the play, and Ansible shares them between invocations of the same role.
