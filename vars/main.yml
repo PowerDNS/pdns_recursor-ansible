@@ -60,7 +60,45 @@ pdns_rec_powerdns_repo_54:
 
 default_pdns_rec_service_overrides: {}
 
+# Baseline settings written to the configuration file, merged under
+# pdns_rec_config so an operator overrides any of them.
+#
+# The role writes its own file over the one the package ships, so anything the
+# package put in that file and this dict does not carry is lost. Both the
+# Enterprise Linux and the Debian packages ship a YAML configuration declaring
+# `recursor.include_dir`, and the Enterprise Linux one also sets
+# `recursor.setuid` and `recursor.setgid`.
+#
+# setuid and setgid are the reason this baseline exists. The packaged units set
+# `User=` and `Group=`, so the daemon they start is already unprivileged, but
+# the settings are what makes the daemon drop privileges when it is started any
+# other way - a hand-written unit, an ExecStart override that the role's own
+# pdns_rec_service_overrides can install, or a run outside systemd. Without them
+# such a start keeps the recursor running as the account that launched it, which
+# is root.
+#
+# So pdns_rec_user and pdns_rec_group have to name the account the service
+# actually starts as. The packaged units already do - their User= and Group= are
+# the same account these defaults resolve to - and an override that changes
+# User=/Group= or ExecStart has to change these two with it. Asked to become a
+# different account than the one it was started as, an unprivileged daemon exits
+# with "Unable to set effective group id: Operation not permitted", which is the
+# intended refusal rather than a silent downgrade.
+
 default_pdns_rec_config:
+  recursor:
+    include_dir: "{{ pdns_rec_config_dir }}/recursor.d"
+    setuid: "{{ pdns_rec_user }}"
+    setgid: "{{ pdns_rec_group }}"
+    extended_resolution_errors: true
+    threads: 2
+    max_mthreads: 2048
   incoming:
+    allow_from:
+      - 127.0.0.0/8
     listen:
       - 127.0.0.1
+    reuseport: true
+  outgoing:
+    source_address:
+      - 0.0.0.0

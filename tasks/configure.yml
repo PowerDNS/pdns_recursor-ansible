@@ -7,7 +7,65 @@
       ansible.builtin.set_fact:
         _pdns_rec_config: "{{ default_pdns_rec_config | ansible.builtin.combine(pdns_rec_config, recursive=true) }}"
         _service_overrides: "{{ default_pdns_rec_service_overrides | ansible.builtin.combine(pdns_rec_service_overrides, recursive=true) }}"
-        _rec_dirs: "{{ [pdns_rec_config_dir] + pdns_rec_config_additional_dirs }}"
+
+    # webservice.api_dir is read whether or not the webserver is enabled, and the
+    # recursor exits with "No such file or directory" when it names a directory
+    # that is not there, so a configured api_dir is created like any other
+    # directory the configuration points at. An operator who lists it in
+    # pdns_rec_config_additional_dirs as well, to give it a mode of its own, is
+    # unaffected: that entry wins, because the duplicate is dropped here.
+    - name: Collect the directories to create
+      ansible.builtin.set_fact:
+        _rec_dirs: "{{ [_config_dir_entry] + pdns_rec_config_additional_dirs + _include_dir_entry + _api_dir_entry }}"
+      vars:
+        # The configuration directory is never walked, whatever
+        # pdns_rec_config_dirs_recurse says. It belongs to the package, not to
+        # this role: it holds the recursor.yml-dist that the package ships, and
+        # re-owning that is not the role's business. The recursion covers the
+        # directories the role was given - the additional ones - and the
+        # configuration file gets its owner and mode from its own task.
+        _config_dir_entry: "{{ {'path': pdns_rec_config_dir, 'recurse': false} }}"
+        # An entry is either a plain path or a mapping carrying `path`, so the two
+        # shapes are unwrapped separately. A trailing slash is stripped, because
+        # these paths are only ever compared against each other and
+        # /var/lib/x and /var/lib/x/ name one directory - left in, they would
+        # produce two entries for it, and the later one would silently win over
+        # the operator's.
+        _base_paths: >-
+          {{ ([pdns_rec_config_dir]
+              + (pdns_rec_config_additional_dirs | select('mapping') | map(attribute='path') | list)
+              + (pdns_rec_config_additional_dirs | reject('mapping') | list))
+             | map('regex_replace', '/+$', '') | list }}
+        # include_dir names a directory the recursor reads drop-ins from, and a
+        # configuration naming one that does not exist is fatal in the same way a
+        # missing api_dir is: the YAML parse is abandoned, the file is retried as
+        # an old-style configuration, rejected, and the daemon does not start. The
+        # packages do ship it, but the baseline declares it, so the role cannot
+        # rely on the packaging of every platform to have created it.
+        #
+        # Not walked: what is inside are the operator's drop-ins.
+        _include_dir_path: "{{ (_pdns_rec_config.recursor | default({}, true)).get('include_dir', '') | regex_replace('/+$', '') }}"
+        _include_dir_entry: >-
+          {{ [{'path': _include_dir_path, 'recurse': false}]
+             if (_include_dir_path | length > 0 and _include_dir_path not in _base_paths)
+             else [] }}
+        # The REST API writes its zone and configuration files into api_dir, so
+        # unlike the other directories this one is owned by the account the daemon
+        # runs as rather than by pdns_rec_file_owner, which is root.
+        #
+        # It is not walked either. The contents are state the daemon maintains,
+        # not configuration this role manages: the recursor writes its `apizones`
+        # with mode 0644, so a recursion would reset it to 0640 and notify a
+        # restart, and the restart would write it back as 0644 - a change on every
+        # converge, for ever. Only the directory itself is managed here.
+        _api_dir_path: "{{ (_pdns_rec_config.webservice | default({}, true)).get('api_dir', '') | regex_replace('/+$', '') }}"
+        _api_dir_entry: >-
+          {{ [{'path': _api_dir_path, 'owner': pdns_rec_user,
+               'group': pdns_rec_group, 'recurse': false}]
+             if (_api_dir_path | length > 0
+                 and _api_dir_path not in _base_paths
+                 and _api_dir_path != _include_dir_path)
+             else [] }}
 
     - name: Configure systemd
       when: ansible_facts.service_mgr == "systemd"
@@ -42,13 +100,35 @@
           notify: reload systemd and restart pdns-recursor
           register: _pdns_rec_service_override_removed
 
+    # For the additional directories and for api_dir the owner, group and mode
+    # reach the whole tree, not just the directory itself: what the recursor has
+    # to be able to read is the RPZ zone, the include_dir fragment or the API
+    # state file inside, and those are as often put there by something other than
+    # this role as by it. The configuration directory carries recurse: false, set
+    # above, because it belongs to the package.
+    #
+    # The default mode is symbolic on purpose. `u=rwX` grants execute on
+    # directories, and on files that already carry it, but never adds it to a
+    # file that does not, so the tree stays traversable while a plain RPZ zone or
+    # include fragment is left non-executable - the recursor reads them and never
+    # runs them. An octal mode cannot draw that line, since `0750` applied to a
+    # tree marks every file executable too, so an override should be symbolic as
+    # well.
+    # follow: false is what keeps the recursion inside the tree. The file module
+    # follows symlinks by default and applies owner, group and mode to a link's
+    # target, descending into a symlinked directory as well - so a single link
+    # placed in one of these directories, an RPZ zone kept on shared storage
+    # being the obvious one, would hand this task a chown and chmod of whatever
+    # is on the other side.
     - name: Ensure that the PowerDNS Recursor configuration and additional directories exists
       ansible.builtin.file:
         name: "{{ item.path | default(item) }}"
         state: directory
         owner: "{{ item.owner | default(pdns_rec_file_owner) }}"
         group: "{{ item.group | default(pdns_rec_file_group) }}"
-        mode: "{{ item.mode | default('0750') }}"
+        mode: "{{ item.mode | default(pdns_rec_config_dir_mode) }}"
+        recurse: "{{ item.recurse | default(pdns_rec_config_dirs_recurse) }}"
+        follow: false
       loop: "{{ _rec_dirs }}"
       notify: restart pdns-recursor
 
@@ -59,7 +139,7 @@
         dest: "{{ item.dest }}"
         owner: "{{ item.owner | default(pdns_rec_file_owner) }}"
         group: "{{ item.group | default(pdns_rec_file_group) }}"
-        mode: "{{ item.mode | default('0750') }}"
+        mode: "{{ item.mode | default(pdns_rec_config_file_mode) }}"
       loop: "{{ pdns_rec_config_additional_files }}"
       when: pdns_rec_config_additional_files | length > 0
       notify: restart pdns-recursor

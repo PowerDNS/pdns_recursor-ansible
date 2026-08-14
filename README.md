@@ -181,16 +181,101 @@ pdns_rec_config: {}
 
 Dictionary containing in YAML format configuration of PowerDNS Recursor. See https://docs.powerdns.com/recursor/yamlsettings.html.
 
+It is merged over a baseline the role carries, so only the settings that differ
+have to be given. The baseline declares the settings the packages ship in their
+own configuration file, which the role replaces:
+
+```yaml
+recursor:
+  include_dir: "{{ pdns_rec_config_dir }}/recursor.d"
+  setuid: "{{ pdns_rec_user }}"
+  setgid: "{{ pdns_rec_group }}"
+  extended_resolution_errors: true
+  threads: 2
+  max_mthreads: 2048
+incoming:
+  allow_from:
+    - 127.0.0.0/8
+  listen:
+    - 127.0.0.1
+  reuseport: true
+outgoing:
+  source_address:
+    - 0.0.0.0
+```
+
+`setuid` and `setgid` make the daemon drop privileges by itself. The packaged
+units set `User=` and `Group=` as well, so a service started through them is
+already unprivileged; the settings are what covers a start that does not go
+through the packaged unit - a hand-written unit, an `ExecStart` override
+installed through `pdns_rec_service_overrides`, or a run outside systemd. Without
+them such a start leaves the recursor running as the account that launched it.
+
+`pdns_rec_user` and `pdns_rec_group` therefore have to name the account the
+service actually starts as. The packaged units already agree with them, and an
+override that changes `User=`, `Group=` or `ExecStart` has to change these two
+with it. Asked to become a different account than the one it was started as, an
+unprivileged daemon exits with `Unable to set effective group id: Operation not
+permitted` - the intended refusal rather than a silent downgrade.
+
+`incoming.allow_from` is the one baseline value that takes something away.
+`ansible.builtin.combine` replaces a list rather than merging it, so the baseline
+narrows the recursor's own default - loopback plus the RFC 1918 ranges,
+link-local and `::1/128` - down to `127.0.0.0/8`. A host that relied on that
+default to answer clients on a private range will refuse them once this baseline
+applies, so declare the ranges it should serve:
+
+```yaml
+pdns_rec_config:
+  incoming:
+    allow_from:
+      - 127.0.0.0/8
+      - ::1/128
+      - 10.0.0.0/8
+```
+
+Note that section placement is not free: `threads` and `max_mthreads` belong to
+`recursor`, not to `outgoing`. A key in the wrong section is not ignored with a
+warning - the recursor gives up on the YAML parser, reads the file again as an
+old-style configuration, rejects it there as well and does not start.
+
+The REST API is not enabled by the baseline, because `webservice.webserver`
+defaults to false and an API key belongs to the operator. To enable it:
+
+```yaml
+pdns_rec_config:
+  webservice:
+    webserver: true
+    address: 127.0.0.1
+    port: 8001
+    api_dir: /var/lib/pdns-recursor/api
+    api_key: "{{ vault_pdns_rec_api_key }}"
+```
+
+`api_dir` is read whether or not the webserver is enabled, and the recursor
+exits with `No such file or directory` when it names a directory that does not
+exist, so the role creates it - owned by `pdns_rec_user`, because the API writes
+into it, and never walked, because what is inside is state the daemon maintains.
+The same goes for `recursor.include_dir`.
+
+Listing either of them in `pdns_rec_config_additional_dirs` as well is supported
+and takes precedence, but add `recurse: false` when you do. The API directory in
+particular is not a directory to walk: the recursor writes its `apizones` with
+mode `0644`, so a recursive mode would reset it, notify a restart, and the restart
+would write it back - a change on every converge, for ever.
+
 ```yaml
 pdns_rec_config_additional_dirs: []
 # pdns_rec_config_additional_dirs:
-#   - path: "{{ pdns_rec_config.webservice.api_dir }}"
-#     mode: '0775'
-#   - "{{ pdns_rec_config.recursor.include_dir }}"
-#   - "/var/lib/pdns-recursor/rpz"
+#   - path: "/var/lib/pdns-recursor/rpz"
+#     owner: "{{ pdns_rec_user }}"
+#   - path: "{{ pdns_rec_config_dir }}/zones"
+#     recurse: false
 ```
 
-Additional directories for configuration or supplementary files.
+Additional directories for configuration or supplementary files. An entry is
+either a path or a mapping that may carry `path`, `owner`, `group`, `mode` and
+`recurse`.
 
 ```yaml
 pdns_rec_config_additional_files: []
@@ -202,6 +287,38 @@ pdns_rec_config_additional_files: []
 ```
 
 Additional configuration or supplementary files for PowerDNS Recursor, e.g RPZ files.
+
+```yaml
+pdns_rec_config_dirs_recurse: true
+pdns_rec_config_dir_mode: "u=rwX,g=rX,o="
+pdns_rec_config_file_mode: "0640"
+```
+
+The owner, group and mode of every entry in `pdns_rec_config_additional_dirs`,
+and of the directory named by `webservice.api_dir`, are applied to the whole
+tree, so a file another role or the recursor itself put there is still readable
+by the account the daemon runs as. Set `pdns_rec_config_dirs_recurse` to `false`,
+globally or per entry through its `recurse` key, to touch only the directory.
+
+The configuration directory is never walked, whatever this is set to. It belongs
+to the package, which ships a `recursor.yml-dist` in it, and to the operator,
+whose drop-ins live in `recursor.d`; the configuration file the role writes takes
+its owner and mode from `pdns_rec_file_owner`, `pdns_rec_file_group` and its own
+task.
+
+`pdns_rec_config_dir_mode` is symbolic rather than octal on purpose. The capital
+`X` in `u=rwX` grants the execute bit on directories, and on files that already
+carry one, but never adds it to a file that does not - so the tree stays
+traversable while an RPZ zone or an include fragment is left non-executable,
+which is all the recursor needs, since it reads those files and never runs them.
+An octal mode cannot draw that line: `0750` applied to a tree would mark every
+file executable as well. Override it with another symbolic mode.
+
+`pdns_rec_config_file_mode` is the mode of the files in
+`pdns_rec_config_additional_files`, and matches what the file half of
+`pdns_rec_config_dir_mode` produces. Keep the two in step: if they disagree and
+a file sits inside one of those directories, each converge rewrites its mode
+twice and never reports an unchanged run.
 
 ```yaml
 pdns_rec_service_overrides: {}
