@@ -50,7 +50,12 @@ pdns_rec_config_additional_files:
       test-rpz.com.test2.rpz.  60   IN A  127.0.0.2
 
 # Override service
-pdns_rec_service_overrides:
+#
+# Kept under a second name as well, so the side effect can merge its own
+# settings onto this baseline. It cannot snapshot the rendered value with
+# set_fact, because ExecStart references pdns_rec_bin_path, a variable of the
+# role that only resolves while the role runs.
+pdns_rec_service_overrides_base:
   Unit:
     Description: PowerDNS Recursor (modified)
   Service:
@@ -59,3 +64,5 @@ pdns_rec_service_overrides:
     Environment:
       TEST_VAR1: TEST_VALUE1
       TEST_VAR2: TEST_VALUE2
+
+pdns_rec_service_overrides: "{{ pdns_rec_service_overrides_base }}"

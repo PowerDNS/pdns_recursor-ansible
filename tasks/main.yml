@@ -39,17 +39,55 @@
   tags:
     - install
 
+# The unit is gone by the time the handlers flush, so the reload happens here
+# rather than through the restart handler, and it is not suppressed by
+# pdns_rec_disable_handlers: leaving systemd with a drop-in it still holds but
+# that no longer exists is what this removes.
+#
+# The whole drop-in directory goes here, because the unit it belongs to is being
+# removed. While the package stays installed only the file this role writes is
+# removed, when its override dict is emptied - see tasks/configure.yml.
+#
+# Tagged `install`, because removal runs through the install path:
+# `-e pdns_rec_package_state=absent --tags install`, the only run that reaches
+# this once the packages are gone. A full run still fails afterwards on the
+# configuration check, as the README describes.
+- name: Remove the systemd drop-in overrides on uninstall
+  when:
+    - pdns_rec_package_state == 'absent'
+    - ansible_facts.service_mgr == 'systemd'
+  tags:
+    - install
+  block:
+    - name: Remove the PowerDNS Recursor drop-in override directory (systemd)
+      ansible.builtin.file:
+        path: /etc/systemd/system/{{ pdns_rec_service_name }}.service.d
+        state: absent
+      register: _pdns_rec_uninstall_dropin_dir
+
+    - name: Reload systemd after removing the drop-in overrides  # noqa: no-handler
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+      when: _pdns_rec_uninstall_dropin_dir is defined and _pdns_rec_uninstall_dropin_dir.changed
+
 - name: Include configuration tasks
   ansible.builtin.include_tasks: configure.yml
   tags:
     - config
 
+# The handlers flush at the end of the play, so systemd still holds the unit it
+# loaded before this run when this task starts a service that is not running
+# yet: reload first when this run changed the drop-in. An already running
+# service is untouched by the reload, which is what the restart handler is for.
 - name: Set the status of the PowerDNS Recursor service (systemd)
   ansible.builtin.systemd_service:
     name: "{{ pdns_rec_service_name }}"
     state: "{{ pdns_rec_service_state }}"
     enabled: "{{ pdns_rec_service_enabled }}"
     masked: "{{ pdns_rec_service_masked }}"
+    daemon_reload: >-
+      {{ (_pdns_rec_service_override is defined and _pdns_rec_service_override.changed)
+         or (_pdns_rec_service_override_removed is defined and _pdns_rec_service_override_removed.changed) }}
   when: ansible_facts.service_mgr == 'systemd'
   tags:
     - service

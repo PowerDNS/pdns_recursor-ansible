@@ -6,27 +6,44 @@
 #
 # The restart is split in two: systemd hosts use ansible.builtin.systemd_service,
 # and hosts without systemd (FreeBSD) use the generic module for their rc.d
-# scripts. Both listen on the same topic, so the tasks notify
+# scripts. Both listen on the same topics, so the tasks notify
 # `restart pdns-recursor` without knowing which applies.
-
-- name: Reload systemd
-  ansible.builtin.systemd_service:
-    daemon_reload: true
-  listen: reload systemd
-  when:
-    - ansible_facts.service_mgr == 'systemd'
-    - not _pdns_rec_disable_handlers | default(pdns_rec_disable_handlers) | bool
+#
+# The systemd restart reloads the units in the same task, so a restart can never
+# run against a unit systemd has not reloaded, and a host left with a unit file
+# systemd never read is repaired by the next change. The desired state guard
+# lives in the value of `state`, not in `when`: a `when` guard would skip the
+# daemon reload as well, and a drop-in changed while the service is deliberately
+# stopped would never reach systemd. A daemon reload alone never reports
+# `changed`, so a reload handler cannot notify the restart itself.
+#
+# Handlers run in the order they are defined here, not in the order a task lists
+# them in `notify:`.
+#
+# Tag selection filters tasks, not handlers, so `--skip-tags service` would skip
+# the service task and still restart - and restarting an inactive unit starts
+# it. `ansible_skip_tags` puts the restart under the same filter as the task,
+# and sits in the `state` value for the same reason the state guard does: the
+# drop-in of that run still has to reach systemd.
 
 - name: Restart pdns-recursor
   ansible.builtin.systemd_service:
     name: "{{ _pdns_rec_service_name | default(pdns_rec_service_name) }}"
-    state: restarted
-  listen: restart pdns-recursor
+    daemon_reload: true
+    state: >-
+      {{ 'restarted'
+         if ((_pdns_rec_service_state | default(pdns_rec_service_state)) != 'stopped'
+             and 'service' not in ansible_skip_tags)
+         else omit }}
+  listen:
+    - restart pdns-recursor
+    - reload systemd and restart pdns-recursor
   when:
     - ansible_facts.service_mgr == 'systemd'
-    - _pdns_rec_service_state | default(pdns_rec_service_state) != 'stopped'
     - not _pdns_rec_disable_handlers | default(pdns_rec_disable_handlers) | bool
 
+# Only the plain restart topic: `reload systemd and restart pdns-recursor` is
+# notified from the systemd drop-in tasks, which never run here.
 - name: Restart pdns-recursor without systemd
   ansible.builtin.service:
     name: "{{ _pdns_rec_service_name | default(pdns_rec_service_name) }}"
@@ -35,6 +52,7 @@
   when:
     - ansible_facts.service_mgr != 'systemd'
     - _pdns_rec_service_state | default(pdns_rec_service_state) != 'stopped'
+    - "'service' not in ansible_skip_tags"
     - not _pdns_rec_disable_handlers | default(pdns_rec_disable_handlers) | bool
 
 - name: Update the apt cache

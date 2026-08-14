@@ -209,6 +209,10 @@ pdns_rec_service_overrides: {}
 
 Dict with overrides for the service (systemd only).
 This can be used to change any systemd settings in the `[Service]` category.
+The role merges it with the platform defaults and writes the result to
+`/etc/systemd/system/<service name>.service.d/override.conf`. When the merged result is empty that
+file is removed again and the service restarts on the packaged unit; other drop-ins in the same
+directory are left alone.
 
 ## Role Tags
 
@@ -252,6 +256,9 @@ the install path only:
 ansible-playbook site.yml -e pdns_rec_package_state=absent --tags install
 ```
 
+That run also removes `/etc/systemd/system/<service name>.service.d/` and reloads systemd,
+so a later reinstall does not inherit the drop-in of the previous installation.
+
 ## Handlers
 
 Handlers run at the end of the play, and Ansible shares them between invocations of the same role.
@@ -293,6 +300,20 @@ Every instance needs its own service name and configuration file; `pdns-recursor
 
 `meta: flush_handlers` is play-wide: it also runs handlers that earlier roles in the same play
 notified. `pdns_rec_disable_handlers: true` skips the restart handlers entirely.
+
+`pdns_rec_flush_handlers` defaults to `false`, which is correct for a single invocation and wrong
+for more than one: without it the pending restarts of every instance run once, at the end of the
+play, against the service name of the last invocation.
+
+On systemd hosts the restart handler reloads the units in the same task, so a restart never runs
+against a unit systemd has not read. The reload happens even when `pdns_rec_service_state: stopped`
+keeps the service down, so the next manual start uses the drop-in this run wrote.
+
+Ansible does not filter handlers by tag, so the restart handlers read `ansible_skip_tags`
+themselves: under `--skip-tags service` the service task is skipped and the handler restarts
+nothing, while the systemd units of that run are still reloaded. `--tags config` is unaffected and
+still restarts. `pdns_rec_disable_handlers: true` remains the way to apply configuration without
+restarting in a run that is not tag-filtered.
 
 ## Example Playbooks
 

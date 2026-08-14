@@ -15,6 +15,10 @@
     pdns_rec_service_name: "pdns-recursor@{{ instance.name }}"
     pdns_rec_config_file: "recursor-{{ instance.name }}.conf"
     pdns_rec_flush_handlers: true
+    # `instance_service_overrides` sets the drop-in of the instance, so a side
+    # effect can notify the drop-in handler topic instead of the plain restart
+    # topic.
+    pdns_rec_service_overrides: "{{ instance_service_overrides | default({}) }}"
     pdns_rec_config:
       incoming:
         listen: [127.0.0.1]
