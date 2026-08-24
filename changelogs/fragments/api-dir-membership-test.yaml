@@ -1,2 +1,0 @@
-minor_changes:
-- 'rewrite the duplicate test that decides whether ``webservice.api_dir`` needs an entry of its own, from a membership test against a concatenated list to two separate comparisons. The result is the same directory list; the concatenation made ``ansible-lint`` 26 fail the repository with a ``jinja[invalid]`` violation, ``can only concatenate str (not "list") to str``, because the rule renders the referenced variable to a string before evaluating the expression (https://github.com/PowerDNS/pdns_recursor-ansible/pull/269).'

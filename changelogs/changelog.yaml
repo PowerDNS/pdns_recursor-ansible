@@ -75,3 +75,173 @@ releases:
     fragments:
     - add-rec-54-support-and-fixes.yaml
     release_date: '2026-02-23'
+  2.2.0:
+    changes:
+      breaking_changes:
+      - require ansible-core 2.16 or newer. Support for 2.15 is dropped, and Enterprise
+        Linux 8 targets must be managed with 2.16 because their system Python is 3.6
+        (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+      - restrict ``incoming.allow_from`` to ``127.0.0.0/8``. The recursor's own default
+        is the RFC 1918 set plus loopback and link-local (``10.0.0.0/8``, ``100.64.0.0/10``,
+        ``169.254.0.0/16``, ``192.168.0.0/16``, ``172.16.0.0/12``, ``::1/128``, ``fc00::/7``,
+        ``fe80::/10``), and the baseline now replaces it rather than adding to it,
+        because ``ansible.builtin.combine`` overwrites a list instead of merging it.
+        A deployment that relies on the default to serve clients on a private range
+        therefore starts refusing them after this upgrade, and one that serves IPv6
+        loses ``::1/128``. Declare the ranges the host should answer for in ``pdns_rec_config.incoming.allow_from``
+        (https://github.com/PowerDNS/pdns_recursor-ansible/pull/268).
+      bugfixes:
+      - correct the FreeBSD service name, configuration directory and daemon path.
+        The rc script is ``pdns_recursor``, the configuration lives in ``/usr/local/etc/pdns``
+        and the daemon is ``/usr/local/sbin/pdns_recursor``, following the ``dns/powerdns-recursor``
+        port. The configuration check no longer hardcodes ``/usr/sbin`` (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+      - create the directories named by ``recursor.include_dir`` and ``webservice.api_dir``.
+        The recursor reads that setting whether or not the webserver is enabled and
+        exits with ``No such file or directory`` when the directory is absent, so
+        a configuration that set it without also listing the directory in ``pdns_rec_config_additional_dirs``
+        left the daemon unable to start. The same is true of ``recursor.include_dir``,
+        which the baseline now declares. The API directory is owned by ``pdns_rec_user``,
+        because the REST API writes into it (https://github.com/PowerDNS/pdns_recursor-ansible/pull/268).
+      - install the recursor on FreeBSD. ``tasks/main.yml`` includes ``install-{{
+        ansible_facts.system }}.yml`` and only the Linux variant existed, so a FreeBSD
+        run failed at the installation step. The new task installs through ``ansible.builtin.package``
+        and skips the debug symbols package, which FreeBSD does not ship (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+      - keep ``recursor.include_dir`` in the configuration the role writes. The role
+        writes over the file the packages ship, which declares it, so the directory
+        an operator keeps drop-ins in was no longer read (https://github.com/PowerDNS/pdns_recursor-ansible/pull/268).
+      - read the service name and state from facts published per role invocation in
+        the restart handlers. Ansible shares handlers between invocations of the same
+        role and resolves role parameters to the last invocation, so a play with more
+        than one instance restarted the wrong service. Correct restarts also need
+        ``pdns_rec_flush_handlers`` set to ``true`` (https://github.com/PowerDNS/pdns_recursor-ansible/pull/264).
+      - reload the systemd units in the same task that restarts the service. A restart
+        can no longer run against a unit systemd has not read, and a host left with
+        a drop-in systemd never loaded is repaired by the next change instead of restarting
+        onto the stale unit (https://github.com/PowerDNS/pdns_recursor-ansible/pull/267).
+      - reload the systemd units in the service task when this run changed the drop-in.
+        Handlers flush at the end of the play, so a service that was not running yet
+        was started from the unit systemd had loaded before the run and kept the previous
+        settings until the handler restarted it (https://github.com/PowerDNS/pdns_recursor-ansible/pull/267).
+      - remove ``/etc/systemd/system/<service name>.service.d/`` when ``pdns_rec_package_state``
+        is ``absent``, so a later reinstall does not inherit the overrides of the
+        previous installation. The task is tagged ``install``, because removal runs
+        through the install path (https://github.com/PowerDNS/pdns_recursor-ansible/pull/267).
+      - remove ``/etc/systemd/system/<service name>.service.d/override.conf`` when
+        the merged service overrides are empty, and restart the service. The file
+        used to stay on disk, so emptying ``pdns_rec_service_overrides`` kept the
+        previous overrides applied forever. Other drop-ins in that directory are left
+        alone (https://github.com/PowerDNS/pdns_recursor-ansible/pull/267).
+      - restart the service on hosts without systemd. The restart handler and the
+        ``daemon_reload`` handler used the systemd module unconditionally, so a FreeBSD
+        run failed as soon as a configuration change notified them (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+      - restore ``recursor.setuid`` and ``recursor.setgid`` in the configuration the
+        role writes. They were dropped when the configuration moved to the ``pdns_rec_config``
+        dictionary, so the file no longer told the recursor to drop privileges and
+        a start that does not come from the packaged unit - a hand-written unit, an
+        ``ExecStart`` override installed through ``pdns_rec_service_overrides``, or
+        a run outside systemd - left the daemon running as the account that launched
+        it (https://github.com/PowerDNS/pdns_recursor-ansible/pull/268).
+      - skip the debug symbols package when the platform ships none. Arch Linux has
+        no ``pdns-recursor-dbg`` package, so enabling ``pdns_rec_install_debug_symbols_package``
+        there failed (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+      - skip the restart under ``--skip-tags service``. Ansible filters tasks by tag
+        but not handlers, so a run that deliberately left the service alone still
+        restarted it on a configuration change - and restarting an inactive unit starts
+        it. The handlers read ``ansible_skip_tags`` and still reload the units, so
+        a ``--tags config`` run is unaffected (https://github.com/PowerDNS/pdns_recursor-ansible/pull/267).
+      - stop marking supplementary files executable. ``pdns_rec_config_additional_files``
+        were written with mode ``0750``, which is meaningless for files the recursor
+        only ever reads, such as RPZ zones and include fragments. They are now written
+        with ``pdns_rec_config_file_mode``, ``0640`` by default (https://github.com/PowerDNS/pdns_recursor-ansible/pull/268).
+      - tag the ``Set fact for repo name`` task with ``install`` and ``repository``
+        so that ``pdns_rec_repo_name`` and ``pdns_rec_repo_regex`` are defined in
+        filtered runs (https://github.com/PowerDNS/pdns_recursor-ansible/pull/263).
+      - tag the tasks inside ``configure.yml``, ``install-*.yml`` and ``repo-*.yml``
+        so that ``--tags config``, ``--tags install`` and ``--tags repository`` no
+        longer run the include and skip its body. A dynamic ``include_tasks`` does
+        not pass its tags to the tasks it includes, so filtered runs silently did
+        nothing and still exited 0 (https://github.com/PowerDNS/pdns_recursor-ansible/pull/263).
+      - write the drop-in from the same value the template renders. The task was skipped
+        on an empty ``pdns_rec_service_overrides`` while the template renders the
+        merge of that variable with the platform defaults. No shipped platform sets
+        a default override today, so this was latent, but a default added later would
+        not have reached the unit (https://github.com/PowerDNS/pdns_recursor-ansible/pull/267).
+      doc_changes:
+      - document that ``pdns_rec_user`` and ``pdns_rec_group`` have to name the account
+        the service starts as, now that they are written to the configuration as ``setuid``
+        and ``setgid``. The packaged units already agree with them; an override that
+        changes ``User=``, ``Group=`` or ``ExecStart`` has to change them with it,
+        because a daemon asked to become an account other than the one it was started
+        as exits rather than continue with the wrong privileges (https://github.com/PowerDNS/pdns_recursor-ansible/pull/268).
+      - document the baseline configuration, the placement of ``threads`` and ``max_mthreads``
+        under ``recursor`` rather than ``outgoing``, and the settings needed to enable
+        the REST API (https://github.com/PowerDNS/pdns_recursor-ansible/pull/268).
+      - document the drop-in removal, the reload behaviour of the restart handler
+        and that tag selection filters tasks but not handlers, so ``--skip-tags service``
+        still restarts the service on a configuration change (https://github.com/PowerDNS/pdns_recursor-ansible/pull/267).
+      - document the handler behaviour and the multi-instance usage in the README
+        (https://github.com/PowerDNS/pdns_recursor-ansible/pull/264).
+      - document the role tags, the check mode support (converged hosts only) and
+        the package/service state variables in the README (https://github.com/PowerDNS/pdns_recursor-ansible/pull/263).
+      minor_changes:
+      - add ``incoming.reuseport``, ``outgoing.source_address``, ``recursor.extended_resolution_errors``,
+        ``recursor.threads`` and ``recursor.max_mthreads`` to the baseline configuration
+        the role merges ``pdns_rec_config`` over (https://github.com/PowerDNS/pdns_recursor-ansible/pull/268).
+      - add ``pdns_rec_config_dir_mode`` and ``pdns_rec_config_file_mode``. The directory
+        mode is symbolic, ``u=rwX,g=rX,o=``, so that the capital ``X`` grants execute
+        on directories, and on files that already carry it, but never marks a plain
+        RPZ zone or include fragment executable (https://github.com/PowerDNS/pdns_recursor-ansible/pull/268).
+      - add ``pdns_rec_flush_handlers`` to run the notified handlers at the end of
+        the role instead of at the end of the play, which is required when the role
+        runs more than once in a play (https://github.com/PowerDNS/pdns_recursor-ansible/pull/264).
+      - add the ``multi-instance`` Molecule scenario, which configures two instances
+        in a single play (https://github.com/PowerDNS/pdns_recursor-ansible/pull/264).
+      - apply the owner, group and mode of every ``pdns_rec_config_additional_dirs``
+        entry to the whole tree, so a file another role or the recursor itself placed
+        there stays readable by the account the daemon runs as. ``pdns_rec_config_dirs_recurse``
+        turns it off, globally or per entry through a ``recurse`` key. Symlinks are
+        not followed, so a link inside one of these directories - an RPZ zone kept
+        on shared storage, say - cannot turn the recursion into a chown and chmod
+        of whatever it points at. Three directories are never walked - the configuration
+        directory, because it holds the ``recursor.yml-dist`` of the package; the
+        directory named by ``recursor.include_dir``, because it holds the operator's
+        drop-ins; and the one named by ``webservice.api_dir``, because its contents
+        are state the daemon rewrites (https://github.com/PowerDNS/pdns_recursor-ansible/pull/268).
+      - cap every collection in ``requirements.yml``. A collection that raises its
+        ``requires_ansible`` in a new major would otherwise break the ansible-core
+        2.16 leg on the day it is published, without a change in this repository (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+      - declare FreeBSD in the Galaxy metadata (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+      - declare the Arch Linux support the role already implements in the Galaxy metadata,
+        and cover it with a Molecule scenario that installs the recursor from the
+        packages of the distribution (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+      - manage the service with ``ansible.builtin.systemd_service`` on systemd hosts
+        and with ``ansible.builtin.service`` on hosts without systemd, instead of
+        mixing the two modules across the service task and the handlers (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+      - 'read facts through ``ansible_facts`` instead of the injected top-level ``ansible_*``
+        variables. ansible-core deprecated that injection and removes it in 2.24,
+        after which a role reading ``ansible_distribution`` would break. The Molecule
+        configuration sets ``inject_facts_as_vars: false``, so a missed reference
+        fails a test run instead of surfacing on a future ansible-core (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).'
+      - remove version suffixed apt and dnf repo files (https://github.com/PowerDNS/pdns_recursor-ansible/pull/258)
+      - rework apt and dnf repo file creation to stop using version suffixed file
+        names which are not cleaned up on version changes (https://github.com/PowerDNS/pdns_recursor-ansible/pull/258)
+      - rewrite the duplicate test that decides whether ``webservice.api_dir`` needs
+        an entry of its own, from a membership test against a concatenated list to
+        two separate comparisons. The result is the same directory list; the concatenation
+        made ``ansible-lint`` 26 fail the repository with a ``jinja[invalid]`` violation,
+        ``can only concatenate str (not "list") to str``, because the rule renders
+        the referenced variable to a string before evaluating the expression (https://github.com/PowerDNS/pdns_recursor-ansible/pull/269).
+      removed_features:
+      - stop testing the ``rec-master`` repository and the 5.1 series, and test the
+        three most recent release series instead. The ``pdns_rec_powerdns_repo_master``
+        and ``pdns_rec_powerdns_repo_51`` presets are unchanged and still usable (https://github.com/PowerDNS/pdns_recursor-ansible/pull/266).
+    fragments:
+    - api-dir-membership-test.yaml
+    - arch-support-and-ansible-216-minimum.yaml
+    - config-baseline-and-directory-ownership.yaml
+    - handlers-multi-instance.yaml
+    - skip-tags-service-and-freebsd-install.yaml
+    - stop-using-version-suffixed-repo-files.yaml
+    - systemd-dropin-lifecycle.yaml
+    - tags-on-included-tasks-and-check-mode.yaml
+    release_date: '2026-08-24'

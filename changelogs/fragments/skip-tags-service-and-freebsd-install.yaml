@@ -1,2 +1,0 @@
-bugfixes:
-- skip the restart under ``--skip-tags service``. Ansible filters tasks by tag but not handlers, so a run that deliberately left the service alone still restarted it on a configuration change - and restarting an inactive unit starts it. The handlers read ``ansible_skip_tags`` and still reload the units, so a ``--tags config`` run is unaffected (https://github.com/PowerDNS/pdns_recursor-ansible/pull/267).
